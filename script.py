@@ -6,16 +6,22 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt
 
-# Excel-Datei und Daten laden
-file_path = "Patienten_Zahnärzte_Kosten.xlsx"
+# Excel-Datei laden
+file_path = "Patienten_Zahnärzte_Kosten_aktualisiert.xlsx"
 df_patienten = pd.read_excel(file_path, sheet_name="Stamm-Patienten", skiprows=3)
 df_zahnaerzte = pd.read_excel(file_path, sheet_name="Zahnärzte", skiprows=2)
+
+# Sicherstellen, dass Spalte 'Passwort geändert' existiert
+if 'Passwort geändert' not in df_patienten.columns:
+    df_patienten['Passwort geändert'] = 'Nein'
+if 'Passwort geändert' not in df_zahnaerzte.columns:
+    df_zahnaerzte['Passwort geändert'] = 'Nein'
 
 class PasswortAendernFenster(QWidget):
     def __init__(self, benutzername, rolle):
         super().__init__()
         self.benutzername = benutzername
-        self.rolle = rolle  # 'Patient' oder 'Zahnarzt'
+        self.rolle = rolle
         self.setWindowTitle("Passwort ändern")
         self.setGeometry(150, 150, 400, 300)
 
@@ -44,6 +50,10 @@ class PasswortAendernFenster(QWidget):
         neues = self.neues_passwort.text().strip()
         bestaetigung = self.bestaetigen_passwort.text().strip()
 
+        if not neues or not bestaetigung:
+            QMessageBox.warning(self, "Fehler", "Bitte beide Passwortfelder ausfüllen.")
+            return
+
         if neues != bestaetigung:
             QMessageBox.warning(self, "Fehler", "Passwörter stimmen nicht überein.")
             return
@@ -52,52 +62,50 @@ class PasswortAendernFenster(QWidget):
 
         if self.rolle == "Patient":
             df_patienten.loc[df_patienten['Patient'] == self.benutzername, 'initiales Passwort'] = neues
+            df_patienten.loc[df_patienten['Patient'] == self.benutzername, 'Passwort geändert'] = 'Ja'
         else:
             df_zahnaerzte.loc[df_zahnaerzte['Zahnarzt'] == self.benutzername, 'ID/Passwort'] = neues
+            df_zahnaerzte.loc[df_zahnaerzte['Zahnarzt'] == self.benutzername, 'Passwort geändert'] = 'Ja'
 
-        # Speichern zurück in Excel
         with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="overlay") as writer:
             df_patienten.to_excel(writer, sheet_name="Stamm-Patienten", index=False, startrow=3)
             df_zahnaerzte.to_excel(writer, sheet_name="Zahnärzte", index=False, startrow=2)
 
-        QMessageBox.information(self, "Erfolg", "Passwort erfolgreich geändert.")
+        QMessageBox.information(self, "Erfolg", "Passwort erfolgreich geändert. Bitte neu einloggen.")
         self.close()
 
 class LoginFenster(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Zahnarztpraxis - Login")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 400, 300)
 
-        main_layout = QVBoxLayout()
-        main_layout.setAlignment(Qt.AlignCenter)
+        # Hauptlayout
+        layout = QVBoxLayout()
+        layout.setSpacing(15)
+        layout.setAlignment(Qt.AlignTop)
 
+        # Benutzername
         self.label_benutzer = QLabel("Benutzername:")
         self.eingabe_benutzer = QLineEdit()
-        self.eingabe_benutzer.setFixedWidth(300)
 
+        # Passwort
         self.label_passwort = QLabel("Passwort:")
         self.eingabe_passwort = QLineEdit()
         self.eingabe_passwort.setEchoMode(QLineEdit.Password)
-        self.eingabe_passwort.setFixedWidth(300)
 
+        # Login Button
         self.login_button = QPushButton("Login")
-        self.login_button.setFixedWidth(150)
         self.login_button.clicked.connect(self.pruefe_login)
 
-        form_layout = QVBoxLayout()
-        form_layout.setSpacing(15)
-        form_layout.addWidget(self.label_benutzer, alignment=Qt.AlignCenter)
-        form_layout.addWidget(self.eingabe_benutzer, alignment=Qt.AlignCenter)
-        form_layout.addWidget(self.label_passwort, alignment=Qt.AlignCenter)
-        form_layout.addWidget(self.eingabe_passwort, alignment=Qt.AlignCenter)
-        form_layout.addWidget(self.login_button, alignment=Qt.AlignCenter)
+        # Elemente zum Layout hinzufügen
+        layout.addWidget(self.label_benutzer)
+        layout.addWidget(self.eingabe_benutzer)
+        layout.addWidget(self.label_passwort)
+        layout.addWidget(self.eingabe_passwort)
+        layout.addWidget(self.login_button)
 
-        main_layout.addSpacerItem(QSpacerItem(20, 100, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        main_layout.addLayout(form_layout)
-        main_layout.addSpacerItem(QSpacerItem(20, 100, QSizePolicy.Minimum, QSizePolicy.Expanding))
-
-        self.setLayout(main_layout)
+        self.setLayout(layout)
 
     def pruefe_login(self):
         benutzername = self.eingabe_benutzer.text().strip()
@@ -109,9 +117,12 @@ class LoginFenster(QWidget):
         ]
 
         if not patient.empty:
-            QMessageBox.information(self, "Erfolg", f"Willkommen Patient {benutzername}!")
-            self.passwortfenster = PasswortAendernFenster(benutzername, "Patient")
-            self.passwortfenster.show()
+            if patient.iloc[0].get('Passwort geändert', 'Nein') != 'Ja':
+                QMessageBox.information(self, "Erfolg", f"Willkommen Patient {benutzername}! Bitte Passwort ändern.")
+                self.passwortfenster = PasswortAendernFenster(benutzername, "Patient")
+                self.passwortfenster.show()
+            else:
+                QMessageBox.information(self, "Erfolg", f"Willkommen zurück, Patient {benutzername}!")
             return
 
         zahnarzt = df_zahnaerzte[
@@ -120,12 +131,16 @@ class LoginFenster(QWidget):
         ]
 
         if not zahnarzt.empty:
-            QMessageBox.information(self, "Erfolg", f"Willkommen Zahnarzt {benutzername}!")
-            self.passwortfenster = PasswortAendernFenster(benutzername, "Zahnarzt")
-            self.passwortfenster.show()
+            if zahnarzt.iloc[0].get('Passwort geändert', 'Nein') != 'Ja':
+                QMessageBox.information(self, "Erfolg", f"Willkommen Zahnarzt {benutzername}! Bitte Passwort ändern.")
+                self.passwortfenster = PasswortAendernFenster(benutzername, "Zahnarzt")
+                self.passwortfenster.show()
+            else:
+                QMessageBox.information(self, "Erfolg", f"Willkommen zurück, Zahnarzt {benutzername}!")
             return
 
         QMessageBox.warning(self, "Fehler", "Benutzername oder Passwort falsch!")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
