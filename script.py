@@ -94,7 +94,7 @@ class RegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
         super().__init__()
         self.setWindowTitle("Registrierung")
-        self.setGeometry(150, 150, 400, 300)
+        self.setGeometry(150, 150, 400, 350)
 
         layout = QVBoxLayout()
 
@@ -108,12 +108,16 @@ class RegistrierungsFenster(QWidget):
         layout.addWidget(self.eingabe_passwort)
 
         self.eingabe_versicherung = QLineEdit()
-        self.eingabe_versicherung.setPlaceholderText("Versicherung")
+        self.eingabe_versicherung.setPlaceholderText("Versicherung (z. B. gesetzlich)")
         layout.addWidget(self.eingabe_versicherung)
 
         self.eingabe_probleme = QLineEdit()
-        self.eingabe_probleme.setPlaceholderText("Krankheiten / Beschwerden")
+        self.eingabe_probleme.setPlaceholderText("Beschwerde (z. B. Karies klein)")
         layout.addWidget(self.eingabe_probleme)
+
+        self.eingabe_anzahl = QLineEdit()
+        self.eingabe_anzahl.setPlaceholderText("Anzahl (optional, Standard = 1)")
+        layout.addWidget(self.eingabe_anzahl)
 
         self.registrieren_button = QPushButton("Registrieren")
         self.registrieren_button.clicked.connect(self.registriere)
@@ -125,17 +129,29 @@ class RegistrierungsFenster(QWidget):
         name = self.eingabe_name.text().strip()
         pw = self.eingabe_passwort.text().strip()
         versicherung = self.eingabe_versicherung.text().strip()
-        probleme = self.eingabe_probleme.text().strip()
+        beschwerde = self.eingabe_probleme.text().strip()
+        anzahl_text = self.eingabe_anzahl.text().strip()
 
-        if not name or not pw or not versicherung:
+        if not name or not pw or not versicherung or not beschwerde:
             QMessageBox.warning(self, "Fehler", "Bitte alle Pflichtfelder ausfüllen.")
+            return
+
+        try:
+            anzahl = int(anzahl_text) if anzahl_text else 1
+        except ValueError:
+            QMessageBox.warning(self, "Fehler", "Anzahl muss eine Zahl sein.")
             return
 
         neuer_patient = {
             "name": name,
             "passwort": pw,
-            "versicherung": versicherung,
-            "probleme": probleme,
+            "krankenkasse": versicherung,
+            "probleme": [
+                {
+                    "art": beschwerde,
+                    "anzahl": anzahl
+                }
+            ],
             "passwort_geaendert": True
         }
 
@@ -144,6 +160,7 @@ class RegistrierungsFenster(QWidget):
 
         QMessageBox.information(self, "Erfolg", "Registrierung erfolgreich!")
         self.close()
+
 
 # Login Fenster
 class LoginFenster(QWidget):
