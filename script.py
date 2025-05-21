@@ -26,12 +26,86 @@ patienten = lade_daten(pfad_patienten)
 zahnaerzte = lade_daten(pfad_zahnaerzte)
 
 # Hauptfenster
+from PyQt5.QtWidgets import QHBoxLayout, QFrame, QSizePolicy
+
 class MainFenster(QWidget):
     def __init__(self, benutzername, rolle):
         super().__init__()
-        self.setWindowTitle(f"Hauptseite - {rolle} {benutzername}")
-        self.setGeometry(200, 200, 600, 400)
+        self.benutzername = benutzername
+        self.rolle = rolle
+
+        self.setWindowTitle("Dashboard")
+        self.setGeometry(200, 200, 1200, 700)
         self.setStyleSheet("background-color: white;")
+
+        self.init_ui()
+
+    def init_ui(self):
+        hauptlayout = QVBoxLayout()
+
+        # Begrüßung oben
+        begruessung = QLabel(f"Willkommen  {self.benutzername}")
+        begruessung.setStyleSheet("font-size: 24px; font-weight: bold; padding: 10px;")
+        begruessung.setAlignment(Qt.AlignCenter)
+        hauptlayout.addWidget(begruessung)
+
+        # Hauptbereich: horizontal geteilt (links Profil + rechts Inhalt)
+        inhalt_layout = QHBoxLayout()
+
+        # Linkes Menü (Profilbereich)
+        profil_layout = QVBoxLayout()
+        profil_layout.setAlignment(Qt.AlignTop)
+
+        # Profilbild (Platzhalter)
+        profilbild = QLabel()
+        profilbild.setFixedSize(80, 80)
+        profilbild.setStyleSheet("border-radius: 40px; background-color: lightgray;")
+        profilbild.setAlignment(Qt.AlignCenter)
+        profil_layout.addWidget(profilbild, alignment=Qt.AlignCenter)
+
+        # Trennlinie
+        linie = QFrame()
+        linie.setFrameShape(QFrame.HLine)
+        linie.setFrameShadow(QFrame.Sunken)
+        profil_layout.addWidget(linie)
+
+        # Buttons
+        btn_daten = QPushButton("Meine Daten")
+        btn_termine = QPushButton("Termin buchen")
+        btn_settings = QPushButton("Einstellungen")
+
+        for btn in [btn_daten, btn_termine, btn_settings]:
+            btn.setFixedHeight(40)
+            btn.setStyleSheet("text-align: left; padding-left: 10px;")
+            profil_layout.addWidget(btn)
+
+        # Platzhalter rechts (für Inhalte später)
+        inhaltsbereich = QLabel("Inhalte folgen...")
+        inhaltsbereich.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        inhaltsbereich.setAlignment(Qt.AlignCenter)
+
+        # Layout zusammensetzen
+        inhalt_layout.addLayout(profil_layout, stretch=1)
+        inhalt_layout.addWidget(inhaltsbereich, stretch=3)
+
+        hauptlayout.addLayout(inhalt_layout)
+
+        # Untere Buttonleiste
+        footer = QHBoxLayout()
+        footer.setAlignment(Qt.AlignCenter)
+
+        btn1 = QPushButton("Startseite")
+        btn2 = QPushButton("Hilfe")
+        btn3 = QPushButton("Kontakt")
+
+        for b in [btn1, btn2, btn3]:
+            b.setFixedWidth(120)
+            footer.addWidget(b)
+
+        hauptlayout.addLayout(footer)
+
+        self.setLayout(hauptlayout)
+
 
 # Passwort ändern Fenster
 class PasswortAendernFenster(QWidget):
