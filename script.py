@@ -1,11 +1,12 @@
 import sys
 import json
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
+    QApplication, QWidget, QLabel, QLineEdit, QPushButton,
+    QVBoxLayout, QMessageBox
 )
 from PyQt5.QtCore import Qt
 
-# Hilfsfunktionen für JSON-Zugriff
+# JSON-Hilfsfunktionen
 def lade_daten(pfad):
     with open(pfad, "r", encoding="utf-8") as f:
         daten = json.load(f)
@@ -18,17 +19,27 @@ def speichere_daten(pfad, daten):
     with open(pfad, "w", encoding="utf-8") as f:
         json.dump(daten, f, ensure_ascii=False, indent=2)
 
-# Daten laden
+# Datenpfade
 pfad_patienten = "data/patienten.json"
 pfad_zahnaerzte = "data/zahnaerzte.json"
 patienten = lade_daten(pfad_patienten)
 zahnaerzte = lade_daten(pfad_zahnaerzte)
 
+# Hauptfenster
+class MainFenster(QWidget):
+    def __init__(self, benutzername, rolle):
+        super().__init__()
+        self.setWindowTitle(f"Hauptseite - {rolle} {benutzername}")
+        self.setGeometry(200, 200, 600, 400)
+        self.setStyleSheet("background-color: white;")
+
+# Passwort ändern Fenster
 class PasswortAendernFenster(QWidget):
-    def __init__(self, benutzer, rolle):
+    def __init__(self, benutzer, rolle, parent=None):
         super().__init__()
         self.benutzer = benutzer
         self.rolle = rolle
+        self.parent_fenster = parent
         self.setWindowTitle("Passwort ändern")
         self.setGeometry(150, 150, 400, 250)
 
@@ -72,9 +83,17 @@ class PasswortAendernFenster(QWidget):
             speichere_daten(pfad_zahnaerzte, zahnaerzte)
 
         QMessageBox.information(self, "Erfolg", "Passwort erfolgreich geändert.")
+
+        # Hauptfenster öffnen
+        self.mainfenster = MainFenster(self.benutzer["name"], self.rolle)
+        self.mainfenster.show()
+
+        # Passwortfenster + Loginfenster schließen
         self.close()
+        if self.parent_fenster:
+            self.parent_fenster.close()
 
-
+# Login Fenster
 class LoginFenster(QWidget):
     def __init__(self):
         super().__init__()
@@ -105,31 +124,33 @@ class LoginFenster(QWidget):
         benutzername = self.eingabe_benutzer.text().strip()
         passwort = self.eingabe_passwort.text().strip()
 
-        # Patienten prüfen
         for p in patienten:
             if p["name"] == benutzername and p["passwort"] == passwort:
                 if not p.get("passwort_geaendert", False):
                     QMessageBox.information(self, "Erstlogin", f"Willkommen Patient {benutzername}! Bitte Passwort ändern.")
-                    self.passwortfenster = PasswortAendernFenster(p, "Patient")
+                    self.passwortfenster = PasswortAendernFenster(p, "Patient", parent=self)
                     self.passwortfenster.show()
                 else:
-                    QMessageBox.information(self, "Login", f"Willkommen zurück, Patient {benutzername}!")
+                    self.mainfenster = MainFenster(p["name"], "Patient")
+                    self.mainfenster.show()
+                    self.close()
                 return
 
-        # Zahnärzte prüfen
         for z in zahnaerzte:
             if z["name"] == benutzername and z["passwort"] == passwort:
                 if not z.get("passwort_geaendert", False):
                     QMessageBox.information(self, "Erstlogin", f"Willkommen Zahnarzt {benutzername}! Bitte Passwort ändern.")
-                    self.passwortfenster = PasswortAendernFenster(z, "Zahnarzt")
+                    self.passwortfenster = PasswortAendernFenster(z, "Zahnarzt", parent=self)
                     self.passwortfenster.show()
                 else:
-                    QMessageBox.information(self, "Login", f"Willkommen zurück, Zahnarzt {benutzername}!")
+                    self.mainfenster = MainFenster(z["name"], "Zahnarzt")
+                    self.mainfenster.show()
+                    self.close()
                 return
 
         QMessageBox.warning(self, "Fehler", "Benutzername oder Passwort falsch!")
 
-
+# Startpunkt
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     fenster = LoginFenster()
