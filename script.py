@@ -90,6 +90,7 @@ class PasswortAendernFenster(QWidget):
             self.parent_fenster.close()
 
 # Registrierungsfenster für neue Patienten
+from PyQt5.QtWidgets import QComboBox
 class RegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
         super().__init__()
@@ -107,13 +108,19 @@ class RegistrierungsFenster(QWidget):
         self.eingabe_passwort.setEchoMode(QLineEdit.Password)
         layout.addWidget(self.eingabe_passwort)
 
-        self.eingabe_versicherung = QLineEdit()
-        self.eingabe_versicherung.setPlaceholderText("Versicherung (z. B. gesetzlich)")
-        layout.addWidget(self.eingabe_versicherung)
+        # Drop-down für Versicherung
+        self.versicherung_box = QComboBox()
+        self.versicherung_box.addItems(["gesetzlich", "privat", "freiwillig gesetzlich"])
+        layout.addWidget(QLabel("Versicherung:"))
+        layout.addWidget(self.versicherung_box)
 
-        self.eingabe_probleme = QLineEdit()
-        self.eingabe_probleme.setPlaceholderText("Beschwerde (z. B. Karies klein)")
-        layout.addWidget(self.eingabe_probleme)
+        # Drop-down für Beschwerden
+        self.probleme_box = QComboBox()
+        self.probleme_box.addItems([
+            "Karies klein", "Karies Groß", "Teilkrone", "Krone", "Wurzelbehandlung"
+        ])
+        layout.addWidget(QLabel("Beschwerde:"))
+        layout.addWidget(self.probleme_box)
 
         self.eingabe_anzahl = QLineEdit()
         self.eingabe_anzahl.setPlaceholderText("Anzahl (optional, Standard = 1)")
@@ -128,8 +135,8 @@ class RegistrierungsFenster(QWidget):
     def registriere(self):
         name = self.eingabe_name.text().strip()
         pw = self.eingabe_passwort.text().strip()
-        versicherung = self.eingabe_versicherung.text().strip()
-        beschwerde = self.eingabe_probleme.text().strip()
+        versicherung = self.versicherung_box.currentText()
+        beschwerde = self.probleme_box.currentText()
         anzahl_text = self.eingabe_anzahl.text().strip()
 
         if not name or not pw or not versicherung or not beschwerde:
@@ -160,6 +167,7 @@ class RegistrierungsFenster(QWidget):
 
         QMessageBox.information(self, "Erfolg", "Registrierung erfolgreich!")
         self.close()
+
 
 
 # Login Fenster

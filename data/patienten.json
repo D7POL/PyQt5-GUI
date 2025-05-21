@@ -299,13 +299,7 @@
     ],
     "passwort_geaendert": false
   },
-  {
-    "name": "Frau Ayaz",
-    "passwort": "P41",
-    "versicherung": "gesetzlich",
-    "probleme": "Karies klein",
-    "passwort_geaendert": true
-  },
+
   {
     "name": "Frau Özdemir",
     "passwort": "P10",
