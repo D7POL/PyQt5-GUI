@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Herr Dr. Huber",
+    "passwort": "A111",
+    "behandelt": ["privat"],
+    "zeiten": {
+      "Mo": ["08:00-12:00", "14:00-16:00"],
+      "Di": ["08:00-12:00", "14:00-16:00"],
+      "Mi": ["08:00-12:00", "14:00-16:00"],
+      "Do": ["08:00-12:00", "14:00-16:00"],
+      "Fr": ["08:00-12:00", "14:00-16:00"]
+    }
+  },
+  {
+    "name": "Herr Dr. Kraft",
+    "passwort": "A222",
+    "behandelt": ["gesetzlich"],
+    "zeiten": {
+      "Mo": ["10:00-12:00", "14:00-18:00"],
+      "Di": ["10:00-12:00", "14:00-18:00"],
+      "Mi": ["10:00-12:00", "14:00-18:00"],
+      "Do": ["10:00-12:00", "14:00-18:00"],
+      "Fr": ["10:00-12:00", "14:00-18:00"]
+    }
+  },
+  {
+    "name": "Frau Dr. Winkel",
+    "passwort": "A333",
+    "behandelt": ["privat", "freiwillig gesetzlich"],
+    "zeiten": {
+      "Mo": ["08:00-14:00"],
+      "Di": ["08:00-14:00"],
+      "Mi": ["08:00-14:00"],
+      "Do": ["08:00-14:00"],
+      "Fr": ["08:00-14:00"]
+    }
+  },
+  {
+    "name": "Herr Dr. Hausmann",
+    "passwort": "A444",
+    "behandelt": ["gesetzlich", "freiwillig gesetzlich"],
+    "zeiten": {
+      "Mo": ["09:00-12:00"],
+      "Fr": ["12:00-16:00"]
+    }
+  },
+  {
+    "name": "Frau Dr. Wurzel",
+    "passwort": "A555",
+    "behandelt": ["privat"],
+    "zeiten": {
+      "Di": ["08:00-12:00"],
+      "Do": ["12:00-18:00"]
+    }
+  }
+]

@@ -1,0 +1,277 @@
+[
+  {
+    "name": "Frau Meyer",
+    "passwort": "P1111",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Herr Krüger",
+    "passwort": "P334",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 1
+      }
+    ]
+  },
+  {
+    "name": "Herr Meyer",
+    "passwort": "P756",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Herr Deister",
+    "passwort": "P564",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 1
+      }
+    ]
+  },
+  {
+    "name": "Frau Müller",
+    "passwort": "P711",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 1
+      }
+    ]
+  },
+  {
+    "name": "Herr Schuster",
+    "passwort": "P561",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Wurzelbehandlung",
+        "anzahl": 1
+      }
+    ]
+  },
+  {
+    "name": "Frau Schulze",
+    "passwort": "P991",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 3
+      }
+    ]
+  },
+  {
+    "name": "Herr Meister",
+    "passwort": "P196",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies groß",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Frau Riesenhuber",
+    "passwort": "P556",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Karies groß",
+        "anzahl": 4
+      }
+    ]
+  },
+  {
+    "name": "Herr Schmidt",
+    "passwort": "P856",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Frau Michaelis",
+    "passwort": "P214",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 1
+      }
+    ]
+  },
+  {
+    "name": "Herr Ziegler",
+    "passwort": "P779",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 3
+      }
+    ]
+  },
+  {
+    "name": "Herr Maurer",
+    "passwort": "P433",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies groß",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Frau Kossmeier",
+    "passwort": "P913",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 1
+      }
+    ]
+  },
+  {
+    "name": "Herr Kaufmann",
+    "passwort": "P117",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Herr Hansen",
+    "passwort": "P555",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 4
+      }
+    ]
+  },
+  {
+    "name": "Herr Freischulz",
+    "passwort": "P915",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Frau Meckernich",
+    "passwort": "P999",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Herr Liebermann",
+    "passwort": "P848",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies groß",
+        "anzahl": 3
+      }
+    ]
+  },
+  {
+    "name": "Frau Koslowski",
+    "passwort": "P616",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Wurzelbehandlung",
+        "anzahl": 1
+      }
+    ]
+  },
+  {
+    "name": "Herr Werner",
+    "passwort": "P441",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 3
+      }
+    ]
+  },
+  {
+    "name": "Frau Ganzer",
+    "passwort": "P963",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Frau Heiermann",
+    "passwort": "P283",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Wurzelbehandlung",
+        "anzahl": 2
+      }
+    ]
+  },
+  {
+    "name": "Herr Gonzalez",
+    "passwort": "P964",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 3
+      }
+    ]
+  },
+  {
+    "name": "Frau Mertens",
+    "passwort": "P242",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 4
+      }
+    ]
+  }
+]

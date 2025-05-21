@@ -1,0 +1,29 @@
+[
+  {
+    "patient": "Frau Meyer",
+    "zahnarzt": "Herr Dr. Kraft",
+    "datum": "2025-06-03",
+    "uhrzeit": "09:00",
+    "behandlung": "Karies klein",
+    "material": "höchstwertig",
+    "anzahl_zaehne": 1
+  },
+  {
+    "patient": "Herr Kaufmann",
+    "zahnarzt": "Herr Dr. Hausmann",
+    "datum": "2025-06-04",
+    "uhrzeit": "12:00",
+    "behandlung": "Krone",
+    "material": "normal",
+    "anzahl_zaehne": 1
+  },
+  {
+    "patient": "Herr Krüger",
+    "zahnarzt": "Frau Dr. Winkel",
+    "datum": "2025-05-17",
+    "uhrzeit": "08:00",
+    "behandlung": "Karies klein",
+    "material": "höchstwertig",
+    "anzahl_zaehne": 1
+  }
+]

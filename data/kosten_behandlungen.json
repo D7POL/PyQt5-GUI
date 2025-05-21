@@ -1,0 +1,132 @@
+{
+  "Karies klein": {
+    "normal": {
+      "zeit": 0.25,
+      "kosten": 100,
+      "kasse": {
+        "gesetzlich": 0.80,
+        "privat": 1.00
+      }
+    },
+    "höherwertig": {
+      "zeit": 0.25,
+      "kosten": 180,
+      "kasse": {
+        "gesetzlich": 0.70,
+        "privat": 1.00
+      }
+    },
+    "höchstwertig": {
+      "zeit": 0.25,
+      "kosten": 250,
+      "kasse": {
+        "gesetzlich": 0.50,
+        "privat": 0.95
+      }
+    }
+  },
+  "Karies groß": {
+    "normal": {
+      "zeit": 0.5,
+      "kosten": 200,
+      "kasse": {
+        "gesetzlich": 0.80,
+        "privat": 1.00
+      }
+    },
+    "höherwertig": {
+      "zeit": 0.5,
+      "kosten": 360,
+      "kasse": {
+        "gesetzlich": 0.70,
+        "privat": 1.00
+      }
+    },
+    "höchstwertig": {
+      "zeit": 0.5,
+      "kosten": 480,
+      "kasse": {
+        "gesetzlich": 0.50,
+        "privat": 0.95
+      }
+    }
+  },
+  "Teilkrone": {
+    "normal": {
+      "zeit": 1.0,
+      "kosten": 1000,
+      "kasse": {
+        "gesetzlich": 0.80,
+        "privat": 1.00
+      }
+    },
+    "höherwertig": {
+      "zeit": 1.0,
+      "kosten": 1800,
+      "kasse": {
+        "gesetzlich": 0.70,
+        "privat": 0.95
+      }
+    },
+    "höchstwertig": {
+      "zeit": 1.0,
+      "kosten": 3100,
+      "kasse": {
+        "gesetzlich": 0.30,
+        "privat": 0.85
+      }
+    }
+  },
+  "Krone": {
+    "normal": {
+      "zeit": 2.0,
+      "kosten": 2800,
+      "kasse": {
+        "gesetzlich": 0.70,
+        "privat": 1.00
+      }
+    },
+    "höherwertig": {
+      "zeit": 2.0,
+      "kosten": 3600,
+      "kasse": {
+        "gesetzlich": 0.50,
+        "privat": 0.85
+      }
+    },
+    "höchstwertig": {
+      "zeit": 2.0,
+      "kosten": 4200,
+      "kasse": {
+        "gesetzlich": 0.25,
+        "privat": 0.75
+      }
+    }
+  },
+  "Wurzelbehandlung": {
+    "normal": {
+      "zeit": 1.5,
+      "kosten": 750,
+      "kasse": {
+        "gesetzlich": 0.90,
+        "privat": 1.00
+      }
+    },
+    "höherwertig": {
+      "zeit": 1.5,
+      "kosten": 1200,
+      "kasse": {
+        "gesetzlich": 0.70,
+        "privat": 0.95
+      }
+    },
+    "höchstwertig": {
+      "zeit": 2.0,
+      "kosten": 1500,
+      "kasse": {
+        "gesetzlich": 0.45,
+        "privat": 0.85
+      }
+    }
+  }
+}
