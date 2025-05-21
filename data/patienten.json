@@ -8,18 +8,20 @@
         "art": "Karies klein",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Krüger",
-    "passwort": "P334",
+    "passwort": "P333",
     "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
       {
         "art": "Karies klein",
         "anzahl": 1
       }
-    ]
+    ],
+    "passwort_geaendert": true
   },
   {
     "name": "Herr Meyer",
@@ -30,7 +32,8 @@
         "art": "Teilkrone",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Deister",
@@ -41,7 +44,8 @@
         "art": "Teilkrone",
         "anzahl": 1
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Müller",
@@ -52,7 +56,8 @@
         "art": "Krone",
         "anzahl": 1
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Schuster",
@@ -63,7 +68,8 @@
         "art": "Wurzelbehandlung",
         "anzahl": 1
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Schulze",
@@ -74,7 +80,8 @@
         "art": "Teilkrone",
         "anzahl": 3
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Meister",
@@ -85,7 +92,8 @@
         "art": "Karies groß",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Riesenhuber",
@@ -96,7 +104,8 @@
         "art": "Karies groß",
         "anzahl": 4
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Schmidt",
@@ -107,7 +116,8 @@
         "art": "Krone",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Michaelis",
@@ -118,7 +128,8 @@
         "art": "Teilkrone",
         "anzahl": 1
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Ziegler",
@@ -129,7 +140,8 @@
         "art": "Karies klein",
         "anzahl": 3
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Maurer",
@@ -140,7 +152,8 @@
         "art": "Karies groß",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Kossmeier",
@@ -151,7 +164,8 @@
         "art": "Teilkrone",
         "anzahl": 1
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Kaufmann",
@@ -162,7 +176,8 @@
         "art": "Krone",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Hansen",
@@ -173,7 +188,8 @@
         "art": "Krone",
         "anzahl": 4
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Freischulz",
@@ -184,7 +200,8 @@
         "art": "Teilkrone",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Meckernich",
@@ -195,7 +212,8 @@
         "art": "Karies klein",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Liebermann",
@@ -206,7 +224,8 @@
         "art": "Karies groß",
         "anzahl": 3
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Koslowski",
@@ -217,7 +236,8 @@
         "art": "Wurzelbehandlung",
         "anzahl": 1
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Werner",
@@ -228,7 +248,8 @@
         "art": "Teilkrone",
         "anzahl": 3
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Ganzer",
@@ -239,7 +260,8 @@
         "art": "Teilkrone",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Heiermann",
@@ -250,7 +272,8 @@
         "art": "Wurzelbehandlung",
         "anzahl": 2
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Gonzalez",
@@ -261,7 +284,8 @@
         "art": "Krone",
         "anzahl": 3
       }
-    ]
+    ],
+    "passwort_geaendert": false
   },
   {
     "name": "Frau Mertens",
@@ -272,6 +296,7 @@
         "art": "Teilkrone",
         "anzahl": 4
       }
-    ]
+    ],
+    "passwort_geaendert": false
   }
 ]
