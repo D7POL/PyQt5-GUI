@@ -83,22 +83,74 @@ class PasswortAendernFenster(QWidget):
             speichere_daten(pfad_zahnaerzte, zahnaerzte)
 
         QMessageBox.information(self, "Erfolg", "Passwort erfolgreich geändert.")
-
-        # Hauptfenster öffnen
         self.mainfenster = MainFenster(self.benutzer["name"], self.rolle)
         self.mainfenster.show()
-
-        # Passwortfenster + Loginfenster schließen
         self.close()
         if self.parent_fenster:
             self.parent_fenster.close()
+
+# Registrierungsfenster für neue Patienten
+class RegistrierungsFenster(QWidget):
+    def __init__(self, parent=None):
+        super().__init__()
+        self.setWindowTitle("Registrierung")
+        self.setGeometry(150, 150, 400, 300)
+
+        layout = QVBoxLayout()
+
+        self.eingabe_name = QLineEdit()
+        self.eingabe_name.setPlaceholderText("Vollständiger Name")
+        layout.addWidget(self.eingabe_name)
+
+        self.eingabe_passwort = QLineEdit()
+        self.eingabe_passwort.setPlaceholderText("Passwort")
+        self.eingabe_passwort.setEchoMode(QLineEdit.Password)
+        layout.addWidget(self.eingabe_passwort)
+
+        self.eingabe_versicherung = QLineEdit()
+        self.eingabe_versicherung.setPlaceholderText("Versicherung")
+        layout.addWidget(self.eingabe_versicherung)
+
+        self.eingabe_probleme = QLineEdit()
+        self.eingabe_probleme.setPlaceholderText("Krankheiten / Beschwerden")
+        layout.addWidget(self.eingabe_probleme)
+
+        self.registrieren_button = QPushButton("Registrieren")
+        self.registrieren_button.clicked.connect(self.registriere)
+        layout.addWidget(self.registrieren_button)
+
+        self.setLayout(layout)
+
+    def registriere(self):
+        name = self.eingabe_name.text().strip()
+        pw = self.eingabe_passwort.text().strip()
+        versicherung = self.eingabe_versicherung.text().strip()
+        probleme = self.eingabe_probleme.text().strip()
+
+        if not name or not pw or not versicherung:
+            QMessageBox.warning(self, "Fehler", "Bitte alle Pflichtfelder ausfüllen.")
+            return
+
+        neuer_patient = {
+            "name": name,
+            "passwort": pw,
+            "versicherung": versicherung,
+            "probleme": probleme,
+            "passwort_geaendert": True
+        }
+
+        patienten.append(neuer_patient)
+        speichere_daten(pfad_patienten, patienten)
+
+        QMessageBox.information(self, "Erfolg", "Registrierung erfolgreich!")
+        self.close()
 
 # Login Fenster
 class LoginFenster(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Login Zahnarztpraxis")
-        self.setGeometry(100, 100, 400, 250)
+        self.setGeometry(100, 100, 400, 300)
 
         layout = QVBoxLayout()
 
@@ -112,13 +164,21 @@ class LoginFenster(QWidget):
         self.login_button = QPushButton("Login")
         self.login_button.clicked.connect(self.pruefe_login)
 
+        self.registrieren_button = QPushButton("Registrieren")
+        self.registrieren_button.clicked.connect(self.zeige_registrierung)
+
         layout.addWidget(self.label_benutzer)
         layout.addWidget(self.eingabe_benutzer)
         layout.addWidget(self.label_passwort)
         layout.addWidget(self.eingabe_passwort)
         layout.addWidget(self.login_button)
+        layout.addWidget(self.registrieren_button)
 
         self.setLayout(layout)
+
+    def zeige_registrierung(self):
+        self.regfenster = RegistrierungsFenster(self)
+        self.regfenster.show()
 
     def pruefe_login(self):
         benutzername = self.eingabe_benutzer.text().strip()
@@ -150,7 +210,7 @@ class LoginFenster(QWidget):
 
         QMessageBox.warning(self, "Fehler", "Benutzername oder Passwort falsch!")
 
-# Startpunkt
+# Start der App
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     fenster = LoginFenster()
