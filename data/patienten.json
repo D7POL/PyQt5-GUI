@@ -1,5 +1,17 @@
 [
   {
+    "name": "Max Mustermann",
+    "passwort": "test123",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
     "name": "Frau Meyer",
     "passwort": "P111",
     "krankenkasse": "gesetzlich",
@@ -12,7 +24,7 @@
     "passwort_geaendert": true
   },
   {
-    "name": "Herr Krüger",
+    "name": "Herr Kr\u00fcger",
     "passwort": "P333",
     "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
@@ -48,7 +60,7 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Müller",
+    "name": "Frau M\u00fcller",
     "passwort": "P711",
     "krankenkasse": "privat",
     "probleme": [
@@ -89,7 +101,7 @@
     "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -101,7 +113,7 @@
     "krankenkasse": "privat",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 4
       }
     ],
@@ -149,7 +161,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -221,7 +233,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 3
       }
     ],
@@ -300,12 +312,12 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Özdemir",
+    "name": "Frau \u00d6zdemir",
     "passwort": "P10",
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 1
       }
     ],
@@ -315,16 +327,7 @@
     "name": "Frau Ayaz",
     "passwort": "P19",
     "krankenkasse": "privat",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 2
-      },
-      {
-        "art": "Wurzelbehandlung",
-        "anzahl": 4
-      }
-    ],
+    "probleme": [],
     "passwort_geaendert": true
   }
 ]
