@@ -1,10 +1,13 @@
 import sys
 import json
+from datetime import datetime, timedelta
+import calendar
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QLineEdit, QPushButton,
-    QVBoxLayout, QMessageBox, QHBoxLayout, QFrame, QSizePolicy, QComboBox
+    QVBoxLayout, QMessageBox, QHBoxLayout, QFrame, QSizePolicy, QComboBox,
+    QCalendarWidget, QScrollArea, QGridLayout
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QColor, QPalette
 
 # Globale Stil-Definitionen
@@ -131,6 +134,14 @@ class MainFenster(QWidget):
         palette.setColor(QPalette.Window, QColor("#f5f6fa"))
         self.setPalette(palette)
         self.setAutoFillBackground(True)
+
+        # Initialisiere Behandlungsvariablen
+        self.selected_problem = None
+        self.selected_anzahl = None
+        self.selected_material = None
+        self.selected_zahnarzt = None
+        self.selected_date = None
+        self.selected_time = None
 
         self.init_ui()
 
@@ -452,6 +463,589 @@ class MainFenster(QWidget):
         self.problem_anzahl.clear()
         self.show_meine_daten()  # Aktualisiere die Analyse-Ansicht
 
+    def show_meine_termine(self):
+        if self.current_page:
+            self.current_page.hide()
+            self.current_page.deleteLater()
+        
+        # Container für die Termine
+        termine_container = QFrame()
+        termine_container.setStyleSheet("""
+            QFrame {
+                background-color: white;
+                border-radius: 10px;
+                padding: 20px;
+            }
+        """)
+        termine_layout = QVBoxLayout(termine_container)
+
+        # Überschrift
+        titel = QLabel("Meine Termine")
+        titel.setStyleSheet("""
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        """)
+        termine_layout.addWidget(titel)
+
+        # Lade Termine
+        with open("data/termine.json", "r", encoding="utf-8") as f:
+            alle_termine = json.load(f)
+
+        # Sammle alle Termine des Patienten
+        meine_termine = []
+        for arzt, arzt_termine in alle_termine.items():
+            for datum, tag_termine in arzt_termine.items():
+                for zeit, termin in tag_termine.items():
+                    if termin["patient"] == self.benutzername:
+                        meine_termine.append({
+                            "arzt": arzt,
+                            "datum": datum,
+                            "zeit": zeit,
+                            "behandlung": termin["behandlung"],
+                            "dauer": termin["dauer"]
+                        })
+
+        # Sortiere Termine nach Datum und Zeit
+        meine_termine.sort(key=lambda x: (x["datum"], x["zeit"]))
+
+        if not meine_termine:
+            keine_termine = QLabel("Sie haben noch keine Termine gebucht.")
+            keine_termine.setStyleSheet("color: #7f8c8d;")
+            termine_layout.addWidget(keine_termine)
+        else:
+            # Erstelle eine ScrollArea für die Termine
+            scroll = QScrollArea()
+            scroll.setWidgetResizable(True)
+            scroll.setStyleSheet("""
+                QScrollArea {
+                    border: none;
+                }
+            """)
+            
+            scroll_content = QWidget()
+            scroll_layout = QVBoxLayout(scroll_content)
+            scroll_layout.setSpacing(10)  # Reduzierter Abstand zwischen Terminen
+            
+            # Gruppiere Termine nach Datum
+            termine_nach_datum = {}
+            for termin in meine_termine:
+                datum = termin["datum"]
+                if datum not in termine_nach_datum:
+                    termine_nach_datum[datum] = []
+                termine_nach_datum[datum].append(termin)
+            
+            for datum, termine in termine_nach_datum.items():
+                # Datum Header
+                datum_obj = datetime.strptime(datum, "%Y-%m-%d")
+                datum_str = datum_obj.strftime("%d.%m.%Y")
+                wochentag = datum_obj.strftime("%A")  # Vollständiger Wochentag
+                
+                datum_frame = QFrame()
+                datum_frame.setStyleSheet("""
+                    QFrame {
+                        background-color: #f8f9fa;
+                        border-radius: 5px;
+                        padding: 10px;
+                        margin-bottom: 5px;
+                    }
+                """)
+                datum_layout = QVBoxLayout(datum_frame)
+                datum_layout.setSpacing(5)
+                
+                datum_label = QLabel(f"<b>{wochentag}, {datum_str}</b>")
+                datum_label.setStyleSheet("color: #2c3e50; font-size: 14px;")
+                datum_layout.addWidget(datum_label)
+                
+                for termin in termine:
+                    termin_frame = QFrame()
+                    termin_frame.setStyleSheet("""
+                        QFrame {
+                            background-color: white;
+                            border: 1px solid #e0e0e0;
+                            border-radius: 5px;
+                            padding: 8px;
+                        }
+                    """)
+                    termin_layout = QHBoxLayout(termin_frame)
+                    termin_layout.setContentsMargins(10, 5, 10, 5)
+                    
+                    # Linke Seite: Zeit und Dauer
+                    zeit_container = QFrame()
+                    zeit_layout = QVBoxLayout(zeit_container)
+                    zeit_layout.setSpacing(2)
+                    zeit_layout.setContentsMargins(0, 0, 0, 0)
+                    
+                    zeit_label = QLabel(f"<b>{termin['zeit']} Uhr</b>")
+                    zeit_label.setStyleSheet("color: #2c3e50;")
+                    zeit_layout.addWidget(zeit_label)
+                    
+                    dauer_label = QLabel(f"{termin['dauer']} Min.")
+                    dauer_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
+                    zeit_layout.addWidget(dauer_label)
+                    
+                    termin_layout.addWidget(zeit_container)
+                    
+                    # Vertikale Linie
+                    linie = QFrame()
+                    linie.setFrameShape(QFrame.VLine)
+                    linie.setFrameShadow(QFrame.Sunken)
+                    linie.setStyleSheet("color: #e0e0e0;")
+                    termin_layout.addWidget(linie)
+                    
+                    # Rechte Seite: Behandlung und Arzt
+                    info_container = QFrame()
+                    info_layout = QVBoxLayout(info_container)
+                    info_layout.setSpacing(2)
+                    info_layout.setContentsMargins(0, 0, 0, 0)
+                    
+                    behandlung_label = QLabel(f"<b>{termin['behandlung']}</b>")
+                    behandlung_label.setStyleSheet("color: #2c3e50;")
+                    info_layout.addWidget(behandlung_label)
+                    
+                    arzt_label = QLabel(f"Dr. {termin['arzt']}")
+                    arzt_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
+                    info_layout.addWidget(arzt_label)
+                    
+                    termin_layout.addWidget(info_container, stretch=1)
+                    
+                    datum_layout.addWidget(termin_frame)
+                
+                scroll_layout.addWidget(datum_frame)
+            
+            scroll_layout.addStretch()
+            scroll.setWidget(scroll_content)
+            termine_layout.addWidget(scroll)
+
+        self.inhalt_layout_inner.addWidget(termine_container)
+        self.current_page = termine_container
+
+    def show_termin_buchen(self):
+        if self.rolle == "Patient":
+            if self.current_page:
+                self.current_page.hide()
+                self.current_page.deleteLater()
+            
+            # Container für die Terminbuchung
+            self.termin_container = QFrame()
+            self.termin_container.setStyleSheet("""
+                QFrame {
+                    background-color: white;
+                    border-radius: 10px;
+                    padding: 20px;
+                }
+            """)
+            termin_layout = QVBoxLayout(self.termin_container)
+
+            # Überschrift
+            titel = QLabel("Termin buchen")
+            titel.setStyleSheet("""
+                font-size: 24px;
+                font-weight: bold;
+                color: #2c3e50;
+                margin-bottom: 20px;
+            """)
+            termin_layout.addWidget(titel)
+
+            # Schritt 1: Behandlungsauswahl
+            self.problem_box = QComboBox()
+            for problem in self.patient_data["probleme"]:
+                self.problem_box.addItem(f"{problem['art']} ({problem['anzahl']} Zähne)")
+            termin_layout.addWidget(QLabel("Behandlung:"))
+            termin_layout.addWidget(self.problem_box)
+
+            # Anzahl der Zähne
+            termin_layout.addWidget(QLabel("Anzahl der Zähne für diese Behandlung:"))
+            self.anzahl_box = QComboBox()
+            self.update_anzahl_box()
+            termin_layout.addWidget(self.anzahl_box)
+
+            # Füllmaterial
+            termin_layout.addWidget(QLabel("Füllmaterial:"))
+            self.material_box = QComboBox()
+            self.material_box.addItems(["normal", "höherwertig", "höchstwertig"])
+            termin_layout.addWidget(self.material_box)
+
+            # Kostenübersicht
+            self.kosten_label = QLabel()
+            self.kosten_label.setStyleSheet("""
+                background-color: #f8f9fa;
+                padding: 10px;
+                border-radius: 5px;
+                margin-top: 10px;
+            """)
+            termin_layout.addWidget(self.kosten_label)
+
+            # Event-Handler verbinden
+            self.problem_box.currentIndexChanged.connect(self.update_anzahl_box)
+            self.anzahl_box.currentIndexChanged.connect(self.update_kosten)
+            self.material_box.currentIndexChanged.connect(self.update_kosten)
+
+            # Initial Kostenberechnung
+            self.update_kosten()
+
+            # Weiter-Button
+            self.weiter_btn = QPushButton("Weiter zur Arztwahl")
+            self.weiter_btn.clicked.connect(self.show_arzt_selection)
+            termin_layout.addWidget(self.weiter_btn)
+
+            self.inhalt_layout_inner.addWidget(self.termin_container)
+            self.current_page = self.termin_container
+
+    def update_anzahl_box(self):
+        self.anzahl_box.clear()
+        current_problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
+        for i in range(1, current_problem["anzahl"] + 1):
+            self.anzahl_box.addItem(str(i))
+            
+    def update_kosten(self):
+        if self.problem_box.currentIndex() < 0 or self.anzahl_box.currentIndex() < 0:
+            return
+            
+        problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
+        anzahl = int(self.anzahl_box.currentText())
+        material = self.material_box.currentText()
+        
+        # Lade Materialkosten
+        with open("data/materialien.json", "r", encoding="utf-8") as f:
+            materialien = json.load(f)
+            
+        # Grundkosten aus BEHANDLUNGEN
+        grundkosten = BEHANDLUNGEN[problem["art"]]["preis"]
+        
+        # Materialfaktor
+        faktor = materialien[material]["faktor"]
+        
+        # Erstattungssatz direkt aus der Versicherung des Patienten
+        erstattung = materialien[material]["erstattung"][self.patient_data["krankenkasse"]]
+        
+        # Berechnung
+        gesamtkosten = grundkosten * faktor * anzahl
+        eigenanteil = gesamtkosten * (1 - erstattung)
+        versicherung = gesamtkosten * erstattung
+        
+        # Kostenübersicht aktualisieren
+        self.kosten_label.setText(f"""
+            <h3>Kostenübersicht:</h3>
+            <p>Gesamtkosten: {gesamtkosten:.2f}€</p>
+            <p>Erstattung durch Versicherung: {versicherung:.2f}€</p>
+            <p>Ihr Eigenanteil: {eigenanteil:.2f}€</p>
+        """)
+
+    def show_arzt_selection(self):
+        # Speichere Auswahl
+        self.selected_problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
+        self.selected_anzahl = int(self.anzahl_box.currentText())
+        self.selected_material = self.material_box.currentText()
+        
+        # Container für Arztwahl
+        self.arzt_container = QFrame()
+        self.arzt_container.setStyleSheet("""
+            QFrame {
+                background-color: white;
+                border-radius: 10px;
+                padding: 20px;
+            }
+        """)
+        arzt_layout = QVBoxLayout(self.arzt_container)
+        
+        titel = QLabel("Zahnarzt auswählen")
+        titel.setStyleSheet("""
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        """)
+        arzt_layout.addWidget(titel)
+        
+        # Lade Zahnärzte
+        with open("data/zahnaerzte.json", "r", encoding="utf-8") as f:
+            zahnaerzte = json.load(f)
+            
+        # Filtere Zahnärzte nach Krankenkasse
+        versicherung = self.patient_data["krankenkasse"]
+        self.verfuegbare_aerzte = [
+            arzt for arzt in zahnaerzte
+            if versicherung in arzt["behandelt"]
+        ]
+        
+        if not self.verfuegbare_aerzte:
+            QMessageBox.warning(self, "Keine Ärzte verfügbar", "Leider wurden keine Ärzte gefunden, die Ihre Versicherung akzeptieren.")
+            return
+        
+        # Zahnarztauswahl
+        self.arzt_box = QComboBox()
+        for arzt in self.verfuegbare_aerzte:
+            self.arzt_box.addItem(arzt["name"])
+        arzt_layout.addWidget(QLabel("Verfügbare Ärzte:"))
+        arzt_layout.addWidget(self.arzt_box)
+        
+        # Weiter-Button
+        self.kalender_btn = QPushButton("Weiter zur Terminauswahl")
+        self.kalender_btn.clicked.connect(self.show_kalender)
+        arzt_layout.addWidget(self.kalender_btn)
+        
+        # Zurück-Button
+        zurueck_btn = QPushButton("Zurück zur Behandlungsauswahl")
+        zurueck_btn.clicked.connect(self.show_termin_buchen)
+        arzt_layout.addWidget(zurueck_btn)
+        
+        # Aktualisiere UI
+        if self.current_page:
+            self.current_page.hide()
+            self.current_page.deleteLater()
+        self.inhalt_layout_inner.addWidget(self.arzt_container)
+        self.current_page = self.arzt_container
+
+    def show_kalender(self):
+        # Speichere ausgewählten Arzt
+        self.selected_zahnarzt = self.verfuegbare_aerzte[self.arzt_box.currentIndex()]
+        
+        # Container für Kalender
+        self.kalender_container = QFrame()
+        self.kalender_container.setStyleSheet("""
+            QFrame {
+                background-color: white;
+                border-radius: 10px;
+                padding: 20px;
+            }
+        """)
+        kalender_layout = QVBoxLayout(self.kalender_container)
+        
+        titel = QLabel("Termin auswählen")
+        titel.setStyleSheet("""
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        """)
+        kalender_layout.addWidget(titel)
+        
+        # Kalender-Widget
+        self.kalender = QCalendarWidget()
+        self.kalender.setMinimumDate(QDate.currentDate())
+        self.kalender.setMaximumDate(QDate.currentDate().addMonths(3))
+        self.kalender.clicked.connect(self.show_time_slots)
+        
+        # Stil für den Kalender
+        self.kalender.setStyleSheet("""
+            QCalendarWidget QToolButton {
+                color: #2c3e50;
+                background-color: transparent;
+            }
+            
+            /* Stil für Tage */
+            QCalendarWidget QAbstractItemView:enabled {
+                color: black;  /* Zukünftige Tage in Schwarz */
+            }
+            
+            /* Stil für das Kalendergitter */
+            QCalendarWidget QAbstractItemView {
+                selection-background-color: #3498db;
+                selection-color: white;
+            }
+        """)
+        kalender_layout.addWidget(self.kalender)
+        
+        # Container für Zeitauswahl
+        time_container = QFrame()
+        time_container.setStyleSheet("""
+            QFrame {
+                background-color: #f8f9fa;
+                border-radius: 5px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+        """)
+        time_layout = QHBoxLayout(time_container)
+        
+        # Zeitauswahl Label
+        time_label = QLabel("Uhrzeit:")
+        time_layout.addWidget(time_label)
+        
+        # Dropdown für Zeitauswahl
+        self.time_box = QComboBox()
+        self.time_box.setStyleSheet("""
+            QComboBox {
+                padding: 5px;
+                border: 1px solid #e0e0e0;
+                border-radius: 3px;
+                min-width: 100px;
+            }
+        """)
+        time_layout.addWidget(self.time_box)
+        
+        # Bestätigungs-Button
+        self.confirm_btn = QPushButton("✓ Termin bestätigen")
+        self.confirm_btn.setEnabled(False)
+        self.confirm_btn.clicked.connect(lambda: self.select_time(self.time_box.currentText()))
+        self.confirm_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #2ecc71;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 3px;
+            }
+            QPushButton:disabled {
+                background-color: #bdc3c7;
+            }
+            QPushButton:hover:!disabled {
+                background-color: #27ae60;
+            }
+        """)
+        time_layout.addWidget(self.confirm_btn)
+        
+        kalender_layout.addWidget(time_container)
+        
+        # Zurück-Button
+        zurueck_btn = QPushButton("Zurück zur Arztwahl")
+        zurueck_btn.clicked.connect(self.show_arzt_selection)
+        kalender_layout.addWidget(zurueck_btn)
+        
+        # Aktualisiere UI
+        if self.current_page:
+            self.current_page.hide()
+            self.current_page.deleteLater()
+        self.inhalt_layout_inner.addWidget(self.kalender_container)
+        self.current_page = self.kalender_container
+        
+        # Deaktiviere Tage, an denen der Arzt nicht praktiziert
+        self.update_calendar()
+
+    def update_calendar(self):
+        # Lade Termine
+        with open("data/termine.json", "r", encoding="utf-8") as f:
+            termine = json.load(f)
+            
+        # Iteriere über alle Tage im sichtbaren Bereich
+        current = self.kalender.minimumDate()
+        while current <= self.kalender.maximumDate():
+            date = current.toPyDate()
+            weekday = date.strftime("%a")
+            
+            format = self.kalender.dateTextFormat(current)
+            
+            # Vergangene Tage in Grau
+            if current < QDate.currentDate():
+                format.setForeground(Qt.gray)
+            # Tage an denen der Arzt nicht praktiziert auch in Grau
+            elif weekday not in self.selected_zahnarzt["zeiten"]:
+                format.setForeground(Qt.gray)
+            # Zukünftige Tage in Schwarz
+            else:
+                format.setForeground(Qt.black)
+                
+            self.kalender.setDateTextFormat(current, format)
+            current = current.addDays(1)
+            
+    def show_time_slots(self, date):
+        self.selected_date = date
+        weekday = date.toString("ddd")
+        
+        # Lösche alte Zeitslots
+        self.time_box.clear()
+        self.confirm_btn.setEnabled(False)
+        
+        if weekday not in self.selected_zahnarzt["zeiten"]:
+            return
+            
+        # Lade bereits gebuchte Termine
+        with open("data/termine.json", "r", encoding="utf-8") as f:
+            termine = json.load(f)
+            
+        arzt_termine = termine.get(self.selected_zahnarzt["name"], {})
+        tag_termine = arzt_termine.get(date.toString("yyyy-MM-dd"), {})
+        
+        # Behandlungsdauer in Minuten
+        behandlungsdauer = BEHANDLUNGEN[self.selected_problem["art"]]["zeit"]
+        
+        # Zeige verfügbare Zeitslots
+        for zeitfenster in self.selected_zahnarzt["zeiten"][weekday]:
+            start, end = zeitfenster.split("-")
+            current_time = datetime.strptime(start, "%H:%M")
+            end_time = datetime.strptime(end, "%H:%M")
+            
+            while current_time <= end_time - timedelta(minutes=behandlungsdauer):
+                time_str = current_time.strftime("%H:%M")
+                
+                # Prüfe ob der Zeitslot verfügbar ist
+                is_available = True
+                test_time = current_time
+                while test_time < current_time + timedelta(minutes=behandlungsdauer):
+                    if test_time.strftime("%H:%M") in tag_termine:
+                        is_available = False
+                        break
+                    test_time += timedelta(minutes=30)
+                
+                if is_available:
+                    self.time_box.addItem(time_str)
+                    
+                current_time += timedelta(minutes=30)
+        
+        if self.time_box.count() > 0:
+            self.confirm_btn.setEnabled(True)
+            
+    def select_time(self, time):
+        self.selected_time = time
+        
+        # Speichere Termin
+        with open("data/termine.json", "r", encoding="utf-8") as f:
+            termine = json.load(f)
+            
+        # Erstelle Einträge wenn sie noch nicht existieren
+        if self.selected_zahnarzt["name"] not in termine:
+            termine[self.selected_zahnarzt["name"]] = {}
+            
+        date_str = self.selected_date.toString("yyyy-MM-dd")
+        if date_str not in termine[self.selected_zahnarzt["name"]]:
+            termine[self.selected_zahnarzt["name"]][date_str] = {}
+            
+        # Füge Termin hinzu
+        termine[self.selected_zahnarzt["name"]][date_str][time] = {
+            "patient": self.patient_data["name"],
+            "behandlung": self.selected_problem["art"],
+            "dauer": BEHANDLUNGEN[self.selected_problem["art"]]["zeit"]
+        }
+        
+        with open("data/termine.json", "w", encoding="utf-8") as f:
+            json.dump(termine, f, indent=2)
+            
+        # Aktualisiere Patientendaten
+        for i, problem in enumerate(self.patient_data["probleme"]):
+            if problem["art"] == self.selected_problem["art"]:
+                if problem["anzahl"] > self.selected_anzahl:
+                    problem["anzahl"] -= self.selected_anzahl
+                else:
+                    del self.patient_data["probleme"][i]
+                break
+                
+        with open("data/patienten.json", "r", encoding="utf-8") as f:
+            patienten = json.load(f)
+            
+        for patient in patienten:
+            if patient["name"] == self.patient_data["name"]:
+                patient["probleme"] = self.patient_data["probleme"]
+                break
+                
+        with open("data/patienten.json", "w", encoding="utf-8") as f:
+            json.dump(patienten, f, indent=2)
+            
+        QMessageBox.information(self, "Erfolg", f"""
+            Termin erfolgreich gebucht!
+            
+            Datum: {self.selected_date.toString("dd.MM.yyyy")}
+            Uhrzeit: {time}
+            Zahnarzt: {self.selected_zahnarzt["name"]}
+            Behandlung: {self.selected_problem["art"]}
+            Anzahl Zähne: {self.selected_anzahl}
+            Material: {self.selected_material}
+        """)
+        
+        # Zeige die Terminübersicht
+        self.show_meine_termine()
+
     def init_ui(self):
         hauptlayout = QVBoxLayout()
         hauptlayout.setContentsMargins(20, 20, 20, 20)
@@ -521,10 +1115,11 @@ class MainFenster(QWidget):
         linie.setFrameShadow(QFrame.Sunken)
         profil_layout.addWidget(linie)
 
-        # Moderne Menü-Buttons mit Funktionalität
+        # Moderne Menü-Buttons
         menu_buttons = [
             ("Meine Daten", "📋", self.show_meine_daten),
-            ("Termin buchen", "📅", None),
+            ("Termin buchen", "📅", self.show_termin_buchen),
+            ("Meine Termine", "📆", self.show_meine_termine),
             ("Einstellungen", "⚙️", self.show_einstellungen)
         ]
 
