@@ -1,0 +1,333 @@
+[
+  {
+    "name": "Max Mustermann",
+    "passwort": "test123",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Meyer",
+    "passwort": "P111",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": true
+  },
+  {
+    "name": "Herr Kr\u00fcger",
+    "passwort": "P333",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": true
+  },
+  {
+    "name": "Herr Meyer",
+    "passwort": "P756",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Deister",
+    "passwort": "P564",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau M\u00fcller",
+    "passwort": "P711",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Schuster",
+    "passwort": "P561",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Wurzelbehandlung",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Schulze",
+    "passwort": "P991",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 3
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Meister",
+    "passwort": "P196",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies gro\u00df",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Riesenhuber",
+    "passwort": "P556",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Karies gro\u00df",
+        "anzahl": 4
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Schmidt",
+    "passwort": "P856",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Michaelis",
+    "passwort": "P214",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Ziegler",
+    "passwort": "P779",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 3
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Maurer",
+    "passwort": "P433",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies gro\u00df",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Kossmeier",
+    "passwort": "P913",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Kaufmann",
+    "passwort": "P117",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Hansen",
+    "passwort": "P555",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 4
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Freischulz",
+    "passwort": "P915",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Meckernich",
+    "passwort": "P999",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Liebermann",
+    "passwort": "P848",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies gro\u00df",
+        "anzahl": 3
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Koslowski",
+    "passwort": "P616",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Wurzelbehandlung",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Werner",
+    "passwort": "P441",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 3
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Ganzer",
+    "passwort": "P963",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Heiermann",
+    "passwort": "P283",
+    "krankenkasse": "privat",
+    "probleme": [
+      {
+        "art": "Wurzelbehandlung",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Herr Gonzalez",
+    "passwort": "P964",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Krone",
+        "anzahl": 3
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau Mertens",
+    "passwort": "P242",
+    "krankenkasse": "freiwillig gesetzlich",
+    "probleme": [
+      {
+        "art": "Teilkrone",
+        "anzahl": 4
+      }
+    ],
+    "passwort_geaendert": false
+  },
+  {
+    "name": "Frau \u00d6zdemir",
+    "passwort": "P10",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies gro\u00df",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": true
+  },
+  {
+    "name": "Frau Ayaz",
+    "passwort": "P19",
+    "krankenkasse": "privat",
+    "probleme": [],
+    "passwort_geaendert": true
+  }
+]

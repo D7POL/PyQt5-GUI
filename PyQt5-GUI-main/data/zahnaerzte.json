@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Dr. Huber",
+    "passwort": "A1111",
+    "passwort_geaendert": false,
+    "behandelt": ["privat"],
+    "zeiten": {
+      "Mo": ["08:00-12:00", "14:00-16:00"],
+      "Di": ["08:00-12:00", "14:00-16:00"],
+      "Mi": ["08:00-12:00", "14:00-16:00"],
+      "Do": ["08:00-12:00", "14:00-16:00"],
+      "Fr": ["08:00-12:00", "14:00-16:00"]
+    }
+  },
+  {
+    "name": "Dr. Kraft",
+    "passwort": "A222",
+    "passwort_geaendert": false,
+    "behandelt": ["gesetzlich"],
+    "zeiten": {
+      "Mo": ["10:00-12:00", "14:00-18:00"],
+      "Di": ["10:00-12:00", "14:00-18:00"],
+      "Mi": ["10:00-12:00", "14:00-18:00"],
+      "Do": ["10:00-12:00", "14:00-18:00"],
+      "Fr": ["10:00-12:00", "14:00-18:00"]
+    }
+  },
+  {
+    "name": "Dr. Winkel",
+    "passwort": "A333",
+    "passwort_geaendert": false,
+    "behandelt": ["privat", "freiwillig gesetzlich"],
+    "zeiten": {
+      "Mo": ["08:00-14:00"],
+      "Di": ["08:00-14:00"],
+      "Mi": ["08:00-14:00"],
+      "Do": ["08:00-14:00"],
+      "Fr": ["08:00-14:00"]
+    }
+  },
+  {
+    "name": "Dr. Hausmann",
+    "passwort": "A444",
+    "passwort_geaendert": false,
+    "behandelt": ["gesetzlich", "freiwillig gesetzlich"],
+    "zeiten": {
+      "Mo": ["09:00-12:00"],
+      "Fr": ["12:00-16:00"]
+    }
+  },
+  {
+    "name": "Dr. Wurzel",
+    "passwort": "A555",
+    "passwort_geaendert": false,
+    "behandelt": ["privat"],
+    "zeiten": {
+      "Di": ["08:00-12:00"],
+      "Do": ["12:00-18:00"]
+    }
+  }
+]
