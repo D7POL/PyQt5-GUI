@@ -27,6 +27,7 @@ QLineEdit {
     border-radius: 5px;
     background-color: white;
     margin: 5px 0px;
+    color: black;
 }
 
 QLineEdit:focus {
