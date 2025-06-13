@@ -1939,6 +1939,7 @@ class RegistrierungsFenster(QWidget):
         basis_name = name
         nummer = 1
         
+        # Finde die höchste existierende Nummer
         for patient in patienten:
             if patient["name"] == name:
                 existierender_patient = patient
@@ -1993,7 +1994,17 @@ class RegistrierungsFenster(QWidget):
                 return
             else:
                 # Generiere neuen Namen mit Nummerierung
-                name = f"{basis_name}_{nummer}"
+                while True:
+                    name = f"{basis_name}_{nummer}"
+                    # Prüfe ob dieser Name bereits existiert
+                    name_existiert = False
+                    for patient in patienten:
+                        if patient["name"] == name:
+                            name_existiert = True
+                            nummer += 1
+                            break
+                    if not name_existiert:
+                        break
                 
                 # Informiere den Benutzer über den neuen Namen
                 QMessageBox.information(
