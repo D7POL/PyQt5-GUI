@@ -1955,26 +1955,22 @@ class RegistrierungsFenster(QWidget):
                     continue
 
         if existierender_patient:
-            # Frage nach, ob es sich um den existierenden Patienten handelt
-            antwort = QMessageBox.question(
-                self,
-                "Patient existiert bereits",
-                f"Ein Patient mit dem Namen '{name}' existiert bereits.\n\n"
-                "Sind Sie dieser Patient?",
-                QMessageBox.Yes | QMessageBox.No,
-                QMessageBox.No
-            )
-            
-            if antwort == QMessageBox.Yes:
+            msgbox = QMessageBox(self)
+            msgbox.setWindowTitle("Patient existiert bereits")
+            msgbox.setText(f"Ein Patient mit dem Namen '{name}' existiert bereits.\n\nSind Sie dieser Patient?")
+            ja_btn = msgbox.addButton("Ja", QMessageBox.YesRole)
+            nein_btn = msgbox.addButton("Nein", QMessageBox.NoRole)
+            msgbox.setDefaultButton(ja_btn)
+            msgbox.exec_()
+
+            if msgbox.clickedButton() == ja_btn:
                 # Aktualisiere existierenden Patienten
                 existierender_patient["passwort"] = pw
-                
                 # Füge neue Beschwerden hinzu
                 neues_problem = {
                     "art": beschwerde,
                     "anzahl": anzahl
                 }
-                
                 # Prüfe ob das Problem bereits existiert
                 problem_existiert = False
                 for problem in existierender_patient["probleme"]:
@@ -1982,16 +1978,13 @@ class RegistrierungsFenster(QWidget):
                         problem["anzahl"] += anzahl
                         problem_existiert = True
                         break
-                
                 if not problem_existiert:
                     existierender_patient["probleme"].append(neues_problem)
-                
                 speichere_daten(pfad_patienten, patienten)
                 QMessageBox.information(
                     self,
                     "Erfolg",
-                    "Patientendaten wurden aktualisiert!\n\n"
-                    "Sie können sich jetzt mit Ihren Zugangsdaten anmelden."
+                    "Patientendaten wurden aktualisiert!\n\nSie können sich jetzt mit Ihren Zugangsdaten anmelden."
                 )
                 self.close()
                 return
@@ -2008,7 +2001,6 @@ class RegistrierungsFenster(QWidget):
                             break
                     if not name_existiert:
                         break
-                
                 # Informiere den Benutzer über den neuen Namen
                 QMessageBox.information(
                     self,
