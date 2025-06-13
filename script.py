@@ -113,6 +113,12 @@ ERSTATTUNG = {
 # Set to None to use the real current date, or to QDate(2025, 6, 13) for testing
 CALENDAR_TODAY_OVERRIDE = QDate(2025, 6, 13)
 
+# Weekday function
+def get_weekday(date_obj):
+    """Get weekday name from a date object"""
+    weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+    return weekdays[date_obj.weekday()]
+
 # Hauptfenster
 class MainFenster(QWidget):
     def __init__(self, benutzername, rolle):
@@ -903,7 +909,7 @@ class MainFenster(QWidget):
                 # Datum Header
                 datum_obj = datetime.strptime(datum, "%Y-%m-%d")
                 datum_str = datum_obj.strftime("%d.%m.%Y")
-                wochentag = datum_obj.strftime("%A")  # Vollständiger Wochentag
+                wochentag = get_weekday(datum_obj)  # Vollständiger Wochentag
                 
                 datum_frame = QFrame()
                 datum_frame.setStyleSheet("""
@@ -1512,7 +1518,7 @@ class MainFenster(QWidget):
             for datum_str in sorted(termine_nach_datum.keys()):
                 datum_obj = datetime.strptime(datum_str, "%Y-%m-%d")
                 datum_display = datum_obj.strftime("%d.%m.%Y")
-                wochentag = datum_obj.strftime("%A")
+                wochentag = get_weekday(datum_obj)
 
                 # Datum Container
                 datum_container = QFrame()
