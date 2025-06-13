@@ -136,7 +136,7 @@ class MainFenster(QWidget):
                     break
 
         self.setWindowTitle("Dashboard")
-        self.setGeometry(200, 200, 1200, 700)
+        self.setGeometry(200, 200, 800, 600)
         self.setStyleSheet(STYLE)
         
         # Setze Hintergrundfarbe
@@ -1364,6 +1364,18 @@ class MainFenster(QWidget):
         # Behandlungsdauer in Minuten
         behandlungsdauer = BEHANDLUNGEN[self.selected_problem["art"]]["zeit"]
         
+        # Erstelle eine Liste aller blockierten Zeiten basierend auf bestehenden Terminen
+        blockierte_zeiten = []
+        for termin_zeit, termin_info in tag_termine.items():
+            start_zeit = datetime.strptime(termin_zeit, "%H:%M")
+            end_zeit = start_zeit + timedelta(minutes=termin_info["dauer"])
+            
+            # Blockiere alle 30-Minuten-Intervalle während der Behandlung
+            current_block = start_zeit
+            while current_block < end_zeit:
+                blockierte_zeiten.append(current_block.strftime("%H:%M"))
+                current_block += timedelta(minutes=30)
+        
         # Zeige verfügbare Zeitslots
         for zeitfenster in self.selected_zahnarzt["zeiten"][weekday]:
             start, end = zeitfenster.split("-")
@@ -1375,9 +1387,11 @@ class MainFenster(QWidget):
                 
                 # Prüfe ob der Zeitslot verfügbar ist
                 is_available = True
+                
+                # Prüfe ob die gesamte Behandlungsdauer verfügbar ist
                 test_time = current_time
                 while test_time < current_time + timedelta(minutes=behandlungsdauer):
-                    if test_time.strftime("%H:%M") in tag_termine:
+                    if test_time.strftime("%H:%M") in blockierte_zeiten:
                         is_available = False
                         break
                     test_time += timedelta(minutes=30)

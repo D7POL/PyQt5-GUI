@@ -19,7 +19,7 @@
     "passwort_geaendert": true
   },
   {
-    "name": "Herr Krüger",
+    "name": "Herr Kr\u00fcger",
     "passwort": "P333",
     "krankenkasse": "privat",
     "probleme": [],
@@ -50,7 +50,7 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Müller",
+    "name": "Frau M\u00fcller",
     "passwort": "P711",
     "krankenkasse": "privat",
     "probleme": [
@@ -91,7 +91,7 @@
     "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -103,7 +103,7 @@
     "krankenkasse": "privat",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 4
       }
     ],
@@ -151,7 +151,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -223,7 +223,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 3
       }
     ],
@@ -302,12 +302,12 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Özdemir",
+    "name": "Frau \u00d6zdemir",
     "passwort": "P10",
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 1
       }
     ],
@@ -321,6 +321,10 @@
       {
         "art": "Karies klein",
         "anzahl": 1
+      },
+      {
+        "art": "Krone",
+        "anzahl": 3
       }
     ],
     "passwort_geaendert": true
@@ -338,14 +342,14 @@
     "passwort_geaendert": true
   },
   {
-    "name": "Frau Özdemir_1",
+    "name": "Frau \u00d6zdemir_1",
     "passwort": "P2000",
     "krankenkasse": "gesetzlich",
     "probleme": [],
     "passwort_geaendert": true
   },
   {
-    "name": "Frau Özdemir_1",
+    "name": "Frau \u00d6zdemir_1",
     "passwort": "P100",
     "krankenkasse": "gesetzlich",
     "probleme": [
