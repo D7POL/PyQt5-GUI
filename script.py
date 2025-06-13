@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QColor, QPalette
 
-# Globale Stil-Definitione
+# Globale Stil-Definition
 STYLE = """
 QWidget {
     font-family: 'Segoe UI', Arial;
@@ -1084,6 +1084,11 @@ class MainFenster(QWidget):
         anzahl = int(self.anzahl_box.currentText())
         material = self.material_box.currentText()
         
+        # Store selected values for later use
+        self.selected_problem = problem
+        self.selected_anzahl = anzahl
+        self.selected_material = material
+        
         # Lade Materialkosten
         with open("data/materialien.json", "r", encoding="utf-8") as f:
             materialien = json.load(f)
@@ -1111,11 +1116,6 @@ class MainFenster(QWidget):
         """)
 
     def show_arzt_selection(self):
-        # Speichere Auswahl
-        self.selected_problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
-        self.selected_anzahl = int(self.anzahl_box.currentText())
-        self.selected_material = self.material_box.currentText()
-        
         # Container für Arztwahl
         self.arzt_container = QFrame()
         self.arzt_container.setStyleSheet("""
@@ -1176,8 +1176,24 @@ class MainFenster(QWidget):
         self.current_page = self.arzt_container
 
     def show_kalender(self):
-        # Speichere ausgewählten Arzt
-        self.selected_zahnarzt = self.verfuegbare_aerzte[self.arzt_box.currentIndex()]
+        # Speichere ausgewählten Arzt - nur wenn das Widget noch existiert
+        try:
+            if hasattr(self, 'arzt_box') and self.arzt_box and not self.arzt_box.isHidden():
+                self.selected_zahnarzt = self.verfuegbare_aerzte[self.arzt_box.currentIndex()]
+            else:
+                # Fallback: verwende den ersten verfügbaren Arzt
+                if hasattr(self, 'verfuegbare_aerzte') and self.verfuegbare_aerzte:
+                    self.selected_zahnarzt = self.verfuegbare_aerzte[0]
+                else:
+                    QMessageBox.warning(self, "Fehler", "Keine Ärzte verfügbar.")
+                    return
+        except (RuntimeError, AttributeError):
+            # Wenn das Widget bereits gelöscht wurde, verwende den ersten verfügbaren Arzt
+            if hasattr(self, 'verfuegbare_aerzte') and self.verfuegbare_aerzte:
+                self.selected_zahnarzt = self.verfuegbare_aerzte[0]
+            else:
+                QMessageBox.warning(self, "Fehler", "Keine Ärzte verfügbar.")
+                return
         
         # Container für Kalender
         self.kalender_container = QFrame()
