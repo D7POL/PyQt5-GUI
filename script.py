@@ -97,7 +97,7 @@ zahnaerzte = lade_daten(pfad_zahnaerzte)
 # Preise und Zeitaufwand für Behandlungen
 BEHANDLUNGEN = {
     "Karies klein": {"preis": 50, "zeit": 30, "einheit": "Minuten"},
-    "Karies Groß": {"preis": 120, "zeit": 45, "einheit": "Minuten"},
+    "Karies groß": {"preis": 120, "zeit": 45, "einheit": "Minuten"},
     "Teilkrone": {"preis": 400, "zeit": 60, "einheit": "Minuten"},
     "Krone": {"preis": 600, "zeit": 90, "einheit": "Minuten"},
     "Wurzelbehandlung": {"preis": 300, "zeit": 120, "einheit": "Minuten"}
