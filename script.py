@@ -110,6 +110,9 @@ ERSTATTUNG = {
     "freiwillig gesetzlich": 0.75  # 75% Erstattung
 }
 
+# Set to None to use the real current date, or to QDate(2025, 6, 13) for testing
+CALENDAR_TODAY_OVERRIDE = QDate(2025, 6, 13)
+
 # Hauptfenster
 class MainFenster(QWidget):
     def __init__(self, benutzername, rolle):
@@ -1309,31 +1312,31 @@ class MainFenster(QWidget):
         self.update_calendar()
 
     def update_calendar(self):
-        # Lade Termine
         with open("data/termine.json", "r", encoding="utf-8") as f:
             termine = json.load(f)
-            
-        # Iteriere über alle Tage im sichtbaren Bereich
+
         current = self.kalender.minimumDate()
+        today = CALENDAR_TODAY_OVERRIDE if CALENDAR_TODAY_OVERRIDE else QDate.currentDate()
         while current <= self.kalender.maximumDate():
-            date = current.toPyDate()
-            weekday = date.strftime("%a")
-            
+            weekday = current.toString("ddd")  # 'Mo', 'Di', ...
             format = self.kalender.dateTextFormat(current)
-            
-            # Vergangene Tage in Grau
-            if current < QDate.currentDate():
-                format.setForeground(Qt.gray)
-            # Tage an denen der Arzt nicht praktiziert auch in Grau
+
+            if current < today:
+                # All dates before today: grey
+                format.setForeground(QColor("#95a5a6"))
+            elif weekday == "Sa" or weekday == "So":
+                # Saturdays and Sundays: red
+                format.setForeground(QColor("#e74c3c"))
             elif weekday not in self.selected_zahnarzt["zeiten"]:
-                format.setForeground(Qt.gray)
-            # Zukünftige Tage in Schwarz
+                # Doctor does NOT work: grey
+                format.setForeground(QColor("#95a5a6"))
             else:
-                format.setForeground(Qt.black)
-                
+                # Doctor works: black
+                format.setForeground(QColor("#2c3e50"))
+
             self.kalender.setDateTextFormat(current, format)
             current = current.addDays(1)
-            
+        
     def show_time_slots(self, date):
         self.selected_date = date
         weekday = date.toString("ddd")
