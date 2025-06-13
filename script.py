@@ -74,6 +74,7 @@ QFrame[frameShape="4"] { /* Horizontale Linie */
 }
 """
 
+
 # JSON-Hilfsfunktionen
 def lade_daten(pfad):
     with open(pfad, "r", encoding="utf-8") as f:
@@ -83,9 +84,11 @@ def lade_daten(pfad):
                 eintrag["passwort_geaendert"] = False
         return daten
 
+
 def speichere_daten(pfad, daten):
     with open(pfad, "w", encoding="utf-8") as f:
         json.dump(daten, f, ensure_ascii=False, indent=2)
+
 
 # Datenpfade
 pfad_patienten = "data/patienten.json"
@@ -96,7 +99,7 @@ zahnaerzte = lade_daten(pfad_zahnaerzte)
 # Preise und Zeitaufwand für Behandlungen
 BEHANDLUNGEN = {
     "Karies klein": {"preis": 50, "zeit": 30, "einheit": "Minuten"},
-    "Karies Groß": {"preis": 120, "zeit": 45, "einheit": "Minuten"},
+    "Karies groß": {"preis": 120, "zeit": 45, "einheit": "Minuten"},
     "Teilkrone": {"preis": 400, "zeit": 60, "einheit": "Minuten"},
     "Krone": {"preis": 600, "zeit": 90, "einheit": "Minuten"},
     "Wurzelbehandlung": {"preis": 300, "zeit": 120, "einheit": "Minuten"}
@@ -105,9 +108,10 @@ BEHANDLUNGEN = {
 # Erstattungssätze nach Versicherung
 ERSTATTUNG = {
     "gesetzlich": 0.7,  # 70% Erstattung
-    "privat": 0.85,    # 85% Erstattung
+    "privat": 0.85,  # 85% Erstattung
     "freiwillig gesetzlich": 0.75  # 75% Erstattung
 }
+
 
 # Hauptfenster
 class MainFenster(QWidget):
@@ -116,7 +120,7 @@ class MainFenster(QWidget):
         self.benutzername = benutzername
         self.rolle = rolle
         self.current_page = None  # Speichert die aktuelle Seite
-        
+
         # Finde den aktuellen Patienten
         self.patient_data = None
         if rolle == "Patient":
@@ -128,7 +132,7 @@ class MainFenster(QWidget):
         self.setWindowTitle("Dashboard")
         self.setGeometry(200, 200, 1200, 700)
         self.setStyleSheet(STYLE)
-        
+
         # Setze Hintergrundfarbe
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor("#f5f6fa"))
@@ -155,11 +159,11 @@ class MainFenster(QWidget):
     def berechne_kosten_und_zeit(self, patient):
         if not patient:
             return None
-            
+
         gesamt_kosten = 0
         gesamt_zeit = 0
         erstattung = ERSTATTUNG.get(patient["krankenkasse"], 0.7)
-        
+
         analyse = []
         for problem in patient["probleme"]:
             behandlung = BEHANDLUNGEN.get(problem["art"])
@@ -167,7 +171,7 @@ class MainFenster(QWidget):
                 anzahl = problem["anzahl"]
                 kosten = behandlung["preis"] * anzahl
                 zeit = behandlung["zeit"] * anzahl
-                
+
                 analyse.append({
                     "art": problem["art"],
                     "anzahl": anzahl,
@@ -175,13 +179,13 @@ class MainFenster(QWidget):
                     "zeit": zeit,
                     "einheit": behandlung["einheit"]
                 })
-                
+
                 gesamt_kosten += kosten
                 gesamt_zeit += zeit
-        
+
         eigenanteil = gesamt_kosten * (1 - erstattung)
         versicherung_anteil = gesamt_kosten * erstattung
-        
+
         return {
             "analyse": analyse,
             "gesamt_kosten": gesamt_kosten,
@@ -194,7 +198,7 @@ class MainFenster(QWidget):
         if self.current_page:
             self.current_page.hide()
             self.current_page.deleteLater()
-        
+
         # Container für die Analyse
         analyse_container = QFrame()
         analyse_container.setStyleSheet("""
@@ -209,7 +213,7 @@ class MainFenster(QWidget):
         if self.rolle == "Patient" and self.patient_data:
             # Analyse der Patientendaten
             analyse_data = self.berechne_kosten_und_zeit(self.patient_data)
-            
+
             # Überschrift
             titel = QLabel("Ihre persönliche Behandlungsanalyse")
             titel.setStyleSheet("""
@@ -249,19 +253,19 @@ class MainFenster(QWidget):
                     }
                 """)
                 behandlung_layout = QVBoxLayout(behandlung_frame)
-                
+
                 art_label = QLabel(f"🦷 {item['art']} ({item['anzahl']}x)")
                 art_label.setStyleSheet("font-weight: bold; color: #2c3e50;")
                 behandlung_layout.addWidget(art_label)
-                
+
                 kosten_label = QLabel(f"Kosten: {item['kosten']}€")
                 kosten_label.setStyleSheet("color: #2c3e50;")
                 behandlung_layout.addWidget(kosten_label)
-                
+
                 zeit_label = QLabel(f"Zeitaufwand: {item['zeit']} {item['einheit']}")
                 zeit_label.setStyleSheet("color: #2c3e50;")
                 behandlung_layout.addWidget(zeit_label)
-                
+
                 details_layout.addWidget(behandlung_frame)
 
             analyse_layout.addWidget(details_container)
@@ -330,7 +334,7 @@ class MainFenster(QWidget):
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet("QScrollArea { border: none; }")
-        
+
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)
         scroll_layout.setSpacing(15)
@@ -347,20 +351,20 @@ class MainFenster(QWidget):
                 }
             """)
             passwort_layout = QVBoxLayout(passwort_group)
-            
+
             passwort_label = QLabel("Passwort ändern")
             passwort_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
             passwort_layout.addWidget(passwort_label)
-            
+
             self.neues_passwort = QLineEdit()
             self.neues_passwort.setPlaceholderText("Neues Passwort")
             self.neues_passwort.setEchoMode(QLineEdit.Password)
             passwort_layout.addWidget(self.neues_passwort)
-            
+
             passwort_btn = QPushButton("🔒 Passwort aktualisieren")
             passwort_btn.clicked.connect(self.update_passwort)
             passwort_layout.addWidget(passwort_btn)
-            
+
             scroll_layout.addWidget(passwort_group)
 
             # Krankenkasse ändern
@@ -374,20 +378,20 @@ class MainFenster(QWidget):
                 }
             """)
             kasse_layout = QVBoxLayout(kasse_group)
-            
+
             kasse_label = QLabel("Krankenkasse ändern")
             kasse_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
             kasse_layout.addWidget(kasse_label)
-            
+
             self.kasse_box = QComboBox()
             self.kasse_box.addItems(["gesetzlich", "privat", "freiwillig gesetzlich"])
             self.kasse_box.setCurrentText(self.patient_data["krankenkasse"])
             kasse_layout.addWidget(self.kasse_box)
-            
+
             kasse_btn = QPushButton("💉 Krankenkasse aktualisieren")
             kasse_btn.clicked.connect(self.update_krankenkasse)
             kasse_layout.addWidget(kasse_btn)
-            
+
             scroll_layout.addWidget(kasse_group)
 
             # Neue Probleme hinzufügen
@@ -400,25 +404,25 @@ class MainFenster(QWidget):
                 }
             """)
             probleme_layout = QVBoxLayout(probleme_group)
-            
+
             probleme_label = QLabel("Neue Behandlung hinzufügen")
             probleme_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
             probleme_layout.addWidget(probleme_label)
-            
+
             self.problem_box = QComboBox()
             self.problem_box.addItems([
                 "Karies klein", "Karies Groß", "Teilkrone", "Krone", "Wurzelbehandlung"
             ])
             probleme_layout.addWidget(self.problem_box)
-            
+
             self.problem_anzahl = QLineEdit()
             self.problem_anzahl.setPlaceholderText("Anzahl")
             probleme_layout.addWidget(self.problem_anzahl)
-            
+
             problem_btn = QPushButton("➕ Behandlung hinzufügen")
             problem_btn.clicked.connect(self.add_problem)
             probleme_layout.addWidget(problem_btn)
-            
+
             scroll_layout.addWidget(probleme_group)
 
         else:  # Zahnarzt Einstellungen
@@ -441,20 +445,20 @@ class MainFenster(QWidget):
                     }
                 """)
                 name_layout = QVBoxLayout(name_group)
-                
+
                 name_label = QLabel("Name ändern")
                 name_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 name_layout.addWidget(name_label)
-                
+
                 self.neuer_name = QLineEdit()
                 self.neuer_name.setPlaceholderText("Neuer Name")
                 self.neuer_name.setText(self.zahnarzt_data["name"])
                 name_layout.addWidget(self.neuer_name)
-                
+
                 name_btn = QPushButton("👤 Name aktualisieren")
                 name_btn.clicked.connect(self.update_zahnarzt_name)
                 name_layout.addWidget(name_btn)
-                
+
                 scroll_layout.addWidget(name_group)
 
                 # Passwort ändern
@@ -468,20 +472,20 @@ class MainFenster(QWidget):
                     }
                 """)
                 passwort_layout = QVBoxLayout(passwort_group)
-                
+
                 passwort_label = QLabel("Passwort ändern")
                 passwort_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 passwort_layout.addWidget(passwort_label)
-                
+
                 self.neues_passwort = QLineEdit()
                 self.neues_passwort.setPlaceholderText("Neues Passwort")
                 self.neues_passwort.setEchoMode(QLineEdit.Password)
                 passwort_layout.addWidget(self.neues_passwort)
-                
+
                 passwort_btn = QPushButton("🔒 Passwort aktualisieren")
                 passwort_btn.clicked.connect(self.update_passwort)
                 passwort_layout.addWidget(passwort_btn)
-                
+
                 scroll_layout.addWidget(passwort_group)
 
                 # Krankenkassen
@@ -495,11 +499,11 @@ class MainFenster(QWidget):
                     }
                 """)
                 kassen_layout = QVBoxLayout(kassen_group)
-                
+
                 kassen_label = QLabel("Behandelt folgende Versicherungen:")
                 kassen_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 kassen_layout.addWidget(kassen_label)
-                
+
                 self.kassen_checkboxes = {}
                 for kasse in ["gesetzlich", "privat", "freiwillig gesetzlich"]:
                     cb = QCheckBox(kasse)
@@ -507,11 +511,11 @@ class MainFenster(QWidget):
                     cb.setChecked(kasse in self.zahnarzt_data["behandelt"])
                     self.kassen_checkboxes[kasse] = cb
                     kassen_layout.addWidget(cb)
-                
+
                 kassen_btn = QPushButton("💊 Krankenkassen aktualisieren")
                 kassen_btn.clicked.connect(self.update_zahnarzt_kassen)
                 kassen_layout.addWidget(kassen_btn)
-                
+
                 scroll_layout.addWidget(kassen_group)
 
                 # Behandlungszeiten
@@ -524,11 +528,11 @@ class MainFenster(QWidget):
                     }
                 """)
                 zeiten_layout = QVBoxLayout(zeiten_group)
-                
+
                 zeiten_label = QLabel("Wöchentliche Behandlungszeiten:")
                 zeiten_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 zeiten_layout.addWidget(zeiten_label)
-                
+
                 self.wochentage = {
                     "Mo": "Montag",
                     "Di": "Dienstag",
@@ -536,24 +540,24 @@ class MainFenster(QWidget):
                     "Do": "Donnerstag",
                     "Fr": "Freitag"
                 }
-                
+
                 self.zeiten_widgets = {}
                 for tag_kurz, tag_lang in self.wochentage.items():
                     tag_frame = QFrame()
                     tag_layout = QVBoxLayout(tag_frame)
-                    
+
                     # Checkbox für den Tag
                     tag_cb = QCheckBox(tag_lang)
                     tag_cb.setStyleSheet("color: #2c3e50; font-weight: bold;")
                     tag_cb.setChecked(tag_kurz in self.zahnarzt_data["zeiten"])
                     tag_layout.addWidget(tag_cb)
-                    
+
                     # Container für Zeitslots
                     slots_frame = QFrame()
                     slots_layout = QVBoxLayout(slots_frame)
                     slots_frame.setVisible(tag_kurz in self.zahnarzt_data["zeiten"])
                     tag_cb.toggled.connect(slots_frame.setVisible)
-                    
+
                     # Bestehende Zeitslots laden
                     self.zeiten_widgets[tag_kurz] = {
                         "checkbox": tag_cb,
@@ -561,32 +565,32 @@ class MainFenster(QWidget):
                         "slots_layout": slots_layout,
                         "zeitslots": []
                     }
-                    
+
                     if tag_kurz in self.zahnarzt_data["zeiten"]:
                         for zeitslot in self.zahnarzt_data["zeiten"][tag_kurz]:
                             von, bis = zeitslot.split("-")
-                            
+
                             zeit_container = QFrame()
                             zeit_layout = QHBoxLayout(zeit_container)
-                            
+
                             von_label = QLabel("Von:")
                             von_label.setStyleSheet("color: #2c3e50;")
                             zeit_layout.addWidget(von_label)
-                            
+
                             von_zeit = QComboBox()
                             von_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
                             von_zeit.setCurrentText(von)
                             zeit_layout.addWidget(von_zeit)
-                            
+
                             bis_label = QLabel("Bis:")
                             bis_label.setStyleSheet("color: #2c3e50;")
                             zeit_layout.addWidget(bis_label)
-                            
+
                             bis_zeit = QComboBox()
                             bis_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
                             bis_zeit.setCurrentText(bis)
                             zeit_layout.addWidget(bis_zeit)
-                            
+
                             # Entfernen-Button
                             remove_btn = QPushButton("×")
                             remove_btn.setStyleSheet("""
@@ -601,15 +605,16 @@ class MainFenster(QWidget):
                                     background-color: #c0392b;
                                 }
                             """)
-                            remove_btn.clicked.connect(lambda checked, c=zeit_container, t=tag_kurz: self.remove_zeitslot(t, c))
+                            remove_btn.clicked.connect(
+                                lambda checked, c=zeit_container, t=tag_kurz: self.remove_zeitslot(t, c))
                             zeit_layout.addWidget(remove_btn)
-                            
+
                             slots_layout.addWidget(zeit_container)
                             self.zeiten_widgets[tag_kurz]["zeitslots"].append({
                                 "von": von_zeit,
                                 "bis": bis_zeit
                             })
-                    
+
                     # Button für zusätzliche Zeitslots
                     add_slot_btn = QPushButton("+ Zeitslot hinzufügen")
                     add_slot_btn.setStyleSheet("""
@@ -624,17 +629,17 @@ class MainFenster(QWidget):
                         }
                     """)
                     add_slot_btn.clicked.connect(lambda checked, tag=tag_kurz: self.add_zeitslot(tag))
-                    
+
                     self.zeiten_widgets[tag_kurz]["add_button"] = add_slot_btn
                     slots_layout.addWidget(add_slot_btn)
-                    
+
                     tag_layout.addWidget(slots_frame)
                     zeiten_layout.addWidget(tag_frame)
-                
+
                 zeiten_btn = QPushButton("🕒 Behandlungszeiten aktualisieren")
                 zeiten_btn.clicked.connect(self.update_zahnarzt_zeiten)
                 zeiten_layout.addWidget(zeiten_btn)
-                
+
                 scroll_layout.addWidget(zeiten_group)
 
         scroll.setWidget(scroll_content)
@@ -645,12 +650,12 @@ class MainFenster(QWidget):
     def update_zahnarzt_name(self):
         if not self.zahnarzt_data:
             return
-            
+
         neuer_name = self.neuer_name.text().strip()
         if not neuer_name:
             QMessageBox.warning(self, "Fehler", "Bitte geben Sie einen Namen ein.")
             return
-            
+
         # Prüfe ob der Name bereits existiert
         for arzt in zahnaerzte:
             if arzt["name"] == neuer_name and arzt != self.zahnarzt_data:
@@ -660,7 +665,7 @@ class MainFenster(QWidget):
                     f"Ein Zahnarzt mit dem Namen '{neuer_name}' existiert bereits."
                 )
                 return
-                
+
         self.zahnarzt_data["name"] = neuer_name
         speichere_daten(pfad_zahnaerzte, zahnaerzte)
         QMessageBox.information(self, "Erfolg", "Name wurde aktualisiert!")
@@ -668,12 +673,12 @@ class MainFenster(QWidget):
     def update_zahnarzt_kassen(self):
         if not self.zahnarzt_data:
             return
-            
+
         behandelt = [k for k, cb in self.kassen_checkboxes.items() if cb.isChecked()]
         if not behandelt:
             QMessageBox.warning(self, "Fehler", "Bitte mindestens eine Krankenkasse auswählen.")
             return
-            
+
         self.zahnarzt_data["behandelt"] = behandelt
         speichere_daten(pfad_zahnaerzte, zahnaerzte)
         QMessageBox.information(self, "Erfolg", "Krankenkassen wurden aktualisiert!")
@@ -681,10 +686,10 @@ class MainFenster(QWidget):
     def update_zahnarzt_zeiten(self):
         if not self.zahnarzt_data:
             return
-            
+
         zeiten = {}
         hat_zeiten = False
-        
+
         for tag_kurz, widgets in self.zeiten_widgets.items():
             if widgets["checkbox"].isChecked():
                 zeiten[tag_kurz] = []
@@ -701,11 +706,11 @@ class MainFenster(QWidget):
                         return
                     zeiten[tag_kurz].append(f"{von}-{bis}")
                 hat_zeiten = True
-                
+
         if not hat_zeiten:
             QMessageBox.warning(self, "Fehler", "Bitte mindestens einen Tag mit Behandlungszeiten auswählen.")
             return
-            
+
         self.zahnarzt_data["zeiten"] = zeiten
         speichere_daten(pfad_zahnaerzte, zahnaerzte)
         QMessageBox.information(self, "Erfolg", "Behandlungszeiten wurden aktualisiert!")
@@ -714,31 +719,31 @@ class MainFenster(QWidget):
         widgets = self.zeiten_widgets[tag]
         slots_layout = widgets["slots_layout"]
         add_button = widgets["add_button"]
-        
+
         # Entferne den Add-Button temporär
         slots_layout.removeWidget(add_button)
-        
+
         # Erstelle neuen Zeitslot
         zeit_container = QFrame()
         zeit_layout = QHBoxLayout(zeit_container)
-        
+
         von_label = QLabel("Von:")
         von_label.setStyleSheet("color: #2c3e50;")
         zeit_layout.addWidget(von_label)
-        
+
         von_zeit = QComboBox()
         von_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
         zeit_layout.addWidget(von_zeit)
-        
+
         bis_label = QLabel("Bis:")
         bis_label.setStyleSheet("color: #2c3e50;")
         zeit_layout.addWidget(bis_label)
-        
+
         bis_zeit = QComboBox()
         bis_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
         bis_zeit.setCurrentText("18:00")
         zeit_layout.addWidget(bis_zeit)
-        
+
         # Entfernen-Button
         remove_btn = QPushButton("×")
         remove_btn.setStyleSheet("""
@@ -755,34 +760,34 @@ class MainFenster(QWidget):
         """)
         remove_btn.clicked.connect(lambda: self.remove_zeitslot(tag, zeit_container))
         zeit_layout.addWidget(remove_btn)
-        
+
         slots_layout.addWidget(zeit_container)
         slots_layout.addWidget(add_button)
-        
+
         # Speichere neue Widgets
         widgets["zeitslots"].append({"von": von_zeit, "bis": bis_zeit})
 
     def remove_zeitslot(self, tag, container):
         widgets = self.zeiten_widgets[tag]
-        
+
         # Finde den Index des zu entfernenden Zeitslots
         for i, slot in enumerate(widgets["zeitslots"]):
             if slot["von"].parent().parent() == container:
                 widgets["zeitslots"].pop(i)
                 break
-        
+
         # Entferne Container
         container.deleteLater()
 
     def update_passwort(self):
         if not self.patient_data:
             return
-            
+
         neues_passwort = self.neues_passwort.text().strip()
         if not neues_passwort:
             QMessageBox.warning(self, "Fehler", "Bitte geben Sie ein neues Passwort ein.")
             return
-            
+
         self.patient_data["passwort"] = neues_passwort
         speichere_daten(pfad_patienten, patienten)
         QMessageBox.information(self, "Erfolg", "Passwort wurde aktualisiert!")
@@ -791,7 +796,7 @@ class MainFenster(QWidget):
     def update_krankenkasse(self):
         if not self.patient_data:
             return
-            
+
         neue_kasse = self.kasse_box.currentText()
         self.patient_data["krankenkasse"] = neue_kasse
         speichere_daten(pfad_patienten, patienten)
@@ -801,7 +806,7 @@ class MainFenster(QWidget):
     def add_problem(self):
         if not self.patient_data:
             return
-            
+
         problem = self.problem_box.currentText()
         try:
             anzahl = int(self.problem_anzahl.text().strip())
@@ -810,12 +815,12 @@ class MainFenster(QWidget):
         except ValueError:
             QMessageBox.warning(self, "Fehler", "Bitte geben Sie eine gültige Anzahl ein.")
             return
-            
+
         neues_problem = {
             "art": problem,
             "anzahl": anzahl
         }
-        
+
         self.patient_data["probleme"].append(neues_problem)
         speichere_daten(pfad_patienten, patienten)
         QMessageBox.information(self, "Erfolg", "Neue Behandlung wurde hinzugefügt!")
@@ -826,7 +831,7 @@ class MainFenster(QWidget):
         if self.current_page:
             self.current_page.hide()
             self.current_page.deleteLater()
-        
+
         # Container für die Termine
         termine_container = QFrame()
         termine_container.setStyleSheet("""
@@ -882,11 +887,11 @@ class MainFenster(QWidget):
                     border: none;
                 }
             """)
-            
+
             scroll_content = QWidget()
             scroll_layout = QVBoxLayout(scroll_content)
             scroll_layout.setSpacing(10)  # Reduzierter Abstand zwischen Terminen
-            
+
             # Gruppiere Termine nach Datum
             termine_nach_datum = {}
             for termin in meine_termine:
@@ -894,13 +899,13 @@ class MainFenster(QWidget):
                 if datum not in termine_nach_datum:
                     termine_nach_datum[datum] = []
                 termine_nach_datum[datum].append(termin)
-            
+
             for datum, termine in termine_nach_datum.items():
                 # Datum Header
                 datum_obj = datetime.strptime(datum, "%Y-%m-%d")
                 datum_str = datum_obj.strftime("%d.%m.%Y")
                 wochentag = datum_obj.strftime("%A")  # Vollständiger Wochentag
-                
+
                 datum_frame = QFrame()
                 datum_frame.setStyleSheet("""
                     QFrame {
@@ -912,11 +917,11 @@ class MainFenster(QWidget):
                 """)
                 datum_layout = QVBoxLayout(datum_frame)
                 datum_layout.setSpacing(5)
-                
+
                 datum_label = QLabel(f"<b>{wochentag}, {datum_str}</b>")
                 datum_label.setStyleSheet("color: #2c3e50; font-size: 14px;")
                 datum_layout.addWidget(datum_label)
-                
+
                 for termin in termine:
                     termin_frame = QFrame()
                     termin_frame.setStyleSheet("""
@@ -929,50 +934,50 @@ class MainFenster(QWidget):
                     """)
                     termin_layout = QHBoxLayout(termin_frame)
                     termin_layout.setContentsMargins(10, 5, 10, 5)
-                    
+
                     # Linke Seite: Zeit und Dauer
                     zeit_container = QFrame()
                     zeit_layout = QVBoxLayout(zeit_container)
                     zeit_layout.setSpacing(2)
                     zeit_layout.setContentsMargins(0, 0, 0, 0)
-                    
+
                     zeit_label = QLabel(f"<b>{termin['zeit']} Uhr</b>")
                     zeit_label.setStyleSheet("color: #2c3e50;")
                     zeit_layout.addWidget(zeit_label)
-                    
+
                     dauer_label = QLabel(f"{termin['dauer']} Min.")
                     dauer_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
                     zeit_layout.addWidget(dauer_label)
-                    
+
                     termin_layout.addWidget(zeit_container)
-                    
+
                     # Vertikale Linie
                     linie = QFrame()
                     linie.setFrameShape(QFrame.VLine)
                     linie.setFrameShadow(QFrame.Sunken)
                     linie.setStyleSheet("color: #e0e0e0;")
                     termin_layout.addWidget(linie)
-                    
+
                     # Rechte Seite: Behandlung und Arzt
                     info_container = QFrame()
                     info_layout = QVBoxLayout(info_container)
                     info_layout.setSpacing(2)
                     info_layout.setContentsMargins(0, 0, 0, 0)
-                    
+
                     behandlung_label = QLabel(f"<b>{termin['behandlung']}</b>")
                     behandlung_label.setStyleSheet("color: #2c3e50;")
                     info_layout.addWidget(behandlung_label)
-                    
+
                     arzt_label = QLabel(f"Dr. {termin['arzt']}")
                     arzt_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
                     info_layout.addWidget(arzt_label)
-                    
+
                     termin_layout.addWidget(info_container, stretch=1)
-                    
+
                     datum_layout.addWidget(termin_frame)
-                
+
                 scroll_layout.addWidget(datum_frame)
-            
+
             scroll_layout.addStretch()
             scroll.setWidget(scroll_content)
             termine_layout.addWidget(scroll)
@@ -985,7 +990,7 @@ class MainFenster(QWidget):
             if self.current_page:
                 self.current_page.hide()
                 self.current_page.deleteLater()
-            
+
             # Container für die Terminbuchung
             self.termin_container = QFrame()
             self.termin_container.setStyleSheet("""
@@ -1013,13 +1018,13 @@ class MainFenster(QWidget):
                 keine_probleme.setStyleSheet("color: #7f8c8d;")
                 keine_probleme.setWordWrap(True)
                 termin_layout.addWidget(keine_probleme)
-                
+
                 # Hinweis zum Hinzufügen von Behandlungen
                 hinweis = QLabel("Sie können in den Einstellungen neue Behandlungen hinzufügen.")
                 hinweis.setStyleSheet("color: #3498db;")
                 hinweis.setWordWrap(True)
                 termin_layout.addWidget(hinweis)
-                
+
                 # Button zu den Einstellungen
                 einstellungen_btn = QPushButton("Zu den Einstellungen")
                 einstellungen_btn.clicked.connect(self.show_einstellungen)
@@ -1075,33 +1080,33 @@ class MainFenster(QWidget):
         current_problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
         for i in range(1, current_problem["anzahl"] + 1):
             self.anzahl_box.addItem(str(i))
-            
+
     def update_kosten(self):
         if self.problem_box.currentIndex() < 0 or self.anzahl_box.currentIndex() < 0:
             return
-            
+
         problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
         anzahl = int(self.anzahl_box.currentText())
         material = self.material_box.currentText()
-        
+
         # Lade Materialkosten
         with open("data/materialien.json", "r", encoding="utf-8") as f:
             materialien = json.load(f)
-            
+
         # Grundkosten aus BEHANDLUNGEN
         grundkosten = BEHANDLUNGEN[problem["art"]]["preis"]
-        
+
         # Materialfaktor
         faktor = materialien[material]["faktor"]
-        
+
         # Erstattungssatz direkt aus der Versicherung des Patienten
         erstattung = materialien[material]["erstattung"][self.patient_data["krankenkasse"]]
-        
+
         # Berechnung
         gesamtkosten = grundkosten * faktor * anzahl
         eigenanteil = gesamtkosten * (1 - erstattung)
         versicherung = gesamtkosten * erstattung
-        
+
         # Kostenübersicht aktualisieren
         self.kosten_label.setText(f"""
             <h3>Kostenübersicht:</h3>
@@ -1115,7 +1120,7 @@ class MainFenster(QWidget):
         self.selected_problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
         self.selected_anzahl = int(self.anzahl_box.currentText())
         self.selected_material = self.material_box.currentText()
-        
+
         # Container für Arztwahl
         self.arzt_container = QFrame()
         self.arzt_container.setStyleSheet("""
@@ -1126,7 +1131,7 @@ class MainFenster(QWidget):
             }
         """)
         arzt_layout = QVBoxLayout(self.arzt_container)
-        
+
         titel = QLabel("Zahnarzt auswählen")
         titel.setStyleSheet("""
             font-size: 24px;
@@ -1135,39 +1140,40 @@ class MainFenster(QWidget):
             margin-bottom: 20px;
         """)
         arzt_layout.addWidget(titel)
-        
+
         # Lade Zahnärzte
         with open("data/zahnaerzte.json", "r", encoding="utf-8") as f:
             zahnaerzte = json.load(f)
-            
+
         # Filtere Zahnärzte nach Krankenkasse
         versicherung = self.patient_data["krankenkasse"]
         self.verfuegbare_aerzte = [
             arzt for arzt in zahnaerzte
             if versicherung in arzt["behandelt"]
         ]
-        
+
         if not self.verfuegbare_aerzte:
-            QMessageBox.warning(self, "Keine Ärzte verfügbar", "Leider wurden keine Ärzte gefunden, die Ihre Versicherung akzeptieren.")
+            QMessageBox.warning(self, "Keine Ärzte verfügbar",
+                                "Leider wurden keine Ärzte gefunden, die Ihre Versicherung akzeptieren.")
             return
-        
+
         # Zahnarztauswahl
         self.arzt_box = QComboBox()
         for arzt in self.verfuegbare_aerzte:
             self.arzt_box.addItem(arzt["name"])
         arzt_layout.addWidget(QLabel("Verfügbare Ärzte:"))
         arzt_layout.addWidget(self.arzt_box)
-        
+
         # Weiter-Button
         self.kalender_btn = QPushButton("Weiter zur Terminauswahl")
         self.kalender_btn.clicked.connect(self.show_kalender)
         arzt_layout.addWidget(self.kalender_btn)
-        
+
         # Zurück-Button
         zurueck_btn = QPushButton("Zurück zur Behandlungsauswahl")
         zurueck_btn.clicked.connect(self.show_termin_buchen)
         arzt_layout.addWidget(zurueck_btn)
-        
+
         # Aktualisiere UI
         if self.current_page:
             self.current_page.hide()
@@ -1178,7 +1184,7 @@ class MainFenster(QWidget):
     def show_kalender(self):
         # Speichere ausgewählten Arzt
         self.selected_zahnarzt = self.verfuegbare_aerzte[self.arzt_box.currentIndex()]
-        
+
         # Container für Kalender
         self.kalender_container = QFrame()
         self.kalender_container.setStyleSheet("""
@@ -1189,7 +1195,7 @@ class MainFenster(QWidget):
             }
         """)
         kalender_layout = QVBoxLayout(self.kalender_container)
-        
+
         titel = QLabel("Termin auswählen")
         titel.setStyleSheet("""
             font-size: 24px;
@@ -1198,25 +1204,25 @@ class MainFenster(QWidget):
             margin-bottom: 20px;
         """)
         kalender_layout.addWidget(titel)
-        
+
         # Kalender-Widget
         self.kalender = QCalendarWidget()
         self.kalender.setMinimumDate(QDate.currentDate())
         self.kalender.setMaximumDate(QDate.currentDate().addMonths(3))
         self.kalender.clicked.connect(self.show_time_slots)
-        
+
         # Stil für den Kalender
         self.kalender.setStyleSheet("""
             QCalendarWidget QToolButton {
                 color: #2c3e50;
                 background-color: transparent;
             }
-            
+
             /* Stil für Tage */
             QCalendarWidget QAbstractItemView:enabled {
                 color: black;  /* Zukünftige Tage in Schwarz */
             }
-            
+
             /* Stil für das Kalendergitter */
             QCalendarWidget QAbstractItemView {
                 selection-background-color: #3498db;
@@ -1224,7 +1230,7 @@ class MainFenster(QWidget):
             }
         """)
         kalender_layout.addWidget(self.kalender)
-        
+
         # Container für Zeitauswahl
         time_container = QFrame()
         time_container.setStyleSheet("""
@@ -1236,11 +1242,11 @@ class MainFenster(QWidget):
             }
         """)
         time_layout = QHBoxLayout(time_container)
-        
+
         # Zeitauswahl Label
         time_label = QLabel("Uhrzeit:")
         time_layout.addWidget(time_label)
-        
+
         # Dropdown für Zeitauswahl
         self.time_box = QComboBox()
         self.time_box.setStyleSheet("""
@@ -1252,7 +1258,7 @@ class MainFenster(QWidget):
             }
         """)
         time_layout.addWidget(self.time_box)
-        
+
         # Bestätigungs-Button
         self.confirm_btn = QPushButton("✓ Termin bestätigen")
         self.confirm_btn.setEnabled(False)
@@ -1273,21 +1279,21 @@ class MainFenster(QWidget):
             }
         """)
         time_layout.addWidget(self.confirm_btn)
-        
+
         kalender_layout.addWidget(time_container)
-        
+
         # Zurück-Button
         zurueck_btn = QPushButton("Zurück zur Arztwahl")
         zurueck_btn.clicked.connect(self.show_arzt_selection)
         kalender_layout.addWidget(zurueck_btn)
-        
+
         # Aktualisiere UI
         if self.current_page:
             self.current_page.hide()
             self.current_page.deleteLater()
         self.inhalt_layout_inner.addWidget(self.kalender_container)
         self.current_page = self.kalender_container
-        
+
         # Deaktiviere Tage, an denen der Arzt nicht praktiziert
         self.update_calendar()
 
@@ -1295,15 +1301,15 @@ class MainFenster(QWidget):
         # Lade Termine
         with open("data/termine.json", "r", encoding="utf-8") as f:
             termine = json.load(f)
-            
+
         # Iteriere über alle Tage im sichtbaren Bereich
         current = self.kalender.minimumDate()
         while current <= self.kalender.maximumDate():
             date = current.toPyDate()
             weekday = date.strftime("%a")
-            
+
             format = self.kalender.dateTextFormat(current)
-            
+
             # Vergangene Tage in Grau
             if current < QDate.currentDate():
                 format.setForeground(Qt.gray)
@@ -1313,40 +1319,40 @@ class MainFenster(QWidget):
             # Zukünftige Tage in Schwarz
             else:
                 format.setForeground(Qt.black)
-                
+
             self.kalender.setDateTextFormat(current, format)
             current = current.addDays(1)
-            
+
     def show_time_slots(self, date):
         self.selected_date = date
         weekday = date.toString("ddd")
-        
+
         # Lösche alte Zeitslots
         self.time_box.clear()
         self.confirm_btn.setEnabled(False)
-        
+
         if weekday not in self.selected_zahnarzt["zeiten"]:
             return
-            
+
         # Lade bereits gebuchte Termine
         with open("data/termine.json", "r", encoding="utf-8") as f:
             termine = json.load(f)
-            
+
         arzt_termine = termine.get(self.selected_zahnarzt["name"], {})
         tag_termine = arzt_termine.get(date.toString("yyyy-MM-dd"), {})
-        
+
         # Behandlungsdauer in Minuten
         behandlungsdauer = BEHANDLUNGEN[self.selected_problem["art"]]["zeit"]
-        
+
         # Zeige verfügbare Zeitslots
         for zeitfenster in self.selected_zahnarzt["zeiten"][weekday]:
             start, end = zeitfenster.split("-")
             current_time = datetime.strptime(start, "%H:%M")
             end_time = datetime.strptime(end, "%H:%M")
-            
+
             while current_time <= end_time - timedelta(minutes=behandlungsdauer):
                 time_str = current_time.strftime("%H:%M")
-                
+
                 # Prüfe ob der Zeitslot verfügbar ist
                 is_available = True
                 test_time = current_time
@@ -1355,40 +1361,40 @@ class MainFenster(QWidget):
                         is_available = False
                         break
                     test_time += timedelta(minutes=30)
-                
+
                 if is_available:
                     self.time_box.addItem(time_str)
-                    
+
                 current_time += timedelta(minutes=30)
-        
+
         if self.time_box.count() > 0:
             self.confirm_btn.setEnabled(True)
-            
+
     def select_time(self, time):
         self.selected_time = time
-        
+
         # Speichere Termin
         with open("data/termine.json", "r", encoding="utf-8") as f:
             termine = json.load(f)
-            
+
         # Erstelle Einträge wenn sie noch nicht existieren
         if self.selected_zahnarzt["name"] not in termine:
             termine[self.selected_zahnarzt["name"]] = {}
-            
+
         date_str = self.selected_date.toString("yyyy-MM-dd")
         if date_str not in termine[self.selected_zahnarzt["name"]]:
             termine[self.selected_zahnarzt["name"]][date_str] = {}
-            
+
         # Füge Termin hinzu
         termine[self.selected_zahnarzt["name"]][date_str][time] = {
             "patient": self.patient_data["name"],
             "behandlung": self.selected_problem["art"],
             "dauer": BEHANDLUNGEN[self.selected_problem["art"]]["zeit"]
         }
-        
+
         with open("data/termine.json", "w", encoding="utf-8") as f:
             json.dump(termine, f, indent=2)
-            
+
         # Aktualisiere Patientendaten
         for i, problem in enumerate(self.patient_data["probleme"]):
             if problem["art"] == self.selected_problem["art"]:
@@ -1397,21 +1403,21 @@ class MainFenster(QWidget):
                 else:
                     del self.patient_data["probleme"][i]
                 break
-                
+
         with open("data/patienten.json", "r", encoding="utf-8") as f:
             patienten = json.load(f)
-            
+
         for patient in patienten:
             if patient["name"] == self.patient_data["name"]:
                 patient["probleme"] = self.patient_data["probleme"]
                 break
-                
+
         with open("data/patienten.json", "w", encoding="utf-8") as f:
             json.dump(patienten, f, indent=2)
-            
+
         QMessageBox.information(self, "Erfolg", f"""
             Termin erfolgreich gebucht!
-            
+
             Datum: {self.selected_date.toString("dd.MM.yyyy")}
             Uhrzeit: {time}
             Zahnarzt: {self.selected_zahnarzt["name"]}
@@ -1419,7 +1425,7 @@ class MainFenster(QWidget):
             Anzahl Zähne: {self.selected_anzahl}
             Material: {self.selected_material}
         """)
-        
+
         # Zeige die Terminübersicht
         self.show_meine_termine()
 
@@ -1427,7 +1433,7 @@ class MainFenster(QWidget):
         if self.current_page:
             self.current_page.hide()
             self.current_page.deleteLater()
-        
+
         # Container für das Dashboard
         dashboard_container = QFrame()
         dashboard_container.setStyleSheet("""
@@ -1456,20 +1462,20 @@ class MainFenster(QWidget):
 
         # Hole Termine des Zahnarzts
         arzt_termine = alle_termine.get(self.benutzername, {})
-        
+
         # Erstelle ScrollArea für die Termine
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet("QScrollArea { border: none; }")
-        
+
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)
-        
+
         # Gruppiere Termine nach Datum
         termine_nach_datum = {}
         heute = datetime.now().date()
         drei_monate = heute + timedelta(days=90)
-        
+
         for datum_str, tag_termine in arzt_termine.items():
             datum = datetime.strptime(datum_str, "%Y-%m-%d").date()
             if heute <= datum <= drei_monate:
@@ -1513,7 +1519,7 @@ class MainFenster(QWidget):
 
                 # Sortiere Termine nach Zeit
                 tages_termine = sorted(termine_nach_datum[datum_str], key=lambda x: x["zeit"])
-                
+
                 for termin in tages_termine:
                     termin_frame = QFrame()
                     termin_frame.setStyleSheet("""
@@ -1532,11 +1538,11 @@ class MainFenster(QWidget):
                     zeit_label = QLabel(f"<b>{termin['zeit']} Uhr</b>")
                     zeit_label.setStyleSheet("color: #2c3e50;")
                     zeit_container.addWidget(zeit_label)
-                    
+
                     dauer_label = QLabel(f"{termin['dauer']} Min.")
                     dauer_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
                     zeit_container.addWidget(dauer_label)
-                    
+
                     zeit_widget = QWidget()
                     zeit_widget.setLayout(zeit_container)
                     termin_layout.addWidget(zeit_widget)
@@ -1553,11 +1559,11 @@ class MainFenster(QWidget):
                     patient_label = QLabel(f"<b>Patient:</b> {termin['patient']}")
                     patient_label.setStyleSheet("color: #2c3e50;")
                     info_container.addWidget(patient_label)
-                    
+
                     behandlung_label = QLabel(f"<b>Behandlung:</b> {termin['behandlung']}")
                     behandlung_label.setStyleSheet("color: #2c3e50;")
                     info_container.addWidget(behandlung_label)
-                    
+
                     info_widget = QWidget()
                     info_widget.setLayout(info_container)
                     termin_layout.addWidget(info_widget)
@@ -1588,7 +1594,7 @@ class MainFenster(QWidget):
             }
         """)
         begruessung_layout = QVBoxLayout(begruessung_container)
-        
+
         begruessung = QLabel(f"Willkommen {self.benutzername}")
         begruessung.setStyleSheet("""
             font-size: 24px;
@@ -1598,12 +1604,12 @@ class MainFenster(QWidget):
         """)
         begruessung.setAlignment(Qt.AlignCenter)
         begruessung_layout.addWidget(begruessung)
-        
+
         rolle_label = QLabel(f"Angemeldet als {self.rolle}")
         rolle_label.setStyleSheet("color: #7f8c8d;")
         rolle_label.setAlignment(Qt.AlignCenter)
         begruessung_layout.addWidget(rolle_label)
-        
+
         hauptlayout.addWidget(begruessung_container)
 
         # Hauptbereich: horizontal geteilt
@@ -1713,12 +1719,13 @@ class MainFenster(QWidget):
         hauptlayout.addLayout(inhalt_layout)
 
         self.setLayout(hauptlayout)
-        
+
         # Zeige initial die passende Seite
         if self.rolle == "Patient":
             self.show_meine_daten()
         else:
             self.show_zahnarzt_dashboard()
+
 
 # Passwort ändern Fenster
 class PasswortAendernFenster(QWidget):
@@ -1746,7 +1753,7 @@ class PasswortAendernFenster(QWidget):
                 padding: 20px;
             }
         """)
-        
+
         layout = QVBoxLayout(main_container)
         layout.setSpacing(15)
 
@@ -1813,6 +1820,7 @@ class PasswortAendernFenster(QWidget):
         if self.parent_fenster:
             self.parent_fenster.close()
 
+
 # Registrierungsfenster für neue Patienten
 class RegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
@@ -1870,7 +1878,7 @@ class RegistrierungsFenster(QWidget):
         versicherung_label = QLabel("Versicherung:")
         versicherung_label.setStyleSheet("color: #2c3e50; font-weight: bold;")
         layout.addWidget(versicherung_label)
-        
+
         self.versicherung_box = QComboBox()
         self.versicherung_box.addItems(["gesetzlich", "privat", "freiwillig gesetzlich"])
         layout.addWidget(self.versicherung_box)
@@ -1879,7 +1887,7 @@ class RegistrierungsFenster(QWidget):
         probleme_label = QLabel("Beschwerde:")
         probleme_label.setStyleSheet("color: #2c3e50; font-weight: bold;")
         layout.addWidget(probleme_label)
-        
+
         self.probleme_box = QComboBox()
         self.probleme_box.addItems([
             "Karies klein", "Karies Groß", "Teilkrone", "Krone", "Wurzelbehandlung"
@@ -1921,7 +1929,7 @@ class RegistrierungsFenster(QWidget):
         existierender_patient = None
         basis_name = name
         nummer = 1
-        
+
         for patient in patienten:
             if patient["name"] == name:
                 existierender_patient = patient
@@ -1943,17 +1951,17 @@ class RegistrierungsFenster(QWidget):
                 QMessageBox.Yes | QMessageBox.No,
                 QMessageBox.No
             )
-            
+
             if antwort == QMessageBox.Yes:
                 # Aktualisiere existierenden Patienten
                 existierender_patient["passwort"] = pw
-                
+
                 # Füge neue Beschwerden hinzu
                 neues_problem = {
                     "art": beschwerde,
                     "anzahl": anzahl
                 }
-                
+
                 # Prüfe ob das Problem bereits existiert
                 problem_existiert = False
                 for problem in existierender_patient["probleme"]:
@@ -1961,10 +1969,10 @@ class RegistrierungsFenster(QWidget):
                         problem["anzahl"] += anzahl
                         problem_existiert = True
                         break
-                
+
                 if not problem_existiert:
                     existierender_patient["probleme"].append(neues_problem)
-                
+
                 speichere_daten(pfad_patienten, patienten)
                 QMessageBox.information(
                     self,
@@ -1977,7 +1985,7 @@ class RegistrierungsFenster(QWidget):
             else:
                 # Generiere neuen Namen mit Nummerierung
                 name = f"{basis_name}_{nummer}"
-                
+
                 # Informiere den Benutzer über den neuen Namen
                 QMessageBox.information(
                     self,
@@ -2011,6 +2019,7 @@ class RegistrierungsFenster(QWidget):
         )
         self.close()
 
+
 # Registrierungsfenster für neue Zahnärzte
 class ZahnarztRegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
@@ -2029,7 +2038,7 @@ class ZahnarztRegistrierungsFenster(QWidget):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet("QScrollArea { border: none; }")
-        
+
         # Container für das gesamte Formular
         main_container = QFrame()
         main_container.setStyleSheet("""
@@ -2079,18 +2088,18 @@ class ZahnarztRegistrierungsFenster(QWidget):
             }
         """)
         kassen_layout = QVBoxLayout(kassen_group)
-        
+
         kassen_label = QLabel("Behandelt folgende Versicherungen:")
         kassen_label.setStyleSheet("font-weight: bold; color: #2c3e50;")
         kassen_layout.addWidget(kassen_label)
-        
+
         self.kassen_checkboxes = {}
         for kasse in ["gesetzlich", "privat", "freiwillig gesetzlich"]:
             cb = QCheckBox(kasse)
             cb.setStyleSheet("color: #2c3e50; margin-left: 10px;")
             self.kassen_checkboxes[kasse] = cb
             kassen_layout.addWidget(cb)
-            
+
         layout.addWidget(kassen_group)
 
         # Behandlungszeiten
@@ -2103,11 +2112,11 @@ class ZahnarztRegistrierungsFenster(QWidget):
             }
         """)
         zeiten_layout = QVBoxLayout(zeiten_group)
-        
+
         zeiten_label = QLabel("Wöchentliche Behandlungszeiten:")
         zeiten_label.setStyleSheet("font-weight: bold; color: #2c3e50;")
         zeiten_layout.addWidget(zeiten_label)
-        
+
         self.wochentage = {
             "Mo": "Montag",
             "Di": "Dienstag",
@@ -2115,46 +2124,46 @@ class ZahnarztRegistrierungsFenster(QWidget):
             "Do": "Donnerstag",
             "Fr": "Freitag"
         }
-        
+
         self.zeiten_widgets = {}
         for tag_kurz, tag_lang in self.wochentage.items():
             tag_frame = QFrame()
             tag_layout = QVBoxLayout(tag_frame)
-            
+
             # Checkbox für den Tag
             tag_cb = QCheckBox(tag_lang)
             tag_cb.setStyleSheet("color: #2c3e50; font-weight: bold;")
             tag_layout.addWidget(tag_cb)
-            
+
             # Container für Zeitslots
             slots_frame = QFrame()
             slots_layout = QVBoxLayout(slots_frame)
             slots_frame.setVisible(False)
             tag_cb.toggled.connect(slots_frame.setVisible)
-            
+
             # Erster Zeitslot
             zeit_container = QFrame()
             zeit_layout = QHBoxLayout(zeit_container)
-            
+
             von_label = QLabel("Von:")
             von_label.setStyleSheet("color: #2c3e50;")
             zeit_layout.addWidget(von_label)
-            
+
             von_zeit = QComboBox()
             von_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
             zeit_layout.addWidget(von_zeit)
-            
+
             bis_label = QLabel("Bis:")
             bis_label.setStyleSheet("color: #2c3e50;")
             zeit_layout.addWidget(bis_label)
-            
+
             bis_zeit = QComboBox()
             bis_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
             bis_zeit.setCurrentText("18:00")
             zeit_layout.addWidget(bis_zeit)
-            
+
             slots_layout.addWidget(zeit_container)
-            
+
             # Button für zusätzliche Zeitslots
             add_slot_btn = QPushButton("+ Zeitslot hinzufügen")
             add_slot_btn.setStyleSheet("""
@@ -2170,7 +2179,7 @@ class ZahnarztRegistrierungsFenster(QWidget):
             """)
             add_slot_btn.clicked.connect(lambda checked, tag=tag_kurz: self.add_zeitslot(tag))
             slots_layout.addWidget(add_slot_btn)
-            
+
             # Speichere Widgets
             self.zeiten_widgets[tag_kurz] = {
                 "checkbox": tag_cb,
@@ -2179,10 +2188,10 @@ class ZahnarztRegistrierungsFenster(QWidget):
                 "zeitslots": [{"von": von_zeit, "bis": bis_zeit}],
                 "add_button": add_slot_btn
             }
-            
+
             tag_layout.addWidget(slots_frame)
             zeiten_layout.addWidget(tag_frame)
-            
+
         layout.addWidget(zeiten_group)
 
         # Registrieren Button
@@ -2200,31 +2209,31 @@ class ZahnarztRegistrierungsFenster(QWidget):
         widgets = self.zeiten_widgets[tag]
         slots_layout = widgets["slots_layout"]
         add_button = widgets["add_button"]
-        
+
         # Entferne den Add-Button temporär
         slots_layout.removeWidget(add_button)
-        
+
         # Erstelle neuen Zeitslot
         zeit_container = QFrame()
         zeit_layout = QHBoxLayout(zeit_container)
-        
+
         von_label = QLabel("Von:")
         von_label.setStyleSheet("color: #2c3e50;")
         zeit_layout.addWidget(von_label)
-        
+
         von_zeit = QComboBox()
         von_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
         zeit_layout.addWidget(von_zeit)
-        
+
         bis_label = QLabel("Bis:")
         bis_label.setStyleSheet("color: #2c3e50;")
         zeit_layout.addWidget(bis_label)
-        
+
         bis_zeit = QComboBox()
         bis_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
         bis_zeit.setCurrentText("18:00")
         zeit_layout.addWidget(bis_zeit)
-        
+
         # Entfernen-Button
         remove_btn = QPushButton("×")
         remove_btn.setStyleSheet("""
@@ -2241,43 +2250,43 @@ class ZahnarztRegistrierungsFenster(QWidget):
         """)
         remove_btn.clicked.connect(lambda: self.remove_zeitslot(tag, zeit_container))
         zeit_layout.addWidget(remove_btn)
-        
+
         slots_layout.addWidget(zeit_container)
         slots_layout.addWidget(add_button)
-        
+
         # Speichere neue Widgets
         widgets["zeitslots"].append({"von": von_zeit, "bis": bis_zeit})
 
     def remove_zeitslot(self, tag, container):
         widgets = self.zeiten_widgets[tag]
-        
+
         # Finde den Index des zu entfernenden Zeitslots
         for i, slot in enumerate(widgets["zeitslots"]):
             if slot["von"].parent().parent() == container:
                 widgets["zeitslots"].pop(i)
                 break
-        
+
         # Entferne Container
         container.deleteLater()
 
     def registriere(self):
         name = self.eingabe_name.text().strip()
         pw = self.eingabe_passwort.text().strip()
-        
+
         if not name or not pw:
             QMessageBox.warning(self, "Fehler", "Bitte Name und Passwort eingeben.")
             return
-            
+
         # Prüfe ob mindestens eine Kasse ausgewählt wurde
         behandelt = [k for k, cb in self.kassen_checkboxes.items() if cb.isChecked()]
         if not behandelt:
             QMessageBox.warning(self, "Fehler", "Bitte mindestens eine Krankenkasse auswählen.")
             return
-            
+
         # Sammle Behandlungszeiten
         zeiten = {}
         hat_zeiten = False
-        
+
         for tag_kurz, widgets in self.zeiten_widgets.items():
             if widgets["checkbox"].isChecked():
                 zeiten[tag_kurz] = []
@@ -2294,11 +2303,11 @@ class ZahnarztRegistrierungsFenster(QWidget):
                         return
                     zeiten[tag_kurz].append(f"{von}-{bis}")
                 hat_zeiten = True
-                
+
         if not hat_zeiten:
             QMessageBox.warning(self, "Fehler", "Bitte mindestens einen Tag mit Behandlungszeiten auswählen.")
             return
-            
+
         # Prüfe ob der Name bereits existiert
         for arzt in zahnaerzte:
             if arzt["name"] == name:
@@ -2308,7 +2317,7 @@ class ZahnarztRegistrierungsFenster(QWidget):
                     f"Ein Zahnarzt mit dem Namen '{name}' existiert bereits."
                 )
                 return
-                
+
         # Erstelle neuen Zahnarzt
         neuer_zahnarzt = {
             "name": name,
@@ -2317,10 +2326,10 @@ class ZahnarztRegistrierungsFenster(QWidget):
             "behandelt": behandelt,
             "zeiten": zeiten
         }
-        
+
         zahnaerzte.append(neuer_zahnarzt)
         speichere_daten(pfad_zahnaerzte, zahnaerzte)
-        
+
         QMessageBox.information(
             self,
             "Erfolg",
@@ -2328,6 +2337,7 @@ class ZahnarztRegistrierungsFenster(QWidget):
             f"Der neue Zahnarzt '{name}' wurde registriert und kann sich jetzt anmelden."
         )
         self.close()
+
 
 # Login Fenster
 class LoginFenster(QWidget):
@@ -2393,20 +2403,20 @@ class LoginFenster(QWidget):
         """)
         button_layout = QVBoxLayout(button_container)
         button_layout.setSpacing(10)
-        
+
         # Login Button
         self.login_button = QPushButton("🔑 Anmelden")
         self.login_button.clicked.connect(self.pruefe_login)
         button_layout.addWidget(self.login_button)
-        
+
         # Registrierungs-Buttons
         reg_label = QLabel("Neu hier? Registrieren Sie sich als:")
         reg_label.setStyleSheet("color: #7f8c8d; margin-top: 10px;")
         reg_label.setAlignment(Qt.AlignCenter)
         button_layout.addWidget(reg_label)
-        
+
         reg_buttons_layout = QHBoxLayout()
-        
+
         self.patient_reg_button = QPushButton("🏥 Patient")
         self.patient_reg_button.clicked.connect(self.zeige_patienten_registrierung)
         self.patient_reg_button.setStyleSheet("""
@@ -2418,7 +2428,7 @@ class LoginFenster(QWidget):
             }
         """)
         reg_buttons_layout.addWidget(self.patient_reg_button)
-        
+
         self.arzt_reg_button = QPushButton("👨‍⚕️ Zahnarzt")
         self.arzt_reg_button.clicked.connect(self.zeige_zahnarzt_registrierung)
         self.arzt_reg_button.setStyleSheet("""
@@ -2430,7 +2440,7 @@ class LoginFenster(QWidget):
             }
         """)
         reg_buttons_layout.addWidget(self.arzt_reg_button)
-        
+
         button_layout.addLayout(reg_buttons_layout)
         layout.addWidget(button_container)
 
@@ -2454,7 +2464,8 @@ class LoginFenster(QWidget):
         for p in patienten:
             if p["name"] == benutzername and p["passwort"] == passwort:
                 if not p.get("passwort_geaendert", False):
-                    QMessageBox.information(self, "Erstlogin", f"Willkommen Patient {benutzername}! Bitte Passwort ändern.")
+                    QMessageBox.information(self, "Erstlogin",
+                                            f"Willkommen Patient {benutzername}! Bitte Passwort ändern.")
                     self.passwortfenster = PasswortAendernFenster(p, "Patient", parent=self)
                     self.passwortfenster.show()
                 else:
@@ -2466,7 +2477,8 @@ class LoginFenster(QWidget):
         for z in zahnaerzte:
             if z["name"] == benutzername and z["passwort"] == passwort:
                 if not z.get("passwort_geaendert", False):
-                    QMessageBox.information(self, "Erstlogin", f"Willkommen Zahnarzt {benutzername}! Bitte Passwort ändern.")
+                    QMessageBox.information(self, "Erstlogin",
+                                            f"Willkommen Zahnarzt {benutzername}! Bitte Passwort ändern.")
                     self.passwortfenster = PasswortAendernFenster(z, "Zahnarzt", parent=self)
                     self.passwortfenster.show()
                 else:
@@ -2476,6 +2488,7 @@ class LoginFenster(QWidget):
                 return
 
         QMessageBox.warning(self, "Fehler", "Benutzername oder Passwort falsch!")
+
 
 # Start der App
 if __name__ == "__main__":

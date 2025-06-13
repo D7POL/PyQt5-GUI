@@ -1,19 +1,7 @@
 [
   {
-    "name": "Max Mustermann",
-    "passwort": "test123",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 1
-      }
-    ],
-    "passwort_geaendert": false
-  },
-  {
     "name": "Frau Meyer",
-    "passwort": "P111",
+    "passwort": "P1111",
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
@@ -21,12 +9,12 @@
         "anzahl": 2
       }
     ],
-    "passwort_geaendert": true
+    "passwort_geaendert": false
   },
   {
     "name": "Herr Krüger",
     "passwort": "P333",
-    "krankenkasse": "privat",
+    "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
       {
         "art": "Karies klein",
@@ -311,6 +299,7 @@
     ],
     "passwort_geaendert": false
   },
+
   {
     "name": "Frau Özdemir",
     "passwort": "P10",
@@ -319,25 +308,6 @@
       {
         "art": "Karies groß",
         "anzahl": 1
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz",
-    "passwort": "P19",
-    "krankenkasse": "gesetzlich",
-    "probleme": [],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz_1",
-    "passwort": "P19",
-    "krankenkasse": "privat",
-    "probleme": [
-      {
-        "art": "Wurzelbehandlung",
-        "anzahl": 2
       }
     ],
     "passwort_geaendert": true
