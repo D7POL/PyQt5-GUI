@@ -40,6 +40,50 @@
         "behandlung": "Wurzelbehandlung",
         "dauer": 120
       }
+    },
+    "2025-05-30": {
+      "08:00": {
+        "patient": "Herr Kr\u00fcger",
+        "behandlung": "Karies klein",
+        "dauer": 30
+      }
+    }
+  },
+  "Dr. Shikh": {
+    "2025-06-06": {
+      "08:00": {
+        "patient": "Frau Meyer",
+        "behandlung": "Karies klein",
+        "dauer": 30
+      }
+    }
+  },
+  "Dr. Kraft": {
+    "2025-06-13": {
+      "15:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Wurzelbehandlung",
+        "dauer": 120
+      }
+    }
+  },
+  "Dr. Hausmann": {
+    "2025-06-20": {
+      "13:30": {
+        "patient": "Frau \u00d6zdemir_1",
+        "behandlung": "Krone",
+        "dauer": 90
+      },
+      "14:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Krone",
+        "dauer": 90
+      },
+      "12:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Karies klein",
+        "dauer": 30
+      }
     }
   }
 }

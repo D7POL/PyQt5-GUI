@@ -88,7 +88,7 @@
   {
     "name": "Dr. Hausmann",
     "passwort": "A444",
-    "passwort_geaendert": false,
+    "passwort_geaendert": true,
     "behandelt": [
       "gesetzlich",
       "freiwillig gesetzlich"
