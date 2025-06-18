@@ -1768,7 +1768,7 @@ class PasswortAendernFenster(QWidget):
         self.rolle = rolle
         self.parent_fenster = parent
         self.setWindowTitle("Passwort ändern")
-        self.setGeometry(150, 150, 400, 300)
+        self.setGeometry(700, 200, 400, 300)
         self.setStyleSheet(STYLE)
 
         # Setze Hintergrundfarbe
@@ -1858,7 +1858,7 @@ class RegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
         super().__init__()
         self.setWindowTitle("Registrierung")
-        self.setGeometry(150, 150, 400, 500)
+        self.setGeometry(700, 200, 400, 500)
         self.setStyleSheet(STYLE)
 
         # Setze Hintergrundfarbe
@@ -2059,7 +2059,7 @@ class ZahnarztRegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
         super().__init__()
         self.setWindowTitle("Zahnarzt Registrierung")
-        self.setGeometry(150, 150, 600, 700)
+        self.setGeometry(700, 200, 900, 700)
         self.setStyleSheet(STYLE)
 
         # Setze Hintergrundfarbe
@@ -2377,7 +2377,7 @@ class LoginFenster(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Zahnarztpraxis Login")
-        self.setGeometry(100, 100, 400, 500)
+        self.setGeometry(700, 200, 400, 500)
         self.setStyleSheet(STYLE)
 
         # Setze Hintergrundfarbe

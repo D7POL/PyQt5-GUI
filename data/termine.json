@@ -95,6 +95,11 @@
         "patient": "Frau Ayaz",
         "behandlung": "Krone",
         "dauer": 90
+      },
+      "10:30": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Karies klein",
+        "dauer": 30
       }
     }
   }
