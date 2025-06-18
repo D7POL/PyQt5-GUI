@@ -79,9 +79,11 @@ QFrame[frameShape="4"] { /* Horizontale Linie */
 def lade_daten(pfad):
     with open(pfad, "r", encoding="utf-8") as f:
         daten = json.load(f)
-        for eintrag in daten:
-            if "passwort_geaendert" not in eintrag:
-                eintrag["passwort_geaendert"] = False
+        # Nur für Patienten- und Zahnarztdateien das Feld setzen
+        if "patienten" in pfad or "zahnaerzte" in pfad:
+            for eintrag in daten:
+                if "passwort_geaendert" not in eintrag:
+                    eintrag["passwort_geaendert"] = False
         return daten
 
 def speichere_daten(pfad, daten):
@@ -91,17 +93,13 @@ def speichere_daten(pfad, daten):
 # Datenpfade
 pfad_patienten = "data/patienten.json"
 pfad_zahnaerzte = "data/zahnaerzte.json"
+pfad_behandlungen = "data/kosten_behandlungen.json"
 patienten = lade_daten(pfad_patienten)
 zahnaerzte = lade_daten(pfad_zahnaerzte)
 
-# Preise und Zeitaufwand für Behandlungen
-BEHANDLUNGEN = {
-    "Karies klein": {"preis": 50, "zeit": 30, "einheit": "Minuten"},
-    "Karies groß": {"preis": 120, "zeit": 45, "einheit": "Minuten"},
-    "Teilkrone": {"preis": 400, "zeit": 60, "einheit": "Minuten"},
-    "Krone": {"preis": 600, "zeit": 90, "einheit": "Minuten"},
-    "Wurzelbehandlung": {"preis": 300, "zeit": 120, "einheit": "Minuten"}
-}
+# Preise und Zeitaufwand für Behandlungen jetzt aus JSON laden
+behandlungen_liste = lade_daten(pfad_behandlungen)
+BEHANDLUNGEN = {b["art"]: b for b in behandlungen_liste}
 
 # Erstattungssätze nach Versicherung
 ERSTATTUNG = {
@@ -136,7 +134,7 @@ class MainFenster(QWidget):
                     break
 
         self.setWindowTitle("Dashboard")
-        self.setGeometry(200, 200, 800, 600)
+        self.setGeometry(300, 50, 1200, 600)
         self.setStyleSheet(STYLE)
         
         # Setze Hintergrundfarbe
@@ -165,38 +163,44 @@ class MainFenster(QWidget):
     def berechne_kosten_und_zeit(self, patient):
         if not patient:
             return None
-            
+        
         gesamt_kosten = 0
         gesamt_zeit = 0
-        erstattung = ERSTATTUNG.get(patient["krankenkasse"], 0.7)
+        versicherung = patient["krankenkasse"]
         
         analyse = []
         for problem in patient["probleme"]:
             behandlung = BEHANDLUNGEN.get(problem["art"])
             if behandlung:
                 anzahl = problem["anzahl"]
-                kosten = behandlung["preis"] * anzahl
-                zeit = behandlung["zeit"] * anzahl
-                
+                # Füllmaterial berücksichtigen (default: normal)
+                material = problem.get("material", "normal")
+                mat_info = behandlung["materialien"].get(material, behandlung["materialien"]["normal"])
+                kosten = mat_info["preis"] * anzahl
+                zeit = mat_info["zeit"] * anzahl
+                einheit = behandlung["einheit"]
+                erstattung = mat_info["erstattung"].get(versicherung, 0.0)
+                eigenanteil = kosten * (1 - erstattung)
+                versicherung_anteil = kosten * erstattung
                 analyse.append({
                     "art": problem["art"],
                     "anzahl": anzahl,
+                    "material": material,
                     "kosten": kosten,
                     "zeit": zeit,
-                    "einheit": behandlung["einheit"]
+                    "einheit": einheit,
+                    "eigenanteil": eigenanteil,
+                    "versicherung_anteil": versicherung_anteil
                 })
-                
                 gesamt_kosten += kosten
                 gesamt_zeit += zeit
-        
-        eigenanteil = gesamt_kosten * (1 - erstattung)
-        versicherung_anteil = gesamt_kosten * erstattung
-        
+        gesamt_eigenanteil = sum(item["eigenanteil"] for item in analyse)
+        gesamt_versicherung_anteil = sum(item["versicherung_anteil"] for item in analyse)
         return {
             "analyse": analyse,
             "gesamt_kosten": gesamt_kosten,
-            "eigenanteil": eigenanteil,
-            "versicherung_anteil": versicherung_anteil,
+            "eigenanteil": gesamt_eigenanteil,
+            "versicherung_anteil": gesamt_versicherung_anteil,
             "gesamt_zeit": gesamt_zeit
         }
 
@@ -236,7 +240,7 @@ class MainFenster(QWidget):
             versicherung_info.setStyleSheet("font-size: 16px; color: #7f8c8d; margin-bottom: 10px;")
             analyse_layout.addWidget(versicherung_info)
 
-            # Container für die Analyse-Details
+            # Container für die Analyse-Details (rote Box)
             details_container = QFrame()
             details_container.setStyleSheet("""
                 QFrame {
@@ -274,36 +278,47 @@ class MainFenster(QWidget):
                 
                 details_layout.addWidget(behandlung_frame)
 
-            analyse_layout.addWidget(details_container)
+            # SCROLLBEREICH für die Behandlungen (rote Box)
+            details_scroll = QScrollArea()
+            details_scroll.setWidgetResizable(True)
+            details_scroll.setWidget(details_container)
+            details_scroll.setMinimumHeight(300)
+            details_scroll.setMaximumHeight(600)
+            details_scroll.setStyleSheet("QScrollArea { margin-left: 0px; }")
+            analyse_layout.addWidget(details_scroll)
 
-            # Zusammenfassung
+            # Zusammenfassung (grüner Bereich) - immer komplett sichtbar
             zusammenfassung = QFrame()
             zusammenfassung.setStyleSheet("""
                 QFrame {
                     background-color: #e8f4f8;
                     border-radius: 8px;
-                    padding: 15px;
-                    margin-top: 20px;
+                    padding: 6px;
+                    margin-top: 6px;
+                    max-width: 500px;
+                    margin-left: 0px;
                 }
             """)
             zusammenfassung_layout = QVBoxLayout(zusammenfassung)
+            zusammenfassung.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
 
             gesamt_label = QLabel(f"Gesamtkosten: {analyse_data['gesamt_kosten']}€")
-            gesamt_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #2c3e50;")
+            gesamt_label.setStyleSheet("font-size: 22px; font-weight: bold; color: #2c3e50; line-height: 1.2;")
             zusammenfassung_layout.addWidget(gesamt_label)
 
             erstattung_label = QLabel(f"Erstattung durch Versicherung: {analyse_data['versicherung_anteil']:.2f}€")
-            erstattung_label.setStyleSheet("color: #27ae60; font-size: 16px;")
+            erstattung_label.setStyleSheet("color: #27ae60; font-size: 18px; line-height: 1.2;")
             zusammenfassung_layout.addWidget(erstattung_label)
 
             eigenanteil_label = QLabel(f"Ihr Eigenanteil: {analyse_data['eigenanteil']:.2f}€")
-            eigenanteil_label.setStyleSheet("color: #e74c3c; font-size: 16px;")
+            eigenanteil_label.setStyleSheet("color: #e74c3c; font-size: 18px; line-height: 1.2;")
             zusammenfassung_layout.addWidget(eigenanteil_label)
 
             zeit_label = QLabel(f"Gesamter Zeitaufwand: {analyse_data['gesamt_zeit']} Minuten")
-            zeit_label.setStyleSheet("color: #2c3e50; font-size: 16px;")
+            zeit_label.setStyleSheet("color: #2c3e50; font-size: 18px; line-height: 1.2;")
             zusammenfassung_layout.addWidget(zeit_label)
 
+            zusammenfassung.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
             analyse_layout.addWidget(zusammenfassung)
 
         self.inhalt_layout_inner.addWidget(analyse_container)
@@ -823,14 +838,21 @@ class MainFenster(QWidget):
             
         neues_problem = {
             "art": problem,
-            "anzahl": anzahl
+            "anzahl": anzahl,
+            "material": "normal"
         }
-        
-        self.patient_data["probleme"].append(neues_problem)
+        # Prüfe ob das Problem bereits existiert
+        problem_existiert = False
+        for p in self.patient_data["probleme"]:
+            if p["art"] == problem:
+                p["anzahl"] += anzahl
+                problem_existiert = True
+                break
+        if not problem_existiert:
+            self.patient_data["probleme"].append(neues_problem)
         speichere_daten(pfad_patienten, patienten)
-        QMessageBox.information(self, "Erfolg", "Neue Behandlung wurde hinzugefügt!")
-        self.problem_anzahl.clear()
-        self.show_meine_daten()  # Aktualisiere die Analyse-Ansicht
+        QMessageBox.information(self, "Erfolg", "Behandlung hinzugefügt!")
+        self.show_meine_daten()
 
     def show_meine_termine(self):
         if self.current_page:
@@ -1015,6 +1037,7 @@ class MainFenster(QWidget):
                 color: #2c3e50;
                 margin-bottom: 20px;
             """)
+            titel.setAlignment(Qt.AlignCenter)
             termin_layout.addWidget(titel)
 
             # Prüfe ob Patient Probleme hat
@@ -1051,7 +1074,7 @@ class MainFenster(QWidget):
                 # Füllmaterial
                 termin_layout.addWidget(QLabel("Füllmaterial:"))
                 self.material_box = QComboBox()
-                self.material_box.addItems(["normal", "höherwertig", "höchstwertig"])
+                self.material_box.addItems(["normal", "hochwertig", "höchstwertig"])
                 termin_layout.addWidget(self.material_box)
 
                 # Kostenübersicht
@@ -1089,39 +1112,29 @@ class MainFenster(QWidget):
     def update_kosten(self):
         if self.problem_box.currentIndex() < 0 or self.anzahl_box.currentIndex() < 0:
             return
-            
         problem = self.patient_data["probleme"][self.problem_box.currentIndex()]
         anzahl = int(self.anzahl_box.currentText())
         material = self.material_box.currentText()
-        
         # Store selected values for later use
         self.selected_problem = problem
         self.selected_anzahl = anzahl
         self.selected_material = material
-        
-        # Lade Materialkosten
-        with open("data/materialien.json", "r", encoding="utf-8") as f:
-            materialien = json.load(f)
-            
-        # Grundkosten aus BEHANDLUNGEN
-        grundkosten = BEHANDLUNGEN[problem["art"]]["preis"]
-        
-        # Materialfaktor
-        faktor = materialien[material]["faktor"]
-        
-        # Erstattungssatz direkt aus der Versicherung des Patienten
-        erstattung = materialien[material]["erstattung"][self.patient_data["krankenkasse"]]
-        
+        # Grundkosten und Zeit aus BEHANDLUNGEN
+        behandlung = BEHANDLUNGEN[problem["art"]]
+        mat_info = behandlung["materialien"].get(material, behandlung["materialien"]["normal"])
+        grundkosten = mat_info["preis"]
+        grundzeit = mat_info["zeit"]
+        versicherung = self.patient_data["krankenkasse"]
+        erstattung = mat_info["erstattung"].get(versicherung, 0.0)
         # Berechnung
-        gesamtkosten = grundkosten * faktor * anzahl
+        gesamtkosten = grundkosten * anzahl
         eigenanteil = gesamtkosten * (1 - erstattung)
-        versicherung = gesamtkosten * erstattung
-        
+        versicherung_anteil = gesamtkosten * erstattung
         # Kostenübersicht aktualisieren
         self.kosten_label.setText(f"""
             <h3>Kostenübersicht:</h3>
             <p>Gesamtkosten: {gesamtkosten:.2f}€</p>
-            <p>Erstattung durch Versicherung: {versicherung:.2f}€</p>
+            <p>Erstattung durch Versicherung: {versicherung_anteil:.2f}€</p>
             <p>Ihr Eigenanteil: {eigenanteil:.2f}€</p>
         """)
 
@@ -1214,7 +1227,9 @@ class MainFenster(QWidget):
                 padding: 20px;
             }
         """)
+        self.kalender_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         kalender_layout = QVBoxLayout(self.kalender_container)
+        kalender_layout.setAlignment(Qt.AlignVCenter)
         
         titel = QLabel("Termin auswählen")
         titel.setStyleSheet("""
@@ -1223,33 +1238,18 @@ class MainFenster(QWidget):
             color: #2c3e50;
             margin-bottom: 20px;
         """)
+        titel.setAlignment(Qt.AlignCenter)
         kalender_layout.addWidget(titel)
         
         # Kalender-Widget
         self.kalender = QCalendarWidget()
+        self.kalender.setMinimumHeight(350)
+        self.kalender.setMinimumWidth(600)
+        self.kalender.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.kalender.setMinimumDate(QDate.currentDate())
         self.kalender.setMaximumDate(QDate.currentDate().addMonths(3))
         self.kalender.clicked.connect(self.show_time_slots)
-        
-        # Stil für den Kalender
-        self.kalender.setStyleSheet("""
-            QCalendarWidget QToolButton {
-                color: #2c3e50;
-                background-color: transparent;
-            }
-            
-            /* Stil für Tage */
-            QCalendarWidget QAbstractItemView:enabled {
-                color: black;  /* Zukünftige Tage in Schwarz */
-            }
-            
-            /* Stil für das Kalendergitter */
-            QCalendarWidget QAbstractItemView {
-                selection-background-color: #3498db;
-                selection-color: white;
-            }
-        """)
-        kalender_layout.addWidget(self.kalender)
+        kalender_layout.addWidget(self.kalender, alignment=Qt.AlignCenter)
         
         # Container für Zeitauswahl
         time_container = QFrame()
@@ -1262,12 +1262,8 @@ class MainFenster(QWidget):
             }
         """)
         time_layout = QHBoxLayout(time_container)
-        
-        # Zeitauswahl Label
         time_label = QLabel("Uhrzeit:")
         time_layout.addWidget(time_label)
-        
-        # Dropdown für Zeitauswahl
         self.time_box = QComboBox()
         self.time_box.setStyleSheet("""
             QComboBox {
@@ -1278,8 +1274,6 @@ class MainFenster(QWidget):
             }
         """)
         time_layout.addWidget(self.time_box)
-        
-        # Bestätigungs-Button
         self.confirm_btn = QPushButton("✓ Termin bestätigen")
         self.confirm_btn.setEnabled(False)
         self.confirm_btn.clicked.connect(lambda: self.select_time(self.time_box.currentText()))
@@ -1299,8 +1293,8 @@ class MainFenster(QWidget):
             }
         """)
         time_layout.addWidget(self.confirm_btn)
-        
-        kalender_layout.addWidget(time_container)
+        kalender_layout.addWidget(time_container, alignment=Qt.AlignCenter)
+        kalender_layout.addStretch(1)
         
         # Zurück-Button
         zurueck_btn = QPushButton("Zurück zur Arztwahl")
@@ -1362,7 +1356,8 @@ class MainFenster(QWidget):
         tag_termine = arzt_termine.get(date.toString("yyyy-MM-dd"), {})
         
         # Behandlungsdauer in Minuten
-        behandlungsdauer = BEHANDLUNGEN[self.selected_problem["art"]]["zeit"]
+        mat_info = BEHANDLUNGEN[self.selected_problem["art"]]["materialien"].get(self.selected_material, BEHANDLUNGEN[self.selected_problem["art"]]["materialien"]["normal"])
+        behandlungsdauer = mat_info["zeit"]
         
         # Erstelle eine Liste aller blockierten Zeiten basierend auf bestehenden Terminen
         blockierte_zeiten = []
@@ -1420,10 +1415,12 @@ class MainFenster(QWidget):
             termine[self.selected_zahnarzt["name"]][date_str] = {}
             
         # Füge Termin hinzu
+        mat_info = BEHANDLUNGEN[self.selected_problem["art"]]["materialien"].get(self.selected_material, BEHANDLUNGEN[self.selected_problem["art"]]["materialien"]["normal"])
         termine[self.selected_zahnarzt["name"]][date_str][time] = {
             "patient": self.patient_data["name"],
             "behandlung": self.selected_problem["art"],
-            "dauer": BEHANDLUNGEN[self.selected_problem["art"]]["zeit"]
+            "material": self.selected_material,
+            "dauer": mat_info["zeit"]
         }
         
         with open("data/termine.json", "w", encoding="utf-8") as f:
@@ -1624,26 +1621,29 @@ class MainFenster(QWidget):
             QFrame {
                 background-color: white;
                 border-radius: 10px;
-                padding: 20px;
+                padding: 12px;
             }
         """)
         begruessung_layout = QVBoxLayout(begruessung_container)
+        begruessung_layout.setAlignment(Qt.AlignCenter)
         
         begruessung = QLabel(f"Willkommen {self.benutzername}")
         begruessung.setStyleSheet("""
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             color: #2c3e50;
-            margin-bottom: 5px;
+            margin: 0px;
         """)
         begruessung.setAlignment(Qt.AlignCenter)
         begruessung_layout.addWidget(begruessung)
         
         rolle_label = QLabel(f"Angemeldet als {self.rolle}")
-        rolle_label.setStyleSheet("color: #7f8c8d;")
+        rolle_label.setStyleSheet("color: #7f8c8d; margin: 0px;")
         rolle_label.setAlignment(Qt.AlignCenter)
         begruessung_layout.addWidget(rolle_label)
         
+        begruessung_layout.addStretch(1)
+
         hauptlayout.addWidget(begruessung_container)
 
         # Hauptbereich: horizontal geteilt
@@ -1989,7 +1989,8 @@ class RegistrierungsFenster(QWidget):
                 # Füge neue Beschwerden hinzu
                 neues_problem = {
                     "art": beschwerde,
-                    "anzahl": anzahl
+                    "anzahl": anzahl,
+                    "material": "normal"
                 }
                 # Prüfe ob das Problem bereits existiert
                 problem_existiert = False
@@ -2036,7 +2037,8 @@ class RegistrierungsFenster(QWidget):
             "probleme": [
                 {
                     "art": beschwerde,
-                    "anzahl": anzahl
+                    "anzahl": anzahl,
+                    "material": "normal"
                 }
             ],
             "passwort_geaendert": True

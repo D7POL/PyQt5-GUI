@@ -1,132 +1,47 @@
-{
-  "Karies klein": {
-    "normal": {
-      "zeit": 0.25,
-      "kosten": 100,
-      "kasse": {
-        "gesetzlich": 0.80,
-        "privat": 1.00
-      }
+[
+  {
+    "art": "Karies klein",
+    "materialien": {
+      "normal": {"preis": 100, "zeit": 15, "erstattung": {"gesetzlich": 0.8, "privat": 1.0}},
+      "hochwertig": {"preis": 180, "zeit": 15, "erstattung": {"gesetzlich": 0.7, "privat": 1.0}},
+      "höchstwertig": {"preis": 250, "zeit": 15, "erstattung": {"gesetzlich": 0.5, "privat": 0.95}}
     },
-    "höherwertig": {
-      "zeit": 0.25,
-      "kosten": 180,
-      "kasse": {
-        "gesetzlich": 0.70,
-        "privat": 1.00
-      }
-    },
-    "höchstwertig": {
-      "zeit": 0.25,
-      "kosten": 250,
-      "kasse": {
-        "gesetzlich": 0.50,
-        "privat": 0.95
-      }
-    }
+    "einheit": "Minuten"
   },
-  "Karies groß": {
-    "normal": {
-      "zeit": 0.5,
-      "kosten": 200,
-      "kasse": {
-        "gesetzlich": 0.80,
-        "privat": 1.00
-      }
+  {
+    "art": "Karies groß",
+    "materialien": {
+      "normal": {"preis": 200, "zeit": 30, "erstattung": {"gesetzlich": 0.8, "privat": 1.0}},
+      "hochwertig": {"preis": 360, "zeit": 30, "erstattung": {"gesetzlich": 0.5, "privat": 1.0}},
+      "höchstwertig": {"preis": 480, "zeit": 30, "erstattung": {"gesetzlich": 0.5, "privat": 0.95}}
     },
-    "höherwertig": {
-      "zeit": 0.5,
-      "kosten": 360,
-      "kasse": {
-        "gesetzlich": 0.70,
-        "privat": 1.00
-      }
-    },
-    "höchstwertig": {
-      "zeit": 0.5,
-      "kosten": 480,
-      "kasse": {
-        "gesetzlich": 0.50,
-        "privat": 0.95
-      }
-    }
+    "einheit": "Minuten"
   },
-  "Teilkrone": {
-    "normal": {
-      "zeit": 1.0,
-      "kosten": 1000,
-      "kasse": {
-        "gesetzlich": 0.80,
-        "privat": 1.00
-      }
+  {
+    "art": "Teilkrone",
+    "materialien": {
+      "normal": {"preis": 1000, "zeit": 60, "erstattung": {"gesetzlich": 0.8, "privat": 1.0}},
+      "hochwertig": {"preis": 1800, "zeit": 60, "erstattung": {"gesetzlich": 0.7, "privat": 0.9}},
+      "höchstwertig": {"preis": 3100, "zeit": 60, "erstattung": {"gesetzlich": 0.3, "privat": 0.85}}
     },
-    "höherwertig": {
-      "zeit": 1.0,
-      "kosten": 1800,
-      "kasse": {
-        "gesetzlich": 0.70,
-        "privat": 0.95
-      }
-    },
-    "höchstwertig": {
-      "zeit": 1.0,
-      "kosten": 3100,
-      "kasse": {
-        "gesetzlich": 0.30,
-        "privat": 0.85
-      }
-    }
+    "einheit": "Minuten"
   },
-  "Krone": {
-    "normal": {
-      "zeit": 2.0,
-      "kosten": 2800,
-      "kasse": {
-        "gesetzlich": 0.70,
-        "privat": 1.00
-      }
+  {
+    "art": "Krone",
+    "materialien": {
+      "normal": {"preis": 2800, "zeit": 120, "erstattung": {"gesetzlich": 0.7, "privat": 1.0}},
+      "hochwertig": {"preis": 3600, "zeit": 120, "erstattung": {"gesetzlich": 0.5, "privat": 0.85}},
+      "höchstwertig": {"preis": 4200, "zeit": 120, "erstattung": {"gesetzlich": 0.25, "privat": 0.75}}
     },
-    "höherwertig": {
-      "zeit": 2.0,
-      "kosten": 3600,
-      "kasse": {
-        "gesetzlich": 0.50,
-        "privat": 0.85
-      }
-    },
-    "höchstwertig": {
-      "zeit": 2.0,
-      "kosten": 4200,
-      "kasse": {
-        "gesetzlich": 0.25,
-        "privat": 0.75
-      }
-    }
+    "einheit": "Minuten"
   },
-  "Wurzelbehandlung": {
-    "normal": {
-      "zeit": 1.5,
-      "kosten": 750,
-      "kasse": {
-        "gesetzlich": 0.90,
-        "privat": 1.00
-      }
+  {
+    "art": "Wurzelbehandlung",
+    "materialien": {
+      "normal": {"preis": 750, "zeit": 90, "erstattung": {"gesetzlich": 0.9, "privat": 1.0}},
+      "hochwertig": {"preis": 1200, "zeit": 90, "erstattung": {"gesetzlich": 0.7, "privat": 0.95}},
+      "höchstwertig": {"preis": 1500, "zeit": 120, "erstattung": {"gesetzlich": 0.45, "privat": 0.85}}
     },
-    "höherwertig": {
-      "zeit": 1.5,
-      "kosten": 1200,
-      "kasse": {
-        "gesetzlich": 0.70,
-        "privat": 0.95
-      }
-    },
-    "höchstwertig": {
-      "zeit": 2.0,
-      "kosten": 1500,
-      "kasse": {
-        "gesetzlich": 0.45,
-        "privat": 0.85
-      }
-    }
+    "einheit": "Minuten"
   }
-}
+]

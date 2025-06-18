@@ -1,7 +1,7 @@
 [
   {
     "name": "Max Mustermann",
-    "passwort": "test123",
+    "passwort": "P2",
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
@@ -9,7 +9,7 @@
         "anzahl": 1
       }
     ],
-    "passwort_geaendert": false
+    "passwort_geaendert": true
   },
   {
     "name": "Frau Meyer",
@@ -319,12 +319,13 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Krone",
+        "art": "Wurzelbehandlung",
         "anzahl": 3
       },
       {
-        "art": "Wurzelbehandlung",
-        "anzahl": 3
+        "art": "Karies klein",
+        "anzahl": 1,
+        "material": "normal"
       }
     ],
     "passwort_geaendert": true
