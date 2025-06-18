@@ -1000,7 +1000,24 @@ class MainFenster(QWidget):
                     info_layout.addWidget(arzt_label)
                     
                     termin_layout.addWidget(info_container, stretch=1)
-                    
+
+                    # Abbrechen-Button
+                    abbrechen_btn = QPushButton("Termin absagen")
+                    abbrechen_btn.setStyleSheet("""
+                        QPushButton {
+                            background-color: #e74c3c;
+                            color: white;
+                            border-radius: 5px;
+                            padding: 5px 12px;
+                            font-weight: bold;
+                        }
+                        QPushButton:hover {
+                            background-color: #c0392b;
+                        }
+                    """)
+                    abbrechen_btn.clicked.connect(lambda checked, arzt=termin['arzt'], datum=termin['datum'], zeit=termin['zeit']: self.cancel_termin(arzt, datum, zeit))
+                    termin_layout.addWidget(abbrechen_btn)
+
                     datum_layout.addWidget(termin_frame)
                 
                 scroll_layout.addWidget(datum_frame)
@@ -1011,6 +1028,48 @@ class MainFenster(QWidget):
 
         self.inhalt_layout_inner.addWidget(termine_container)
         self.current_page = termine_container
+
+    def cancel_termin(self, arzt, datum, zeit):
+        reply = QMessageBox.question(self, "Termin absagen", f"Möchten Sie den Termin am {datum} um {zeit} Uhr bei Dr. {arzt} wirklich absagen?", QMessageBox.Yes | QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            # Lade alle Termine
+            with open("data/termine.json", "r", encoding="utf-8") as f:
+                alle_termine = json.load(f)
+            # Termin-Infos merken, bevor gelöscht wird
+            termin_info = None
+            if arzt in alle_termine and datum in alle_termine[arzt] and zeit in alle_termine[arzt][datum]:
+                termin_info = alle_termine[arzt][datum][zeit]
+                del alle_termine[arzt][datum][zeit]
+                if not alle_termine[arzt][datum]:
+                    del alle_termine[arzt][datum]
+            # Speichere zurück
+            with open("data/termine.json", "w", encoding="utf-8") as f:
+                json.dump(alle_termine, f, indent=2, ensure_ascii=False)
+            # Entferne Termin auch aus Patientenakte (Problem wieder hinzufügen)
+            if termin_info is not None:
+                with open("data/patienten.json", "r", encoding="utf-8") as f:
+                    patienten = json.load(f)
+                for patient in patienten:
+                    if patient["name"] == self.benutzername:
+                        # Problem wieder hinzufügen (art, anzahl=1, material)
+                        art = termin_info.get("behandlung")
+                        material = termin_info.get("material", "normal")
+                        # Prüfe, ob Problem schon existiert (mit gleichem Material)
+                        gefunden = False
+                        for p in patient["probleme"]:
+                            if p["art"] == art and p.get("material", "normal") == material:
+                                p["anzahl"] = p.get("anzahl", 1) + 1
+                                gefunden = True
+                                break
+                        if not gefunden:
+                            patient["probleme"].append({"art": art, "anzahl": 1, "material": material})
+                        # Aktualisiere self.patient_data sofort
+                        self.patient_data = patient
+                        break
+                with open("data/patienten.json", "w", encoding="utf-8") as f:
+                    json.dump(patienten, f, indent=2, ensure_ascii=False)
+            QMessageBox.information(self, "Termin abgesagt", "Der Termin wurde erfolgreich abgesagt.")
+            self.show_meine_termine()
 
     def show_termin_buchen(self):
         if self.rolle == "Patient":
@@ -1474,6 +1533,8 @@ class MainFenster(QWidget):
                 padding: 20px;
             }
         """)
+        dashboard_container.setFixedWidth(900)
+        dashboard_container.setFixedHeight(800)
         dashboard_layout = QVBoxLayout(dashboard_container)
 
         # Überschrift

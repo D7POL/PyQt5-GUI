@@ -320,12 +320,27 @@
     "probleme": [
       {
         "art": "Wurzelbehandlung",
-        "anzahl": 3
+        "anzahl": 7
       },
       {
         "art": "Karies klein",
-        "anzahl": 1,
+        "anzahl": 5,
         "material": "normal"
+      },
+      {
+        "art": "Krone",
+        "anzahl": 3,
+        "material": "normal"
+      },
+      {
+        "art": "Krone",
+        "anzahl": 1,
+        "material": "höchstwertig"
+      },
+      {
+        "art": "Krone",
+        "anzahl": 1,
+        "material": "hochwertig"
       }
     ],
     "passwort_geaendert": true

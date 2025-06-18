@@ -6,52 +6,23 @@
         "behandlung": "Karies klein",
         "dauer": 30
       }
-    },
-    "2025-08-06": {
-      "08:30": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Wurzelbehandlung",
-        "dauer": 120
-      }
     }
   },
   "Dr. Huber": {
-    "2025-05-29": {
-      "15:30": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Karies klein",
-        "dauer": 30
-      }
-    },
     "2025-06-19": {
       "08:00": {
-        "patient": "Herr Kr\u00fcger",
+        "patient": "Herr Krüger",
         "behandlung": "Wurzelbehandlung",
         "material": "normal",
         "dauer": 90
       }
     }
   },
-  "Dr. Wurzel": {
-    "2025-05-29": {
-      "16:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Wurzelbehandlung",
-        "dauer": 120
-      }
-    }
-  },
+  "Dr. Wurzel": {},
   "Dr. Winkel": {
-    "2025-08-22": {
-      "12:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Wurzelbehandlung",
-        "dauer": 120
-      }
-    },
     "2025-05-30": {
       "08:00": {
-        "patient": "Herr Kr\u00fcger",
+        "patient": "Herr Krüger",
         "behandlung": "Karies klein",
         "dauer": 30
       }
@@ -64,74 +35,15 @@
         "behandlung": "Karies klein",
         "dauer": 30
       }
-    },
-    "2025-06-20": {
-      "08:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "material": "h\u00f6chstwertig",
-        "dauer": 120
-      }
     }
   },
-  "Dr. Kraft": {
-    "2025-06-13": {
-      "15:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Wurzelbehandlung",
-        "dauer": 120
-      }
-    }
-  },
+  "Dr. Kraft": {},
   "Dr. Hausmann": {
     "2025-06-20": {
       "13:30": {
-        "patient": "Frau \u00d6zdemir_1",
+        "patient": "Frau Özdemir_1",
         "behandlung": "Krone",
         "dauer": 90
-      },
-      "14:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "dauer": 90
-      },
-      "12:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Karies klein",
-        "dauer": 30
-      },
-      "14:30": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Karies klein",
-        "dauer": 30
-      }
-    },
-    "2025-06-16": {
-      "09:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "dauer": 90
-      },
-      "10:30": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Karies klein",
-        "dauer": 30
-      }
-    },
-    "2025-07-18": {
-      "12:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "material": "hochwertig",
-        "dauer": 110
-      }
-    },
-    "2025-07-04": {
-      "12:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "material": "normal",
-        "dauer": 120
       }
     }
   }
