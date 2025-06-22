@@ -89,11 +89,4 @@ pfad_behandlungen = "data/kosten_behandlungen.json"
 patienten = lade_daten(pfad_patienten)
 zahnaerzte = lade_daten(pfad_zahnaerzte)
 behandlungen_liste = lade_daten(pfad_behandlungen)
-BEHANDLUNGEN = {b["art"]: b for b in behandlungen_liste}
-
-# Erstattungssätze nach Versicherung
-ERSTATTUNG = {
-    "gesetzlich": 0.7,  # 70% Erstattung
-    "privat": 0.85,    # 85% Erstattung
-    "freiwillig gesetzlich": 0.75  # 75% Erstattung
-} 
+BEHANDLUNGEN = {b["art"]: b for b in behandlungen_liste} 

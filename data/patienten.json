@@ -1,17 +1,5 @@
 [
   {
-    "name": "Max Mustermann",
-    "passwort": "P2",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 1
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
     "name": "Frau Meyer",
     "passwort": "P111",
     "krankenkasse": "gesetzlich",
@@ -320,7 +308,12 @@
     "probleme": [
       {
         "art": "Wurzelbehandlung",
-        "anzahl": 2
+        "anzahl": 1
+      },
+      {
+        "art": "Krone",
+        "anzahl": 2,
+        "material": "normal"
       },
       {
         "art": "Krone",
@@ -331,109 +324,6 @@
         "art": "Krone",
         "anzahl": 1,
         "material": "hochwertig"
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz_1",
-    "passwort": "P19",
-    "krankenkasse": "privat",
-    "probleme": [
-      {
-        "art": "Teilkrone",
-        "anzahl": 1
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz_1",
-    "passwort": "P99",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 2
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Abdullah",
-    "passwort": "123456789",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Wurzelbehandlung",
-        "anzahl": 2
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz_1",
-    "passwort": "P19",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies Gro\u00df",
-        "anzahl": 100
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau \u00d6zdemir_1",
-    "passwort": "P2000",
-    "krankenkasse": "gesetzlich",
-    "probleme": [],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau \u00d6zdemir_1",
-    "passwort": "P100",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 1
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz_2",
-    "passwort": "P19",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 2
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz_3",
-    "passwort": "P1",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 1
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz_4",
-    "passwort": "P1",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies klein",
-        "anzahl": 1
       }
     ],
     "passwort_geaendert": true

@@ -274,7 +274,7 @@ class ViewManager:
                     behandlung_label.setStyleSheet("color: #2c3e50;")
                     info_layout.addWidget(behandlung_label)
                     
-                    anzahl_str = f"{termin['anzahl']} Zähne" if isinstance(termin['anzahl'], int) else "Anzahl N/A"
+                    anzahl_str = f"Anzahl Zähne: {termin['anzahl']}"
                     anzahl_label = QLabel(anzahl_str)
                     anzahl_label.setStyleSheet("color: #34495e; font-size: 11px;")
                     info_layout.addWidget(anzahl_label)
