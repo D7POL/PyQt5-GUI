@@ -33,7 +33,7 @@ class MainFenster(QWidget):
                     self.patient_data = p
                     break
 
-        self.setWindowTitle("Dashboard")
+        self.setWindowTitle("BrightByte")
         self.setGeometry(300, 50, 1200, 600)
         self.setStyleSheet(STYLE)
         

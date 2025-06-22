@@ -60,6 +60,15 @@
         "material": "hochwertig",
         "dauer": 120
       }
+    },
+    "2025-07-03": {
+      "08:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Krone",
+        "material": "normal",
+        "dauer": 120,
+        "anzahl": 2
+      }
     }
   },
   "Dr. Kraft": {

@@ -8,7 +8,7 @@ from Login.data_manager import patienten, zahnaerzte, speichere_daten, pfad_pati
 class RegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
         super().__init__()
-        self.setWindowTitle("Registrierung")
+        self.setWindowTitle("BrightByte | Registrierung")
         self.setGeometry(700, 200, 400, 500)
         self.setStyleSheet(STYLE)
 
@@ -211,7 +211,7 @@ class RegistrierungsFenster(QWidget):
 class ZahnarztRegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
         super().__init__()
-        self.setWindowTitle("Zahnarzt Registrierung")
+        self.setWindowTitle("BrightByte | Registrierung")
         self.setGeometry(700, 200, 400, 400)
         self.setStyleSheet(STYLE)
 

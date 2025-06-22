@@ -14,7 +14,7 @@ from Login.data_manager import patienten, zahnaerzte, STYLE
 class LoginFenster(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Zahnarztpraxis Login")
+        self.setWindowTitle("BrightByte")
         self.setGeometry(700, 200, 400, 500)
         self.setStyleSheet(STYLE)
 

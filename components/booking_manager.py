@@ -420,7 +420,8 @@ class BookingManager:
             "patient": self.main_window.patient_data["name"],
             "behandlung": self.main_window.selected_problem["art"],
             "material": self.main_window.selected_material,
-            "dauer": mat_info["zeit"]
+            "dauer": mat_info["zeit"],
+            "anzahl": self.main_window.selected_anzahl
         }
         
         with open("data/termine.json", "w", encoding="utf-8") as f:
@@ -485,15 +486,16 @@ class BookingManager:
                         # Problem wieder hinzufügen (art, anzahl=1, material)
                         art = termin_info.get("behandlung")
                         material = termin_info.get("material", "normal")
+                        anzahl = termin_info.get("anzahl", 1) # Verwende die gespeicherte Anzahl
                         # Prüfe, ob Problem schon existiert (mit gleichem Material)
                         gefunden = False
                         for p in patient["probleme"]:
                             if p["art"] == art and p.get("material", "normal") == material:
-                                p["anzahl"] = p.get("anzahl", 1) + 1
+                                p["anzahl"] = p.get("anzahl", 1) + anzahl
                                 gefunden = True
                                 break
                         if not gefunden:
-                            patient["probleme"].append({"art": art, "anzahl": 1, "material": material})
+                            patient["probleme"].append({"art": art, "anzahl": anzahl, "material": material})
                         # Aktualisiere self.main_window.patient_data sofort
                         self.main_window.patient_data = patient
                         break

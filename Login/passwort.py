@@ -10,7 +10,7 @@ class PasswortAendernFenster(QWidget):
         self.benutzer = benutzer
         self.rolle = rolle
         self.parent_fenster = parent
-        self.setWindowTitle("Passwort ändern")
+        self.setWindowTitle("BrightByte | Passwort ändern")
         self.setGeometry(700, 200, 400, 300)
         self.setStyleSheet(STYLE)
 

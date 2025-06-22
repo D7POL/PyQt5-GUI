@@ -173,7 +173,8 @@ class ViewManager:
                             "datum": datum,
                             "zeit": zeit,
                             "behandlung": termin["behandlung"],
-                            "dauer": termin["dauer"]
+                            "dauer": termin["dauer"],
+                            "anzahl": termin.get("anzahl", "N/A")  # Lese Anzahl, mit Fallback
                         })
 
         # Sortiere Termine nach Datum und Zeit
@@ -273,6 +274,11 @@ class ViewManager:
                     behandlung_label.setStyleSheet("color: #2c3e50;")
                     info_layout.addWidget(behandlung_label)
                     
+                    anzahl_str = f"{termin['anzahl']} Zähne" if isinstance(termin['anzahl'], int) else "Anzahl N/A"
+                    anzahl_label = QLabel(anzahl_str)
+                    anzahl_label.setStyleSheet("color: #34495e; font-size: 11px;")
+                    info_layout.addWidget(anzahl_label)
+                    
                     arzt_label = QLabel(f"Dr. {termin['arzt']}")
                     arzt_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
                     info_layout.addWidget(arzt_label)
@@ -366,7 +372,8 @@ class ViewManager:
                         "zeit": zeit,
                         "patient": termin_info["patient"],
                         "behandlung": termin_info["behandlung"],
-                        "dauer": termin_info["dauer"]
+                        "dauer": termin_info["dauer"],
+                        "anzahl": termin_info.get("anzahl", "N/A") # Lese Anzahl
                     })
 
         if not termine_nach_datum:
@@ -443,6 +450,11 @@ class ViewManager:
                     behandlung_label = QLabel(f"<b>Behandlung:</b> {termin['behandlung']}")
                     behandlung_label.setStyleSheet("color: #2c3e50;")
                     info_layout.addWidget(behandlung_label)
+                    
+                    anzahl_str = f"<b>Anzahl:</b> {termin['anzahl']} Zähne" if isinstance(termin['anzahl'], int) else "Anzahl N/A"
+                    anzahl_label = QLabel(anzahl_str)
+                    anzahl_label.setStyleSheet("color: #34495e;")
+                    info_layout.addWidget(anzahl_label)
                     
                     info_widget = QWidget()
                     info_widget.setLayout(info_layout)
