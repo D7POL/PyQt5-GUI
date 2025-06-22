@@ -19,7 +19,7 @@
     "passwort_geaendert": true
   },
   {
-    "name": "Herr Krüger",
+    "name": "Herr Kr\u00fcger",
     "passwort": "P333",
     "krankenkasse": "privat",
     "probleme": [],
@@ -50,7 +50,7 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Müller",
+    "name": "Frau M\u00fcller",
     "passwort": "P711",
     "krankenkasse": "privat",
     "probleme": [
@@ -91,7 +91,7 @@
     "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -103,7 +103,7 @@
     "krankenkasse": "privat",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 4
       }
     ],
@@ -151,7 +151,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -223,7 +223,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 3
       }
     ],
@@ -302,12 +302,12 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Özdemir",
+    "name": "Frau \u00d6zdemir",
     "passwort": "P10",
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 1
       }
     ],
@@ -320,22 +320,17 @@
     "probleme": [
       {
         "art": "Wurzelbehandlung",
-        "anzahl": 7
-      },
-      {
-        "art": "Karies klein",
-        "anzahl": 5,
-        "material": "normal"
+        "anzahl": 2
       },
       {
         "art": "Krone",
-        "anzahl": 3,
+        "anzahl": 2,
         "material": "normal"
       },
       {
         "art": "Krone",
         "anzahl": 1,
-        "material": "höchstwertig"
+        "material": "h\u00f6chstwertig"
       },
       {
         "art": "Krone",
@@ -351,6 +346,30 @@
     "krankenkasse": "privat",
     "probleme": [
       {
+        "art": "Teilkrone",
+        "anzahl": 1
+      }
+    ],
+    "passwort_geaendert": true
+  },
+  {
+    "name": "Frau Ayaz_1",
+    "passwort": "P99",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies klein",
+        "anzahl": 2
+      }
+    ],
+    "passwort_geaendert": true
+  },
+  {
+    "name": "Abdullah",
+    "passwort": "123456789",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
         "art": "Wurzelbehandlung",
         "anzahl": 2
       }
@@ -358,14 +377,26 @@
     "passwort_geaendert": true
   },
   {
-    "name": "Frau Özdemir_1",
+    "name": "Frau Ayaz_1",
+    "passwort": "P19",
+    "krankenkasse": "gesetzlich",
+    "probleme": [
+      {
+        "art": "Karies Gro\u00df",
+        "anzahl": 100
+      }
+    ],
+    "passwort_geaendert": true
+  },
+  {
+    "name": "Frau \u00d6zdemir_1",
     "passwort": "P2000",
     "krankenkasse": "gesetzlich",
     "probleme": [],
     "passwort_geaendert": true
   },
   {
-    "name": "Frau Özdemir_1",
+    "name": "Frau \u00d6zdemir_1",
     "passwort": "P100",
     "krankenkasse": "gesetzlich",
     "probleme": [

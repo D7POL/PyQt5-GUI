@@ -124,12 +124,11 @@
     "passwort_geaendert": true,
     "behandelt": [
       "gesetzlich",
-      "privat",
       "freiwillig gesetzlich"
     ],
     "zeiten": {
       "Mo": [
-        "10:00-18:00"
+        "08:00-18:00"
       ],
       "Di": [
         "08:00-18:00"
@@ -144,5 +143,16 @@
         "08:00-18:00"
       ]
     }
+  },
+  {
+    "name": "Frau Ayaz",
+    "passwort": "p1",
+    "behandelt": [
+      "gesetzlich",
+      "privat",
+      "freiwillig gesetzlich"
+    ],
+    "zeiten": {},
+    "passwort_geaendert": true
   }
 ]

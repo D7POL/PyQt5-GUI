@@ -11,7 +11,7 @@
   "Dr. Huber": {
     "2025-06-19": {
       "08:00": {
-        "patient": "Herr Krüger",
+        "patient": "Herr Kr\u00fcger",
         "behandlung": "Wurzelbehandlung",
         "material": "normal",
         "dauer": 90
@@ -22,26 +22,67 @@
   "Dr. Winkel": {
     "2025-05-30": {
       "08:00": {
-        "patient": "Herr Krüger",
+        "patient": "Herr Kr\u00fcger",
         "behandlung": "Karies klein",
         "dauer": 30
       }
     }
   },
   "Dr. Shikh": {
-    "2025-06-06": {
-      "08:00": {
-        "patient": "Frau Meyer",
+    "2025-06-02": {
+      "10:00": {
+        "patient": "Frau Ayaz_1",
+        "behandlung": "Wurzelbehandlung",
+        "dauer": 120
+      },
+      "10:30": {
+        "patient": "Frau Ayaz_1",
         "behandlung": "Karies klein",
         "dauer": 30
       }
+    },
+    "2025-06-25": {
+      "08:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Wurzelbehandlung",
+        "material": "hochwertig",
+        "dauer": 90
+      },
+      "09:30": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Karies klein",
+        "material": "h\u00f6chstwertig",
+        "dauer": 15
+      },
+      "11:30": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Krone",
+        "material": "hochwertig",
+        "dauer": 120
+      }
     }
   },
-  "Dr. Kraft": {},
+  "Dr. Kraft": {
+    "2025-06-10": {
+      "15:00": {
+        "patient": "Abdullah",
+        "behandlung": "Wurzelbehandlung",
+        "dauer": 120
+      }
+    },
+    "2025-06-26": {
+      "10:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Karies klein",
+        "material": "normal",
+        "dauer": 15
+      }
+    }
+  },
   "Dr. Hausmann": {
     "2025-06-20": {
       "13:30": {
-        "patient": "Frau Özdemir_1",
+        "patient": "Frau \u00d6zdemir_1",
         "behandlung": "Krone",
         "dauer": 90
       }
