@@ -6,7 +6,7 @@ from Login.Login import LoginFenster
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon('start.png'))
+    app.setWindowIcon(QIcon('tooth_logo.png'))
 
     # Splash Screen erstellen
     pixmap = QPixmap("start.png")

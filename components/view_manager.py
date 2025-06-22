@@ -252,7 +252,7 @@ class ViewManager:
                     zeit_layout.addWidget(zeit_label)
                     
                     dauer_label = QLabel(f"{termin['dauer']} Min.")
-                    dauer_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
+                    dauer_label.setStyleSheet("color: #7f8c8d; font-size: 15px;")
                     zeit_layout.addWidget(dauer_label)
                     
                     termin_layout.addWidget(zeit_container)
@@ -276,11 +276,11 @@ class ViewManager:
                     
                     anzahl_str = f"Anzahl Zähne: {termin['anzahl']}"
                     anzahl_label = QLabel(anzahl_str)
-                    anzahl_label.setStyleSheet("color: #34495e; font-size: 11px;")
+                    anzahl_label.setStyleSheet("color: #7f8c8d; font-size: 13px;")
                     info_layout.addWidget(anzahl_label)
                     
                     arzt_label = QLabel(f"Dr. {termin['arzt']}")
-                    arzt_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
+                    arzt_label.setStyleSheet("color: #34495e; font-size: 15px;")
                     info_layout.addWidget(arzt_label)
                     
                     termin_layout.addWidget(info_container, stretch=1)
@@ -427,7 +427,7 @@ class ViewManager:
                     zeit_container.addWidget(zeit_label)
                     
                     dauer_label = QLabel(f"{termin['dauer']} Min.")
-                    dauer_label.setStyleSheet("color: #7f8c8d; font-size: 11px;")
+                    dauer_label.setStyleSheet("color: #7f8c8d; font-size: 15px;")
                     zeit_container.addWidget(dauer_label)
                     
                     zeit_widget = QWidget()
