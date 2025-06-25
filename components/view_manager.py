@@ -279,7 +279,7 @@ class ViewManager:
                     anzahl_label.setStyleSheet("color: #7f8c8d; font-size: 13px;")
                     info_layout.addWidget(anzahl_label)
                     
-                    arzt_label = QLabel(f"Dr. {termin['arzt']}")
+                    arzt_label = QLabel(f"{termin['arzt']}")
                     arzt_label.setStyleSheet("color: #34495e; font-size: 15px;")
                     info_layout.addWidget(arzt_label)
                     

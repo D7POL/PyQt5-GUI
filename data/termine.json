@@ -14,8 +14,15 @@
         "anzahl": 1
       }
     },
-    "2025-06-26": {
+    "2025-07-31": {
       "10:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Krone",
+        "material": "normal",
+        "dauer": 120,
+        "anzahl": 1
+      },
+      "14:00": {
         "patient": "Frau Ayaz",
         "behandlung": "Krone",
         "material": "normal",
