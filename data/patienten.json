@@ -7,7 +7,7 @@
     "passwort_geaendert": true
   },
   {
-    "name": "Herr Krüger",
+    "name": "Herr Kr\u00fcger",
     "passwort": "P333",
     "krankenkasse": "privat",
     "probleme": [],
@@ -38,7 +38,7 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Müller",
+    "name": "Frau M\u00fcller",
     "passwort": "P711",
     "krankenkasse": "privat",
     "probleme": [
@@ -79,7 +79,7 @@
     "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -91,7 +91,7 @@
     "krankenkasse": "privat",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 4
       }
     ],
@@ -139,7 +139,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -211,7 +211,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 3
       }
     ],
@@ -290,12 +290,12 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Özdemir",
+    "name": "Frau \u00d6zdemir",
     "passwort": "P10",
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 1
       }
     ],
@@ -307,18 +307,14 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Wurzelbehandlung",
-        "anzahl": 1
-      },
-      {
         "art": "Krone",
-        "anzahl": 2,
+        "anzahl": 1,
         "material": "normal"
       },
       {
         "art": "Krone",
         "anzahl": 1,
-        "material": "höchstwertig"
+        "material": "h\u00f6chstwertig"
       },
       {
         "art": "Krone",
@@ -326,7 +322,7 @@
         "material": "hochwertig"
       },
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 1,
         "material": "normal"
       }

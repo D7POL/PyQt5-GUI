@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QColor
 from datetime import datetime, timedelta
 import json
-from Login.data_manager import BEHANDLUNGEN, zahnaerzte, patienten, speichere_daten, pfad_patienten
+from gui.data_manager import BEHANDLUNGEN, zahnaerzte, patienten, speichere_daten, pfad_patienten
 from components.helper import CALENDAR_TODAY_OVERRIDE
 
 class BookingManager:

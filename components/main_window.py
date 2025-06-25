@@ -8,7 +8,7 @@ from PyQt5.QtGui import QColor, QPalette
 from datetime import datetime, timedelta
 import json
 
-from Login.data_manager import (
+from gui.data_manager import (
     patienten, zahnaerzte, BEHANDLUNGEN, speichere_daten,
     pfad_patienten, pfad_zahnaerzte, STYLE
 )
@@ -17,6 +17,7 @@ from components.calculator import berechne_kosten_und_zeit
 from components.settings_manager import SettingsManager
 from components.booking_manager import BookingManager
 from components.view_manager import ViewManager
+from gui.register import RegistrierungsFenster, ZahnarztRegistrierungsFenster
 
 class MainFenster(QWidget):
     def __init__(self, benutzername, rolle):
@@ -58,7 +59,7 @@ class MainFenster(QWidget):
 
     def logout(self):
         # Öffne das Login-Fenster
-        from Login.Login import LoginFenster
+        from gui.login import LoginFenster
         self.login_fenster = LoginFenster()
         self.login_fenster.show()
         # Schließe das aktuelle Fenster

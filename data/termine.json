@@ -13,6 +13,15 @@
         "dauer": 90,
         "anzahl": 1
       }
+    },
+    "2025-06-26": {
+      "10:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Krone",
+        "material": "normal",
+        "dauer": 120,
+        "anzahl": 1
+      }
     }
   },
   "Dr. Hausmann": {}

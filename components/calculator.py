@@ -1,4 +1,4 @@
-from Login.data_manager import BEHANDLUNGEN
+from gui.data_manager import BEHANDLUNGEN
 
 def berechne_kosten_und_zeit(patient):
     if not patient:

@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QSplashScreen
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtCore import Qt, QTimer
-from Login.Login import LoginFenster
+from gui.login import LoginFenster
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

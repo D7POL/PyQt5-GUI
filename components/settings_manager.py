@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QColor, QPalette
-from Login.data_manager import speichere_daten, patienten, zahnaerzte, pfad_patienten, pfad_zahnaerzte
+from gui.data_manager import speichere_daten, patienten, zahnaerzte, pfad_patienten, pfad_zahnaerzte
 
 class SettingsManager:
     def __init__(self, main_window):
