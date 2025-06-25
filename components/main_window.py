@@ -58,8 +58,9 @@ class MainFenster(QWidget):
         self.init_ui()
 
     def logout(self):
-        # Öffne das Login-Fenster
+        # Import here to avoid circular import
         from gui.login import LoginFenster
+        # Öffne das Login-Fenster
         self.login_fenster = LoginFenster()
         self.login_fenster.show()
         # Schließe das aktuelle Fenster

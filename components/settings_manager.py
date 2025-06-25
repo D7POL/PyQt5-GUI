@@ -41,7 +41,7 @@ class SettingsManager:
         # Scroll-Bereich für die Einstellungen
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("QScrollArea { border: none; }")
+        scroll.setStyleSheet("QScrollArea { border: 5px solid #E8F4F8; }")
         
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)

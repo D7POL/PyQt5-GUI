@@ -48,11 +48,11 @@ class ViewManager:
             versicherung_info.setStyleSheet("font-size: 16px; color: #7f8c8d; margin-bottom: 10px;")
             analyse_layout.addWidget(versicherung_info)
 
-            # Container für die Analyse-Details (rote Box)
+            # Container für die Analyse-Details
             details_container = QFrame()
             details_container.setStyleSheet("""
                 QFrame {
-                    background-color: #f8f9fa;
+                    background-color: #e8f4f8;
                     border-radius: 8px;
                     padding: 15px;
                 }
@@ -95,7 +95,7 @@ class ViewManager:
             details_scroll.setStyleSheet("QScrollArea { margin-left: 0px; }")
             analyse_layout.addWidget(details_scroll)
 
-            # Zusammenfassung (grüner Bereich) - immer komplett sichtbar
+            # Zusammenfassung Kosten
             zusammenfassung = QFrame()
             zusammenfassung.setStyleSheet("""
                 QFrame {
@@ -103,8 +103,8 @@ class ViewManager:
                     border-radius: 8px;
                     padding: 6px;
                     margin-top: 6px;
-                    max-width: 500px;
-                    margin-left: 0px;
+                    margin-left: 20px;
+                    max-width: 1220px
                 }
             """)
             zusammenfassung_layout = QVBoxLayout(zusammenfassung)
@@ -190,7 +190,7 @@ class ViewManager:
             scroll.setWidgetResizable(True)
             scroll.setStyleSheet("""
                 QScrollArea {
-                    border: none;
+                    border: 5px solid #E8F4F8;
                 }
             """)
             

@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (
     QHBoxLayout, QFrame, QSizePolicy, QComboBox, QCalendarWidget
 )
 from PyQt5.QtCore import Qt, QDate
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QTextCharFormat
 from datetime import datetime, timedelta
 import json
 from gui.data_manager import BEHANDLUNGEN, zahnaerzte, patienten, speichere_daten, pfad_patienten
@@ -319,20 +319,21 @@ class BookingManager:
         today = CALENDAR_TODAY_OVERRIDE if CALENDAR_TODAY_OVERRIDE else QDate.currentDate()
         while current <= self.main_window.kalender.maximumDate():
             weekday = current.toString("ddd")  # 'Mo', 'Di', ...
-            format = self.main_window.kalender.dateTextFormat(current)
+            format = QTextCharFormat()
+            format.setForeground(QColor("#000000"))  # Immer schwarze Schrift
 
             if current < today:
-                # All dates before today: grey
-                format.setForeground(QColor("#95a5a6"))
+                # Alle Tage vor heute: grau
+                format.setBackground(QColor("#e0e0e0"))
             elif weekday == "Sa" or weekday == "So":
-                # Saturdays and Sundays: red
-                format.setForeground(QColor("#e74c3c"))
+                # Samstag und Sonntag: hellrot
+                format.setBackground(QColor("#ffb3b3"))
             elif weekday not in self.main_window.selected_zahnarzt["zeiten"]:
-                # Doctor does NOT work: grey
-                format.setForeground(QColor("#95a5a6"))
+                # Arzt arbeitet nicht: grau
+                format.setBackground(QColor("#e0e0e0"))
             else:
-                # Doctor works: black
-                format.setForeground(QColor("#2c3e50"))
+                # Verfügbare Tage: hellgrün
+                format.setBackground(QColor("#b9fbc0"))
 
             self.main_window.kalender.setDateTextFormat(current, format)
             current = current.addDays(1)

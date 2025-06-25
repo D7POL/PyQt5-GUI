@@ -1,13 +1,14 @@
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QLineEdit, QPushButton,
-    QVBoxLayout, QMessageBox, QHBoxLayout, QFrame, QCheckBox
+    QVBoxLayout, QMessageBox, QHBoxLayout, QFrame, QCheckBox, QToolButton
 )
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QPalette
+from PyQt5.QtGui import QColor, QPalette, QIcon, QPixmap, QPainter
+from PyQt5.QtSvg import QSvgRenderer
+from PyQt5.QtCore import QByteArray
 
 from gui.passwort import PasswortAendernFenster
-from components.main_window import MainFenster
 from gui.register import RegistrierungsFenster, ZahnarztRegistrierungsFenster
 from gui.data_manager import patienten, zahnaerzte, STYLE
 
@@ -62,7 +63,35 @@ class LoginFenster(QWidget):
         self.passwort = QLineEdit()
         self.passwort.setPlaceholderText("🔒 Passwort")
         self.passwort.setEchoMode(QLineEdit.Password)
-        layout.addWidget(self.passwort)
+        
+        # Schwarzes SVG-Auge (offen)
+        eye_svg = '''<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 12C1 12 5 5 12 5C19 5 23 12 23 12C23 12 19 19 12 19C5 19 1 12 1 12Z" stroke="black" stroke-width="2"/><circle cx="12" cy="12" r="3.5" stroke="black" stroke-width="2"/></svg>'''
+        eye_off_svg = '''<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 12C1 12 5 5 12 5C14.5 5 16.6 6.1 18.2 7.5M23 12C23 12 19 19 12 19C9.5 19 7.4 17.9 5.8 16.5M1 1L23 23" stroke="black" stroke-width="2"/><circle cx="12" cy="12" r="3.5" stroke="black" stroke-width="2"/></svg>'''
+        def svg_to_icon(svg):
+            renderer = QSvgRenderer(QByteArray(svg.encode()))
+            pixmap = QPixmap(24, 24)
+            pixmap.fill(Qt.transparent)
+            painter = QPainter(pixmap)
+            renderer.render(painter)
+            painter.end()
+            return QIcon(pixmap)
+        self.eye_icon = svg_to_icon(eye_svg)
+        self.eye_off_icon = svg_to_icon(eye_off_svg)
+        
+        # Modernes Auge-Icon zum Anzeigen/Verstecken des Passworts
+        pw_layout = QHBoxLayout()
+        pw_layout.setContentsMargins(0, 0, 0, 0)
+        pw_layout.setSpacing(0)
+        pw_layout.addWidget(self.passwort)
+        
+        self.pw_toggle_btn = QToolButton()
+        self.pw_toggle_btn.setCheckable(True)
+        self.pw_toggle_btn.setIcon(self.eye_icon)
+        self.pw_toggle_btn.setToolTip("Passwort anzeigen/ausblenden")
+        self.pw_toggle_btn.setStyleSheet("QToolButton { border: none; padding: 0 8px; }")
+        self.pw_toggle_btn.toggled.connect(self.toggle_password_visibility)
+        pw_layout.addWidget(self.pw_toggle_btn)
+        layout.addLayout(pw_layout)
 
         # Buttons Container
         button_container = QFrame()
@@ -129,6 +158,7 @@ class LoginFenster(QWidget):
         self.zahnarzt_regfenster.show()
 
     def pruefe_login(self):
+        from components.main_window import MainFenster
         benutzername = self.benutzername.text().strip()
         passwort = self.passwort.text().strip()
 
@@ -157,3 +187,11 @@ class LoginFenster(QWidget):
                 return
 
         QMessageBox.warning(self, "Fehler", "Benutzername oder Passwort falsch!")
+
+    def toggle_password_visibility(self, checked):
+        if checked:
+            self.passwort.setEchoMode(QLineEdit.Normal)
+            self.pw_toggle_btn.setIcon(self.eye_off_icon)
+        else:
+            self.passwort.setEchoMode(QLineEdit.Password)
+            self.pw_toggle_btn.setIcon(self.eye_icon)

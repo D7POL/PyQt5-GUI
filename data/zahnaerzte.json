@@ -143,5 +143,30 @@
         "08:00-18:00"
       ]
     }
+  },
+  {
+    "name": "Dr. Ayaz",
+    "passwort": "A1",
+    "behandelt": [
+      "gesetzlich",
+      "privat",
+      "freiwillig gesetzlich"
+    ],
+    "zeiten": {
+      "Mo": [
+        "08:00-13:00",
+        "14:00-18:00"
+      ],
+      "Di": [
+        "08:00-18:00"
+      ],
+      "Mi": [
+        "08:00-18:00"
+      ],
+      "Do": [
+        "08:00-18:00"
+      ]
+    },
+    "passwort_geaendert": true
   }
 ]
