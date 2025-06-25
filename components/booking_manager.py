@@ -462,8 +462,15 @@ class BookingManager:
         self.main_window.show_meine_termine()
 
     def cancel_termin(self, arzt, datum, zeit):
-        reply = QMessageBox.question(self.main_window, "Termin absagen", f"Möchten Sie den Termin am {datum} um {zeit} Uhr bei Dr. {arzt} wirklich absagen?", QMessageBox.Yes | QMessageBox.No)
-        if reply == QMessageBox.Yes:
+        msg_box = QMessageBox(self.main_window)
+        msg_box.setIcon(QMessageBox.Question)
+        msg_box.setWindowTitle("Termin absagen")
+        msg_box.setText(f"Möchten Sie den Termin am {datum} um {zeit} Uhr bei Dr. {arzt} wirklich absagen?")
+        ja_btn = msg_box.addButton("Ja", QMessageBox.YesRole)
+        nein_btn = msg_box.addButton("Nein", QMessageBox.NoRole)
+        msg_box.setDefaultButton(ja_btn)
+        msg_box.exec_()
+        if msg_box.clickedButton() == ja_btn:
             # Lade alle Termine
             with open("data/termine.json", "r", encoding="utf-8") as f:
                 alle_termine = json.load(f)
@@ -502,4 +509,4 @@ class BookingManager:
                 with open("data/patienten.json", "w", encoding="utf-8") as f:
                     json.dump(patienten_data, f, indent=2, ensure_ascii=False)
             QMessageBox.information(self.main_window, "Termin abgesagt", "Der Termin wurde erfolgreich abgesagt.")
-            self.main_window.show_meine_termine() 
+        self.main_window.show_meine_termine() 

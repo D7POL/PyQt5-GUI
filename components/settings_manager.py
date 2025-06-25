@@ -119,7 +119,7 @@ class SettingsManager:
             
             self.main_window.problem_box = QComboBox()
             self.main_window.problem_box.addItems([
-                "Karies klein", "Karies Groß", "Teilkrone", "Krone", "Wurzelbehandlung"
+                "Karies klein", "Karies groß", "Teilkrone", "Krone", "Wurzelbehandlung"
             ])
             probleme_layout.addWidget(self.main_window.problem_box)
             

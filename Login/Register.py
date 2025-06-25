@@ -73,7 +73,7 @@ class RegistrierungsFenster(QWidget):
         
         self.probleme_box = QComboBox()
         self.probleme_box.addItems([
-            "Karies klein", "Karies Groß", "Teilkrone", "Krone", "Wurzelbehandlung"
+            "Karies klein", "Karies groß", "Teilkrone", "Krone", "Wurzelbehandlung"
         ])
         layout.addWidget(self.probleme_box)
 
