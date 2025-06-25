@@ -4,32 +4,6 @@
   "Dr. Wurzel": {},
   "Dr. Winkel": {},
   "Dr. Shikh": {},
-  "Dr. Kraft": {
-    "2025-06-27": {
-      "10:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Wurzelbehandlung",
-        "material": "normal",
-        "dauer": 90,
-        "anzahl": 1
-      }
-    },
-    "2025-07-31": {
-      "10:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "material": "normal",
-        "dauer": 120,
-        "anzahl": 1
-      },
-      "14:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "material": "normal",
-        "dauer": 120,
-        "anzahl": 1
-      }
-    }
-  },
+  "Dr. Kraft": {},
   "Dr. Hausmann": {}
 }

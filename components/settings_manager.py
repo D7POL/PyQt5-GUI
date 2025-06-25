@@ -17,7 +17,7 @@ class SettingsManager:
             self.main_window.current_page.deleteLater()
 
         # Container für Einstellungen
-        settings_container = QFrame()
+        settings_container = QFrame(self.main_window)
         settings_container.setStyleSheet("""
             QFrame {
                 background-color: white;
@@ -28,7 +28,7 @@ class SettingsManager:
         settings_layout = QVBoxLayout(settings_container)
 
         # Überschrift
-        titel = QLabel("Einstellungen")
+        titel = QLabel("Einstellungen", settings_container)
         titel.setStyleSheet("""
             font-size: 24px;
             font-weight: bold;
@@ -39,17 +39,17 @@ class SettingsManager:
         settings_layout.addWidget(titel)
 
         # Scroll-Bereich für die Einstellungen
-        scroll = QScrollArea()
+        scroll = QScrollArea(settings_container)
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet("QScrollArea { border: 5px solid #E8F4F8; }")
         
-        scroll_content = QWidget()
+        scroll_content = QWidget(scroll)
         scroll_layout = QVBoxLayout(scroll_content)
         scroll_layout.setSpacing(15)
 
         if self.main_window.rolle == "Patient":
             # Passwort ändern
-            passwort_group = QFrame()
+            passwort_group = QFrame(scroll_content)
             passwort_group.setStyleSheet("""
                 QFrame {
                     background-color: #f8f9fa;
@@ -60,23 +60,23 @@ class SettingsManager:
             """)
             passwort_layout = QVBoxLayout(passwort_group)
             
-            passwort_label = QLabel("Passwort ändern")
+            passwort_label = QLabel("Passwort ändern", passwort_group)
             passwort_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
             passwort_layout.addWidget(passwort_label)
             
-            self.main_window.neues_passwort = QLineEdit()
+            self.main_window.neues_passwort = QLineEdit(passwort_group)
             self.main_window.neues_passwort.setPlaceholderText("Neues Passwort")
             self.main_window.neues_passwort.setEchoMode(QLineEdit.Password)
             passwort_layout.addWidget(self.main_window.neues_passwort)
             
-            passwort_btn = QPushButton("🔒 Passwort aktualisieren")
+            passwort_btn = QPushButton("🔒 Passwort aktualisieren", passwort_group)
             passwort_btn.clicked.connect(self.update_passwort)
             passwort_layout.addWidget(passwort_btn)
             
             scroll_layout.addWidget(passwort_group)
 
             # Krankenkasse ändern
-            kasse_group = QFrame()
+            kasse_group = QFrame(scroll_content)
             kasse_group.setStyleSheet("""
                 QFrame {
                     background-color: #f8f9fa;
@@ -87,23 +87,23 @@ class SettingsManager:
             """)
             kasse_layout = QVBoxLayout(kasse_group)
             
-            kasse_label = QLabel("Krankenkasse ändern")
+            kasse_label = QLabel("Krankenkasse ändern", kasse_group)
             kasse_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
             kasse_layout.addWidget(kasse_label)
             
-            self.main_window.kasse_box = QComboBox()
+            self.main_window.kasse_box = QComboBox(kasse_group)
             self.main_window.kasse_box.addItems(["gesetzlich", "privat", "freiwillig gesetzlich"])
             self.main_window.kasse_box.setCurrentText(self.main_window.patient_data["krankenkasse"])
             kasse_layout.addWidget(self.main_window.kasse_box)
             
-            kasse_btn = QPushButton("💉 Krankenkasse aktualisieren")
+            kasse_btn = QPushButton("💉 Krankenkasse aktualisieren", kasse_group)
             kasse_btn.clicked.connect(self.update_krankenkasse)
             kasse_layout.addWidget(kasse_btn)
             
             scroll_layout.addWidget(kasse_group)
 
             # Neue Probleme hinzufügen
-            probleme_group = QFrame()
+            probleme_group = QFrame(scroll_content)
             probleme_group.setStyleSheet("""
                 QFrame {
                     background-color: #f8f9fa;
@@ -113,21 +113,21 @@ class SettingsManager:
             """)
             probleme_layout = QVBoxLayout(probleme_group)
             
-            probleme_label = QLabel("Neue Behandlung hinzufügen")
+            probleme_label = QLabel("Neue Behandlung hinzufügen", probleme_group)
             probleme_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
             probleme_layout.addWidget(probleme_label)
             
-            self.main_window.problem_box = QComboBox()
+            self.main_window.problem_box = QComboBox(probleme_group)
             self.main_window.problem_box.addItems([
                 "Karies klein", "Karies groß", "Teilkrone", "Krone", "Wurzelbehandlung"
             ])
             probleme_layout.addWidget(self.main_window.problem_box)
             
-            self.main_window.problem_anzahl = QLineEdit()
+            self.main_window.problem_anzahl = QLineEdit(probleme_group)
             self.main_window.problem_anzahl.setPlaceholderText("Anzahl")
             probleme_layout.addWidget(self.main_window.problem_anzahl)
             
-            problem_btn = QPushButton("➕ Behandlung hinzufügen")
+            problem_btn = QPushButton("➕ Behandlung hinzufügen", probleme_group)
             problem_btn.clicked.connect(self.add_problem)
             probleme_layout.addWidget(problem_btn)
             
@@ -143,7 +143,7 @@ class SettingsManager:
 
             if self.main_window.zahnarzt_data:
                 # Name ändern
-                name_group = QFrame()
+                name_group = QFrame(scroll_content)
                 name_group.setStyleSheet("""
                     QFrame {
                         background-color: #f8f9fa;
@@ -154,23 +154,23 @@ class SettingsManager:
                 """)
                 name_layout = QVBoxLayout(name_group)
                 
-                name_label = QLabel("Name ändern")
+                name_label = QLabel("Name ändern", name_group)
                 name_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 name_layout.addWidget(name_label)
                 
-                self.main_window.neuer_name = QLineEdit()
+                self.main_window.neuer_name = QLineEdit(name_group)
                 self.main_window.neuer_name.setPlaceholderText("Neuer Name")
                 self.main_window.neuer_name.setText(self.main_window.zahnarzt_data["name"])
                 name_layout.addWidget(self.main_window.neuer_name)
                 
-                name_btn = QPushButton("👤 Name aktualisieren")
+                name_btn = QPushButton("👤 Name aktualisieren", name_group)
                 name_btn.clicked.connect(self.update_zahnarzt_name)
                 name_layout.addWidget(name_btn)
                 
                 scroll_layout.addWidget(name_group)
 
                 # Passwort ändern
-                passwort_group = QFrame()
+                passwort_group = QFrame(scroll_content)
                 passwort_group.setStyleSheet("""
                     QFrame {
                         background-color: #f8f9fa;
@@ -181,23 +181,23 @@ class SettingsManager:
                 """)
                 passwort_layout = QVBoxLayout(passwort_group)
                 
-                passwort_label = QLabel("Passwort ändern")
+                passwort_label = QLabel("Passwort ändern", passwort_group)
                 passwort_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 passwort_layout.addWidget(passwort_label)
                 
-                self.main_window.neues_passwort = QLineEdit()
+                self.main_window.neues_passwort = QLineEdit(passwort_group)
                 self.main_window.neues_passwort.setPlaceholderText("Neues Passwort")
                 self.main_window.neues_passwort.setEchoMode(QLineEdit.Password)
                 passwort_layout.addWidget(self.main_window.neues_passwort)
                 
-                passwort_btn = QPushButton("🔒 Passwort aktualisieren")
+                passwort_btn = QPushButton("🔒 Passwort aktualisieren", passwort_group)
                 passwort_btn.clicked.connect(self.update_passwort)
                 passwort_layout.addWidget(passwort_btn)
                 
                 scroll_layout.addWidget(passwort_group)
 
                 # Krankenkassen
-                kassen_group = QFrame()
+                kassen_group = QFrame(scroll_content)
                 kassen_group.setStyleSheet("""
                     QFrame {
                         background-color: #f8f9fa;
@@ -208,26 +208,26 @@ class SettingsManager:
                 """)
                 kassen_layout = QVBoxLayout(kassen_group)
                 
-                kassen_label = QLabel("Behandelt folgende Versicherungen:")
+                kassen_label = QLabel("Behandelt folgende Versicherungen:", kassen_group)
                 kassen_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 kassen_layout.addWidget(kassen_label)
                 
                 self.main_window.kassen_checkboxes = {}
                 for kasse in ["gesetzlich", "privat", "freiwillig gesetzlich"]:
-                    cb = QCheckBox(kasse)
+                    cb = QCheckBox(kasse, kassen_group)
                     cb.setStyleSheet("color: #2c3e50; margin-left: 10px;")
                     cb.setChecked(kasse in self.main_window.zahnarzt_data["behandelt"])
                     self.main_window.kassen_checkboxes[kasse] = cb
                     kassen_layout.addWidget(cb)
                 
-                kassen_btn = QPushButton("💊 Krankenkassen aktualisieren")
+                kassen_btn = QPushButton("💊 Krankenkassen aktualisieren", kassen_group)
                 kassen_btn.clicked.connect(self.update_zahnarzt_kassen)
                 kassen_layout.addWidget(kassen_btn)
                 
                 scroll_layout.addWidget(kassen_group)
 
                 # Behandlungszeiten
-                zeiten_group = QFrame()
+                zeiten_group = QFrame(scroll_content)
                 zeiten_group.setStyleSheet("""
                     QFrame {
                         background-color: #f8f9fa;
@@ -237,7 +237,7 @@ class SettingsManager:
                 """)
                 zeiten_layout = QVBoxLayout(zeiten_group)
                 
-                zeiten_label = QLabel("Wöchentliche Behandlungszeiten:")
+                zeiten_label = QLabel("Wöchentliche Behandlungszeiten:", zeiten_group)
                 zeiten_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #2c3e50;")
                 zeiten_layout.addWidget(zeiten_label)
                 
@@ -251,17 +251,17 @@ class SettingsManager:
                 
                 self.main_window.zeiten_widgets = {}
                 for tag_kurz, tag_lang in self.main_window.wochentage.items():
-                    tag_frame = QFrame()
+                    tag_frame = QFrame(zeiten_group)
                     tag_layout = QVBoxLayout(tag_frame)
                     
                     # Checkbox für den Tag
-                    tag_cb = QCheckBox(tag_lang)
+                    tag_cb = QCheckBox(tag_lang, tag_frame)
                     tag_cb.setStyleSheet("color: #2c3e50; font-weight: bold;")
                     tag_cb.setChecked(tag_kurz in self.main_window.zahnarzt_data["zeiten"])
                     tag_layout.addWidget(tag_cb)
                     
                     # Container für Zeitslots
-                    slots_frame = QFrame()
+                    slots_frame = QFrame(tag_frame)
                     slots_layout = QVBoxLayout(slots_frame)
                     slots_frame.setVisible(tag_kurz in self.main_window.zahnarzt_data["zeiten"])
                     tag_cb.toggled.connect(slots_frame.setVisible)
@@ -278,29 +278,29 @@ class SettingsManager:
                         for zeitslot in self.main_window.zahnarzt_data["zeiten"][tag_kurz]:
                             von, bis = zeitslot.split("-")
                             
-                            zeit_container = QFrame()
+                            zeit_container = QFrame(slots_frame)
                             zeit_layout = QHBoxLayout(zeit_container)
                             
-                            von_label = QLabel("Von:")
+                            von_label = QLabel("Von:", zeit_container)
                             von_label.setStyleSheet("color: #2c3e50;")
                             zeit_layout.addWidget(von_label)
                             
-                            von_zeit = QComboBox()
+                            von_zeit = QComboBox(zeit_container)
                             von_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
                             von_zeit.setCurrentText(von)
                             zeit_layout.addWidget(von_zeit)
                             
-                            bis_label = QLabel("Bis:")
+                            bis_label = QLabel("Bis:", zeit_container)
                             bis_label.setStyleSheet("color: #2c3e50;")
                             zeit_layout.addWidget(bis_label)
                             
-                            bis_zeit = QComboBox()
+                            bis_zeit = QComboBox(zeit_container)
                             bis_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
                             bis_zeit.setCurrentText(bis)
                             zeit_layout.addWidget(bis_zeit)
                             
                             # Entfernen-Button
-                            remove_btn = QPushButton("×")
+                            remove_btn = QPushButton("×", zeit_container)
                             remove_btn.setStyleSheet("""
                                 QPushButton {
                                     background-color: #e74c3c;
@@ -323,7 +323,7 @@ class SettingsManager:
                             })
                     
                     # Button für zusätzliche Zeitslots
-                    add_slot_btn = QPushButton("+ Zeitslot hinzufügen")
+                    add_slot_btn = QPushButton("+ Zeitslot hinzufügen", tag_frame)
                     add_slot_btn.setStyleSheet("""
                         QPushButton {
                             background-color: transparent;
@@ -343,7 +343,7 @@ class SettingsManager:
                     tag_layout.addWidget(slots_frame)
                     zeiten_layout.addWidget(tag_frame)
                 
-                zeiten_btn = QPushButton("🕒 Behandlungszeiten aktualisieren")
+                zeiten_btn = QPushButton("🕒 Behandlungszeiten aktualisieren", zeiten_group)
                 zeiten_btn.clicked.connect(self.update_zahnarzt_zeiten)
                 zeiten_layout.addWidget(zeiten_btn)
                 

@@ -308,18 +308,18 @@
     "probleme": [
       {
         "art": "Krone",
+        "anzahl": 4,
+        "material": "normal"
+      },
+      {
+        "art": "Wurzelbehandlung",
         "anzahl": 1,
-        "material": "hochwertig"
+        "material": "normal"
       },
       {
         "art": "Karies groß",
         "anzahl": 1,
-        "material": "normal"
-      },
-      {
-        "art": "Krone",
-        "anzahl": 1,
-        "material": "normal"
+        "material": "höchstwertig"
       }
     ],
     "passwort_geaendert": true
