@@ -2,11 +2,18 @@ from PyQt5.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QMessageBox,
     QHBoxLayout, QFrame, QScrollArea, QPushButton, QSizePolicy
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDate
 from datetime import datetime, timedelta
 import json
-from components.helper import get_weekday
 from components.calculator import berechne_kosten_und_zeit
+
+# Helper functions moved from helper.py
+CALENDAR_TODAY_OVERRIDE = QDate(2025, 6, 13)
+
+def get_weekday(date_obj):
+    """Get weekday name from a date object"""
+    weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+    return weekdays[date_obj.weekday()]
 
 class ViewManager:
     def __init__(self, main_window):
@@ -174,7 +181,7 @@ class ViewManager:
                             "zeit": zeit,
                             "behandlung": termin["behandlung"],
                             "dauer": termin["dauer"],
-                            "anzahl": termin.get("anzahl", "N/A")  # Lese Anzahl, mit Fallback
+                            "anzahl": termin.get("anzahl")  # Lese Anzahl
                         })
 
         # Sortiere Termine nach Datum und Zeit

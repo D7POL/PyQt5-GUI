@@ -487,16 +487,22 @@ class SettingsManager:
         container.deleteLater()
 
     def update_passwort(self):
-        if not self.main_window.patient_data:
-            return
-            
         neues_passwort = self.main_window.neues_passwort.text().strip()
         if not neues_passwort:
             QMessageBox.warning(self.main_window, "Fehler", "Bitte geben Sie ein neues Passwort ein.")
             return
             
-        self.main_window.patient_data["passwort"] = neues_passwort
-        speichere_daten(pfad_patienten, patienten)
+        if self.main_window.rolle == "Patient":
+            if not self.main_window.patient_data:
+                return
+            self.main_window.patient_data["passwort"] = neues_passwort
+            speichere_daten(pfad_patienten, patienten)
+        else:  # Zahnarzt
+            if not self.main_window.zahnarzt_data:
+                return
+            self.main_window.zahnarzt_data["passwort"] = neues_passwort
+            speichere_daten(pfad_zahnaerzte, zahnaerzte)
+            
         QMessageBox.information(self.main_window, "Erfolg", "Passwort wurde aktualisiert!")
         self.main_window.neues_passwort.clear()
 

@@ -12,7 +12,7 @@ from gui.data_manager import (
     patienten, zahnaerzte, BEHANDLUNGEN, speichere_daten,
     pfad_patienten, pfad_zahnaerzte, STYLE
 )
-from components.helper import get_weekday, CALENDAR_TODAY_OVERRIDE
+from components.view_manager import get_weekday, CALENDAR_TODAY_OVERRIDE
 from components.calculator import berechne_kosten_und_zeit
 from components.settings_manager import SettingsManager
 from components.booking_manager import BookingManager

@@ -4,6 +4,25 @@
   "Dr. Wurzel": {},
   "Dr. Winkel": {},
   "Dr. Shikh": {},
-  "Dr. Kraft": {},
+  "Dr. Kraft": {
+    "2025-07-04": {
+      "10:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Krone",
+        "material": "normal",
+        "dauer": 120,
+        "anzahl": 1
+      }
+    },
+    "2025-07-23": {
+      "10:00": {
+        "patient": "Frau Ayaz",
+        "behandlung": "Krone",
+        "material": "normal",
+        "dauer": 120,
+        "anzahl": 1
+      }
+    }
+  },
   "Dr. Hausmann": {}
 }

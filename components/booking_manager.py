@@ -7,7 +7,7 @@ from PyQt5.QtGui import QColor, QTextCharFormat
 from datetime import datetime, timedelta
 import json
 from gui.data_manager import BEHANDLUNGEN, zahnaerzte, patienten, speichere_daten, pfad_patienten
-from components.helper import CALENDAR_TODAY_OVERRIDE
+from components.view_manager import CALENDAR_TODAY_OVERRIDE
 
 class BookingManager:
     def __init__(self, main_window):
@@ -116,7 +116,7 @@ class BookingManager:
         problem = self.main_window.patient_data["probleme"][self.main_window.problem_box.currentIndex()]
         anzahl = int(self.main_window.anzahl_box.currentText())
         material = self.main_window.material_box.currentText()
-        # Store selected values for later use
+        # Speichere ausgewählte Werte für spätere Benutzung
         self.main_window.selected_problem = problem
         self.main_window.selected_anzahl = anzahl
         self.main_window.selected_material = material
