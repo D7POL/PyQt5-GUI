@@ -23,6 +23,6 @@ if __name__ == "__main__":
         fenster.show()
 
     # Timer starten, der die Funktion nach 3000 Millisekunden (3 Sekunden) aufruft
-    QTimer.singleShot(3000, show_main_window)
+    QTimer.singleShot(4000, show_main_window)
 
     sys.exit(app.exec_())
