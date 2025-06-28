@@ -288,52 +288,5 @@
       }
     ],
     "passwort_geaendert": false
-  },
-  {
-    "name": "Frau \u00d6zdemir",
-    "passwort": "P10",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Karies gro\u00df",
-        "anzahl": 1
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Frau Ayaz",
-    "passwort": "P1",
-    "krankenkasse": "gesetzlich",
-    "probleme": [
-      {
-        "art": "Krone",
-        "anzahl": 2,
-        "material": "normal"
-      },
-      {
-        "art": "Wurzelbehandlung",
-        "anzahl": 1,
-        "material": "normal"
-      },
-      {
-        "art": "Karies gro\u00df",
-        "anzahl": 2,
-        "material": "h\u00f6chstwertig"
-      },
-      {
-        "art": "Karies klein",
-        "anzahl": 1,
-        "material": "normal"
-      }
-    ],
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Test",
-    "passwort": "1",
-    "krankenkasse": "gesetzlich",
-    "probleme": [],
-    "passwort_geaendert": true
   }
 ]

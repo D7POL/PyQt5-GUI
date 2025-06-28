@@ -52,10 +52,6 @@
       "Do": [
         "10:00-12:00",
         "14:00-18:00"
-      ],
-      "Fr": [
-        "10:00-12:00",
-        "14:00-18:00"
       ]
     }
   },
@@ -88,7 +84,7 @@
   {
     "name": "Dr. Hausmann",
     "passwort": "A444",
-    "passwort_geaendert": true,
+    "passwort_geaendert": false,
     "behandelt": [
       "gesetzlich",
       "freiwillig gesetzlich"
@@ -117,65 +113,5 @@
         "12:00-18:00"
       ]
     }
-  },
-  {
-    "name": "Dr. Shikh",
-    "passwort": "A11",
-    "passwort_geaendert": true,
-    "behandelt": [
-      "gesetzlich",
-      "freiwillig gesetzlich"
-    ],
-    "zeiten": {
-      "Mo": [
-        "08:00-18:00"
-      ],
-      "Di": [
-        "08:00-18:00"
-      ],
-      "Mi": [
-        "08:00-18:00"
-      ],
-      "Do": [
-        "08:00-18:00"
-      ],
-      "Fr": [
-        "08:00-18:00"
-      ]
-    }
-  },
-  {
-    "name": "Dr. Ayaz",
-    "passwort": "A1",
-    "behandelt": [
-      "gesetzlich",
-      "privat",
-      "freiwillig gesetzlich"
-    ],
-    "zeiten": {
-      "Mo": [
-        "08:00-13:00",
-        "14:00-18:00"
-      ],
-      "Di": [
-        "08:00-18:00"
-      ],
-      "Mi": [
-        "08:00-18:00"
-      ],
-      "Do": [
-        "08:00-18:00"
-      ]
-    },
-    "passwort_geaendert": true
-  },
-  {
-    "name": "Test2",
-    "passwort": "2",
-    "behandelt": [
-      "gesetzlich"
-    ],
-    "zeiten": {},
-    "passwort_geaendert": true
   }
 ]

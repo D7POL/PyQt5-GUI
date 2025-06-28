@@ -58,52 +58,60 @@ class ViewManager:
             versicherung_info.setStyleSheet("font-size: 16px; color: #7f8c8d; margin-bottom: 10px;")
             analyse_layout.addWidget(versicherung_info)
 
-            # Container für die Analyse-Details
-            details_container = QFrame()
-            details_container.setStyleSheet("""
-                QFrame {
-                    background-color: #e8f4f8;
-                    border-radius: 8px;
-                    padding: 15px;
-                }
-            """)
-            details_layout = QVBoxLayout(details_container)
-
-            # Einzelne Behandlungen
-            for item in analyse_data["analyse"]:
-                behandlung_frame = QFrame()
-                behandlung_frame.setStyleSheet("""
+            if not analyse_data["analyse"]:
+                # Hinweistext außerhalb der Box, ohne Scrollbereich
+                hinweis = QLabel("Sie haben zurzeit keine Behandlungen, neue Behandlungen können Sie in den Einstellungen hinzufügen")
+                hinweis.setStyleSheet("color: #7f8c8d; font-size: 15px; padding: 16px;")
+                hinweis.setAlignment(Qt.AlignCenter)
+                analyse_layout.addWidget(hinweis)
+            else:
+                # Container für die Analyse-Details
+                details_container = QFrame()
+                details_container.setStyleSheet("""
                     QFrame {
-                        background-color: white;
-                        border-radius: 5px;
-                        padding: 10px;
-                        margin: 5px 0px;
+                        background-color: #e8f4f8;
+                        border-radius: 8px;
+                        padding: 15px;
                     }
                 """)
-                behandlung_layout = QVBoxLayout(behandlung_frame)
+                details_layout = QVBoxLayout(details_container)
+                
 
-                art_label = QLabel(f"🦷 {item['art']} ({item['anzahl']}x)")
-                art_label.setStyleSheet("font-weight: bold; color: #2c3e50;")
-                behandlung_layout.addWidget(art_label)
+                # Einzelne Behandlungen
+                for item in analyse_data["analyse"]:
+                    behandlung_frame = QFrame()
+                    behandlung_frame.setStyleSheet("""
+                        QFrame {
+                            background-color: white;
+                            border-radius: 5px;
+                            padding: 10px;
+                            margin: 5px 0px;
+                        }
+                    """)
+                    behandlung_layout = QVBoxLayout(behandlung_frame)
 
-                kosten_label = QLabel(f"Kosten: {item['kosten']}€")
-                kosten_label.setStyleSheet("color: #2c3e50;")
-                behandlung_layout.addWidget(kosten_label)
+                    art_label = QLabel(f"🦷 {item['art']} ({item['anzahl']}x)")
+                    art_label.setStyleSheet("font-weight: bold; color: #2c3e50;")
+                    behandlung_layout.addWidget(art_label)
 
-                zeit_label = QLabel(f"Zeitaufwand: {item['zeit']} {item['einheit']}")
-                zeit_label.setStyleSheet("color: #2c3e50;")
-                behandlung_layout.addWidget(zeit_label)
+                    kosten_label = QLabel(f"Kosten: {item['kosten']}€")
+                    kosten_label.setStyleSheet("color: #2c3e50;")
+                    behandlung_layout.addWidget(kosten_label)
 
-                details_layout.addWidget(behandlung_frame)
+                    zeit_label = QLabel(f"Zeitaufwand: {item['zeit']} {item['einheit']}")
+                    zeit_label.setStyleSheet("color: #2c3e50;")
+                    behandlung_layout.addWidget(zeit_label)
 
-            # SCROLLBEREICH für die Behandlungen (rote Box)
-            details_scroll = QScrollArea()
-            details_scroll.setWidgetResizable(True)
-            details_scroll.setWidget(details_container)
-            details_scroll.setMinimumHeight(300)
-            details_scroll.setMaximumHeight(600)
-            details_scroll.setStyleSheet("QScrollArea { margin-left: 0px; }")
-            analyse_layout.addWidget(details_scroll)
+                    details_layout.addWidget(behandlung_frame)
+
+                # SCROLLBEREICH für die Behandlungen (rote Box)
+                details_scroll = QScrollArea()
+                details_scroll.setWidgetResizable(True)
+                details_scroll.setWidget(details_container)
+                details_scroll.setMinimumHeight(300)
+                details_scroll.setMaximumHeight(600)
+                details_scroll.setStyleSheet("QScrollArea { margin-left: 0px; }")
+                analyse_layout.addWidget(details_scroll)
 
             # Zusammenfassung Kosten
             zusammenfassung = QFrame()
@@ -403,6 +411,8 @@ class ViewManager:
 
     def update_zahnarzt_calendar(self, zahnarzt):
         """Aktualisiert die Kalender-Farben basierend auf Terminen und Arbeitszeiten"""
+        if zahnarzt is None:
+            return
         with open("data/termine.json", "r", encoding="utf-8") as f:
             termine = json.load(f)
 

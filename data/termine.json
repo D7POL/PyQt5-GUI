@@ -4,51 +4,5 @@
   "Dr. Wurzel": {},
   "Dr. Winkel": {},
   "Dr. Shikh": {},
-  "Dr. Kraft": {
-    "2025-07-04": {
-      "10:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "material": "normal",
-        "dauer": 120,
-        "anzahl": 1
-      }
-    },
-    "2025-07-23": {
-      "10:00": {
-        "patient": "Frau Ayaz",
-        "behandlung": "Krone",
-        "material": "normal",
-        "dauer": 120,
-        "anzahl": 1
-      }
-    }
-  },
-  "Dr. Hausmann": {
-    "2025-07-04": {
-      "12:00": {
-        "patient": "Test",
-        "behandlung": "Karies klein",
-        "material": "normal",
-        "dauer": 15,
-        "anzahl": 1
-      }
-    },
-    "2025-07-07": {
-      "09:00": {
-        "patient": "Test",
-        "behandlung": "Karies klein",
-        "material": "hochwertig",
-        "dauer": 15,
-        "anzahl": 1
-      },
-      "09:30": {
-        "patient": "Test",
-        "behandlung": "Karies gro\u00df",
-        "material": "h\u00f6chstwertig",
-        "dauer": 30,
-        "anzahl": 1
-      }
-    }
-  }
+  "Dr. Kraft": {}
 }
