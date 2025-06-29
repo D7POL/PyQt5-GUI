@@ -434,31 +434,47 @@ class SettingsManager:
     def update_zahnarzt_zeiten(self):
         if not self.main_window.zahnarzt_data:
             return
-            
         zeiten = {}
         hat_zeiten = False
-        
         for tag_kurz, widgets in self.main_window.zeiten_widgets.items():
             if widgets["checkbox"].isChecked():
-                zeiten[tag_kurz] = []
+                slots = []
                 for slot in widgets["zeitslots"]:
-                    von = slot["von"].currentText()
-                    bis = slot["bis"].currentText()
+                    von_widget = slot.get("von")
+                    bis_widget = slot.get("bis")
+                    if von_widget is None or bis_widget is None:
+                        continue
+                    try:
+                        von = von_widget.currentText()
+                        bis = bis_widget.currentText()
+                    except RuntimeError:
+                        continue  # Widget wurde gelöscht
                     if von >= bis:
                         QMessageBox.warning(
                             self.main_window,
                             "Fehler",
-                            f"Ungültige Zeitspanne am {self.main_window.wochentage[tag_kurz]}:\n"
-                            f"'{von} - {bis}'"
+                            f"Ungültige Zeitspanne am {self.main_window.wochentage[tag_kurz]}:\n'{von} - {bis}'"
                         )
                         return
-                    zeiten[tag_kurz].append(f"{von}-{bis}")
+                    slots.append((von, bis, slot))
+                # Sortiere Slots nach Startzeit
+                slots.sort(key=lambda x: x[0])
+                # Prüfe auf Überschneidungen (Lücken sind erlaubt)
+                for i in range(1, len(slots)):
+                    prev_bis = slots[i-1][1]
+                    curr_von = slots[i][0]
+                    if curr_von < prev_bis:
+                        QMessageBox.warning(
+                            self.main_window,
+                            "Fehler",
+                            f"Bitte geben Sie gültige Behandlungszeiten an. Die Zeitslots dürfen sich nicht überschneiden. Bsp: 08:00-10:00, 12:00-14:00, ..."
+                        )
+                        return
+                zeiten[tag_kurz] = [f"{von}-{bis}" for (von, bis, _) in slots]
                 hat_zeiten = True
-                
         if not hat_zeiten:
             QMessageBox.warning(self.main_window, "Fehler", "Bitte mindestens einen Tag mit Behandlungszeiten auswählen.")
             return
-            
         self.main_window.zahnarzt_data["zeiten"] = zeiten
         speichere_daten(pfad_zahnaerzte, zahnaerzte)
         QMessageBox.information(self.main_window, "Erfolg", "Behandlungszeiten wurden aktualisiert!")
@@ -467,31 +483,24 @@ class SettingsManager:
         widgets = self.main_window.zeiten_widgets[tag]
         slots_layout = widgets["slots_layout"]
         add_button = widgets["add_button"]
-        
         # Entferne den Add-Button temporär
         slots_layout.removeWidget(add_button)
-        
         # Erstelle neuen Zeitslot
         zeit_container = QFrame()
         zeit_layout = QHBoxLayout(zeit_container)
-        
         von_label = QLabel("Von:")
         von_label.setStyleSheet("color: #2c3e50;")
         zeit_layout.addWidget(von_label)
-        
         von_zeit = QComboBox()
         von_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
         zeit_layout.addWidget(von_zeit)
-        
         bis_label = QLabel("Bis:")
         bis_label.setStyleSheet("color: #2c3e50;")
         zeit_layout.addWidget(bis_label)
-        
         bis_zeit = QComboBox()
         bis_zeit.addItems([f"{h:02d}:00" for h in range(8, 19)])
         bis_zeit.setCurrentText("18:00")
         zeit_layout.addWidget(bis_zeit)
-        
         # Entfernen-Button
         remove_btn = QPushButton("×")
         remove_btn.setStyleSheet("""
@@ -508,22 +517,18 @@ class SettingsManager:
         """)
         remove_btn.clicked.connect(lambda: self.remove_zeitslot(tag, zeit_container))
         zeit_layout.addWidget(remove_btn)
-        
         slots_layout.addWidget(zeit_container)
         slots_layout.addWidget(add_button)
-        
-        # Speichere neue Widgets
-        widgets["zeitslots"].append({"von": von_zeit, "bis": bis_zeit})
+        # Speichere neue Widgets (inkl. Container)
+        widgets["zeitslots"].append({"von": von_zeit, "bis": bis_zeit, "container": zeit_container})
 
     def remove_zeitslot(self, tag, container):
         widgets = self.main_window.zeiten_widgets[tag]
-        
         # Finde den Index des zu entfernenden Zeitslots
         for i, slot in enumerate(widgets["zeitslots"]):
-            if slot["von"].parent().parent() == container:
+            if slot.get("container") == container:
                 widgets["zeitslots"].pop(i)
                 break
-        
         # Entferne Container
         container.deleteLater()
 

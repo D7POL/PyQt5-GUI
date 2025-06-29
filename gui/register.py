@@ -307,7 +307,7 @@ class ZahnarztRegistrierungsFenster(QWidget):
         # Automatische Bildzuweisung
         bilder_dir = os.path.join(os.path.dirname(__file__), "..", "arzt_bilder")
         bilder_dir = os.path.abspath(bilder_dir)
-        alle_bilder = [f"arzt_bilder/doc{i}.jpg" for i in range(1, 9)]
+        alle_bilder = [f"arzt_bilder/doc{i}.jpg" for i in range(1, 13)]
         bilder_json_path = os.path.join(os.path.dirname(__file__), "..", "data", "zahnaerzte_bilder.json")
         bilder_json_path = os.path.abspath(bilder_json_path)
         try:
