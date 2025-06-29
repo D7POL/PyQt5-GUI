@@ -1,18 +1,19 @@
 from PyQt5.QtWidgets import (
-    QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox,
+    QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox,
     QHBoxLayout, QFrame, QSizePolicy, QComboBox, QCalendarWidget,
-    QScrollArea, QCheckBox
+    QScrollArea, QCheckBox, QTableWidget, QTableWidgetItem, QHeaderView
 )
 from PyQt5.QtCore import Qt, QDate
-from PyQt5.QtGui import QColor, QPalette
+from PyQt5.QtGui import QColor, QPalette, QTextCharFormat, QPixmap
 from datetime import datetime, timedelta
 import json
+import sys
 
 from gui.data_manager import (
     patienten, zahnaerzte, BEHANDLUNGEN, speichere_daten,
     pfad_patienten, pfad_zahnaerzte, STYLE
 )
-from components.view_manager import get_weekday, CALENDAR_TODAY_OVERRIDE
+from components.view_manager import get_weekday
 from components.calculator import berechne_kosten_und_zeit
 from components.settings_manager import SettingsManager
 from components.booking_manager import BookingManager

@@ -7,7 +7,6 @@ from PyQt5.QtGui import QColor, QTextCharFormat, QPixmap
 from datetime import datetime, timedelta
 import json
 from gui.data_manager import BEHANDLUNGEN, zahnaerzte, patienten, speichere_daten, pfad_patienten
-from components.view_manager import CALENDAR_TODAY_OVERRIDE
 
 class BookingManager:
     def __init__(self, main_window):
@@ -307,7 +306,7 @@ class BookingManager:
             termine = json.load(f)
 
         current = self.main_window.kalender.minimumDate()
-        today = CALENDAR_TODAY_OVERRIDE if CALENDAR_TODAY_OVERRIDE else QDate.currentDate()
+        today = QDate.currentDate()
         while current <= self.main_window.kalender.maximumDate():
             weekday = current.toString("ddd")  # 'Mo', 'Di', ...
             format = QTextCharFormat()

@@ -9,9 +9,6 @@ import json
 from components.calculator import berechne_kosten_und_zeit
 
 
-CALENDAR_TODAY_OVERRIDE = QDate(2025, 6, 13)
-
-
 def get_weekday(date_obj):
     """Get weekday name from a date object"""
     weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
@@ -452,7 +449,7 @@ class ViewManager:
             termine = json.load(f)
 
         current = self.main_window.zahnarzt_kalender.minimumDate()
-        today = CALENDAR_TODAY_OVERRIDE if CALENDAR_TODAY_OVERRIDE else QDate.currentDate()
+        today = QDate.currentDate()
 
         while current <= self.main_window.zahnarzt_kalender.maximumDate():
             weekday = current.toString("ddd")  # 'Mo', 'Di', ...
