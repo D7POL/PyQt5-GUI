@@ -1,6 +1,6 @@
 import json
 
-# Globale Stil-Definition
+# Stil-Definition
 STYLE = """
 QWidget {
     font-family: 'Segoe UI', Arial;
