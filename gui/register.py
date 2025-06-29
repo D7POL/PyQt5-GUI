@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox, QFrame, QComboBox, QCheckBox
 from PyQt5.QtGui import QColor, QPalette
 from PyQt5.QtCore import Qt
+import os
+import json
 
 from gui.data_manager import patienten, zahnaerzte, speichere_daten, pfad_patienten, pfad_zahnaerzte, STYLE
 
@@ -279,18 +281,14 @@ class ZahnarztRegistrierungsFenster(QWidget):
     def registriere_zahnarzt(self):
         name = self.name_input.text().strip()
         passwort = self.passwort_input.text().strip()
-        
         behandelt = [kasse for kasse, cb in self.kassen_checkboxes.items() if cb.isChecked()]
 
         if not name or not passwort:
             QMessageBox.warning(self, "Fehler", "Bitte Name und Passwort eingeben.")
             return
-            
         if not behandelt:
             QMessageBox.warning(self, "Fehler", "Bitte mindestens eine Kasse auswählen.")
             return
-
-        # Prüfe, ob der Name bereits existiert
         for zahnarzt in zahnaerzte:
             if zahnarzt["name"] == name:
                 QMessageBox.warning(self, "Fehler", "Ein Zahnarzt mit diesem Namen existiert bereits.")
@@ -303,9 +301,32 @@ class ZahnarztRegistrierungsFenster(QWidget):
             "zeiten": {},  # Standard: keine Zeiten
             "passwort_geaendert": True
         }
-
         zahnaerzte.append(neuer_zahnarzt)
         speichere_daten(pfad_zahnaerzte, zahnaerzte)
+
+        # Automatische Bildzuweisung
+        bilder_dir = os.path.join(os.path.dirname(__file__), "..", "arzt_bilder")
+        bilder_dir = os.path.abspath(bilder_dir)
+        alle_bilder = [f"arzt_bilder/doc{i}.jpg" for i in range(1, 9)]
+        bilder_json_path = os.path.join(os.path.dirname(__file__), "..", "data", "zahnaerzte_bilder.json")
+        bilder_json_path = os.path.abspath(bilder_json_path)
+        try:
+            with open(bilder_json_path, "r", encoding="utf-8") as f:
+                bilder_mapping = json.load(f)
+        except Exception:
+            bilder_mapping = {}
+        vergebene_bilder = set(bilder_mapping.values())
+        freies_bild = None
+        for bild in alle_bilder:
+            if bild not in vergebene_bilder:
+                freies_bild = bild
+                break
+        if not freies_bild:
+            # Falls alle vergeben, nimm das erste Bild
+            freies_bild = alle_bilder[0]
+        bilder_mapping[name] = freies_bild
+        with open(bilder_json_path, "w", encoding="utf-8") as f:
+            json.dump(bilder_mapping, f, indent=2, ensure_ascii=False)
 
         QMessageBox.information(
             self,

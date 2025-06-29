@@ -123,5 +123,16 @@
     ],
     "zeiten": {},
     "passwort_geaendert": true
+  },
+  {
+    "name": "Dr. Ayaz",
+    "passwort": "1",
+    "behandelt": [
+      "gesetzlich",
+      "privat",
+      "freiwillig gesetzlich"
+    ],
+    "zeiten": {},
+    "passwort_geaendert": true
   }
 ]
