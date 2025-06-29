@@ -439,16 +439,21 @@ class BookingManager:
         with open("data/patienten.json", "w", encoding="utf-8") as f:
             json.dump(patienten_data, f, indent=2)
             
-        QMessageBox.information(self.main_window, "Erfolg", f"""
-            Termin erfolgreich gebucht!
-            
-            Datum: {self.main_window.selected_date.toString("dd.MM.yyyy")}
-            Uhrzeit: {time}
-            Zahnarzt: {self.main_window.selected_zahnarzt["name"]}
-            Behandlung: {self.main_window.selected_problem["art"]}
-            Anzahl Zähne: {self.main_window.selected_anzahl}
-            Material: {self.main_window.selected_material}
-        """)
+        msg = QMessageBox(self.main_window)
+        msg.setWindowTitle("Erfolg")
+        msg.setIcon(QMessageBox.Information)
+        msg.setTextFormat(Qt.PlainText)
+        msg.setText(
+            f"Termin erfolgreich gebucht!\n\n"
+            f"Datum: {self.main_window.selected_date.toString('dd.MM.yyyy')}\n"
+            f"Uhrzeit: {time}\n"
+            f"Zahnarzt: {self.main_window.selected_zahnarzt['name']}\n"
+            f"Behandlung: {self.main_window.selected_problem['art']}\n"
+            f"Anzahl Zähne: {self.main_window.selected_anzahl}\n"
+            f"Material: {self.main_window.selected_material}"
+        )
+        msg.setStyleSheet("QLabel{ text-align: left; }")
+        msg.exec_()
         
         # Zeige die Terminübersicht
         self.main_window.show_meine_termine()
@@ -457,7 +462,13 @@ class BookingManager:
         msg_box = QMessageBox(self.main_window)
         msg_box.setIcon(QMessageBox.Question)
         msg_box.setWindowTitle("Termin absagen")
-        msg_box.setText(f"Möchten Sie den Termin am {datum} um {zeit} Uhr bei Dr. {arzt} wirklich absagen?")
+        # Datum deutsche Format
+        try:
+            datum_dt = datetime.strptime(datum, "%Y-%m-%d")
+            datum_de = datum_dt.strftime("%d.%m.%Y")
+        except Exception:
+            datum_de = datum  # Fallback falls Format schon passt
+        msg_box.setText(f"Möchten Sie den Termin am {datum_de} um {zeit} Uhr bei {arzt} wirklich absagen?")
         ja_btn = msg_box.addButton("Ja", QMessageBox.YesRole)
         nein_btn = msg_box.addButton("Nein", QMessageBox.NoRole)
         msg_box.setDefaultButton(ja_btn)
