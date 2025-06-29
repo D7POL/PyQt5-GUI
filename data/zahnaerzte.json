@@ -31,7 +31,7 @@
   },
   {
     "name": "Dr. Kraft",
-    "passwort": "A3",
+    "passwort": "A333",
     "passwort_geaendert": true,
     "behandelt": [
       "gesetzlich"
@@ -84,7 +84,7 @@
   {
     "name": "Dr. Hausmann",
     "passwort": "A444",
-    "passwort_geaendert": true,
+    "passwort_geaendert": false,
     "behandelt": [
       "gesetzlich",
       "freiwillig gesetzlich"

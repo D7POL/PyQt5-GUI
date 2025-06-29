@@ -6,22 +6,5 @@
   "Dr. Shikh": {},
   "Dr. Hausmann": {},
   "Dr. Kraft": {},
-  "Dr. Ayaz": {
-    "2025-06-30": {
-      "11:00": {
-        "patient": "Frau Meyer",
-        "behandlung": "Karies gro\u00df",
-        "material": "normal",
-        "dauer": 30,
-        "anzahl": 1
-      },
-      "08:00": {
-        "patient": "Frau Meyer",
-        "behandlung": "Karies klein",
-        "material": "normal",
-        "dauer": 15,
-        "anzahl": 1
-      }
-    }
-  }
+  "Dr. Ayaz": {}
 }
