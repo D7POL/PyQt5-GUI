@@ -58,11 +58,13 @@ class LoginFenster(QWidget):
         # Eingabefelder
         self.benutzername = QLineEdit()
         self.benutzername.setPlaceholderText("👤 Benutzername")
+        self.benutzername.returnPressed.connect(self.pruefe_login)
         layout.addWidget(self.benutzername)
 
         self.passwort = QLineEdit()
         self.passwort.setPlaceholderText("🔒 Passwort")
         self.passwort.setEchoMode(QLineEdit.Password)
+        self.passwort.returnPressed.connect(self.pruefe_login)
         
         # Schwarzes SVG-Auge (offen) (source: chatgpt)
         eye_svg = '''<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 12C1 12 5 5 12 5C19 5 23 12 23 12C23 12 19 19 12 19C5 19 1 12 1 12Z" stroke="black" stroke-width="2"/><circle cx="12" cy="12" r="3.5" stroke="black" stroke-width="2"/></svg>'''

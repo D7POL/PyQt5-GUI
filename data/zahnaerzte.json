@@ -113,5 +113,15 @@
         "12:00-18:00"
       ]
     }
+  },
+  {
+    "name": "Dr. Özdemir",
+    "passwort": "1",
+    "behandelt": [
+      "gesetzlich",
+      "privat"
+    ],
+    "zeiten": {},
+    "passwort_geaendert": true
   }
 ]
