@@ -14,13 +14,13 @@ class PasswortAendernFenster(QWidget):
         self.setGeometry(700, 200, 400, 300)
         self.setStyleSheet(STYLE)
 
-        # Setze Hintergrundfarbe
+        # Hintergrundfarbe
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor("#f5f6fa"))
         self.setPalette(palette)
         self.setAutoFillBackground(True)
 
-        # Container für das gesamte Formular
+        # Container Formular
         main_container = QFrame(self)
         main_container.setStyleSheet("""
             QFrame {

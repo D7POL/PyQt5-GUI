@@ -39,7 +39,7 @@ class SettingsManager:
         titel.setAlignment(Qt.AlignCenter)
         settings_layout.addWidget(titel)
 
-        # Scroll-Bereich für die Einstellungen
+        # Scroll-Bereich für Einstellungen
         scroll = QScrollArea(settings_container)
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet("QScrollArea { border: 5px solid #E8F4F8; }")
@@ -135,7 +135,7 @@ class SettingsManager:
             scroll_layout.addWidget(probleme_group)
 
         else:  # Zahnarzt Einstellungen
-            # Finde den aktuellen Zahnarzt
+            # Finde aktuellen Zahnarzt
             self.main_window.zahnarzt_data = None
             for z in zahnaerzte:
                 if z["name"] == self.main_window.benutzername:
@@ -386,7 +386,7 @@ class SettingsManager:
             bilder_mapping[neuer_name] = bilder_mapping.pop(alter_name)
             with open(bilder_json_path, "w", encoding="utf-8") as f:
                 json.dump(bilder_mapping, f, indent=2, ensure_ascii=False)
-        # --- Termine aktualisieren ---
+        # Termine aktualisieren
         termine_path = os.path.join(os.path.dirname(__file__), "..", "data", "termine.json")
         termine_path = os.path.abspath(termine_path)
         try:
@@ -408,9 +408,8 @@ class SettingsManager:
                         termin["arzt"] = neuer_name
         with open(termine_path, "w", encoding="utf-8") as f:
             json.dump(termine, f, indent=2, ensure_ascii=False)
-        # --- Patienten-Termine aktualisieren (optional, falls dort gespeichert) ---
-        # (Hier kann ggf. noch patienten.json angepasst werden, falls dort der Zahnarztname gespeichert ist)
-        # --- UI sofort aktualisieren ---
+        # Patienten-Termine aktualisieren (falls dort gespeichert)
+        # UI sofort aktualisieren 
         self.main_window.benutzername = neuer_name
         self.main_window.zahnarzt_data["name"] = neuer_name
         if hasattr(self.main_window, "update_begruessung_label"):
@@ -461,7 +460,7 @@ class SettingsManager:
                     slots.append((von, bis, slot))
                 # Sortiere Slots nach Startzeit
                 slots.sort(key=lambda x: x[0])
-                # Prüfe auf Überschneidungen (Lücken sind erlaubt)
+                # Prüfe Überschneidungen (Lücken erlaubt)
                 for i in range(1, len(slots)):
                     prev_bis = slots[i-1][1]
                     curr_von = slots[i][0]
@@ -521,12 +520,12 @@ class SettingsManager:
         zeit_layout.addWidget(remove_btn)
         slots_layout.addWidget(zeit_container)
         slots_layout.addWidget(add_button)
-        # Speichere neue Widgets (inkl. Container)
+        # Speichere neue Widgets +Container
         widgets["zeitslots"].append({"von": von_zeit, "bis": bis_zeit, "container": zeit_container})
 
     def remove_zeitslot(self, tag, container):
         widgets = self.main_window.zeiten_widgets[tag]
-        # Finde den Index des zu entfernenden Zeitslots
+        # Finde Index des zu entfernenden Zeitslots
         for i, slot in enumerate(widgets["zeitslots"]):
             if slot.get("container") == container:
                 widgets["zeitslots"].pop(i)
@@ -582,7 +581,7 @@ class SettingsManager:
             "anzahl": anzahl,
             "material": "normal"
         }
-        # Prüfe ob das Problem bereits existiert
+        # Prüfe ob Problem bereits existiert
         problem_existiert = False
         for p in self.main_window.patient_data["probleme"]:
             if p["art"] == problem:

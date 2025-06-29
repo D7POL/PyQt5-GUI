@@ -6,7 +6,7 @@ import json
 
 from gui.data_manager import patienten, zahnaerzte, speichere_daten, pfad_patienten, pfad_zahnaerzte, STYLE
 
-# Registrierungsfenster für neue Patienten
+# Registrierungsfenster neue Patienten
 class RegistrierungsFenster(QWidget):
     def __init__(self, parent=None):
         super().__init__()
@@ -14,13 +14,13 @@ class RegistrierungsFenster(QWidget):
         self.setGeometry(700, 200, 400, 500)
         self.setStyleSheet(STYLE)
 
-        # Setze Hintergrundfarbe
+        # Hintergrundfarbe
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor("#f5f6fa"))
         self.setPalette(palette)
         self.setAutoFillBackground(True)
 
-        # Container für das gesamte Formular
+        # Container Formular
         main_container = QFrame(self)
         main_container.setStyleSheet("""
             QFrame {
@@ -110,7 +110,7 @@ class RegistrierungsFenster(QWidget):
             QMessageBox.warning(self, "Fehler", "Anzahl muss eine Zahl sein.")
             return
 
-        # Prüfe ob der Name bereits existiert
+        # Prüft ob Name bereits existiert
         existierender_patient = None
         basis_name = name
         nummer = 1
@@ -145,7 +145,7 @@ class RegistrierungsFenster(QWidget):
                     "anzahl": anzahl,
                     "material": "normal"
                 }
-                # Prüfe ob das Problem bereits existiert
+                # Prüfe ob Problem bereits existiert
                 problem_existiert = False
                 for problem in existierender_patient["probleme"]:
                     if problem["art"] == beschwerde:
@@ -175,7 +175,7 @@ class RegistrierungsFenster(QWidget):
                             break
                     if not name_existiert:
                         break
-                # Informiere den Benutzer über den neuen Namen
+                # Informiere Benutzer über den neuen Namen
                 QMessageBox.information(
                     self,
                     "Neuer Benutzername",
@@ -217,13 +217,13 @@ class ZahnarztRegistrierungsFenster(QWidget):
         self.setGeometry(700, 200, 400, 400)
         self.setStyleSheet(STYLE)
 
-        # Setze Hintergrundfarbe
+        # Hintergrundfarbe
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor("#f5f6fa"))
         self.setPalette(palette)
         self.setAutoFillBackground(True)
 
-        # Container für das gesamte Formular
+        # Container Formular
         main_container = QFrame(self)
         main_container.setStyleSheet("""
             QFrame {
@@ -322,7 +322,7 @@ class ZahnarztRegistrierungsFenster(QWidget):
                 freies_bild = bild
                 break
         if not freies_bild:
-            # Falls alle vergeben, nimm das erste Bild
+            # Falls alle vergeben, nimmt das erste Bild
             freies_bild = alle_bilder[0]
         bilder_mapping[name] = freies_bild
         with open(bilder_json_path, "w", encoding="utf-8") as f:

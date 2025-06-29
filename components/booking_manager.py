@@ -93,7 +93,7 @@ class BookingManager:
                 self.main_window.anzahl_box.currentIndexChanged.connect(self.update_kosten)
                 self.main_window.material_box.currentIndexChanged.connect(self.update_kosten)
 
-                # Initial Kostenberechnung
+                # Kostenberechnung
                 self.update_kosten()
 
                 # Weiter-Button
@@ -116,7 +116,7 @@ class BookingManager:
         problem = self.main_window.patient_data["probleme"][self.main_window.problem_box.currentIndex()]
         anzahl = int(self.main_window.anzahl_box.currentText())
         material = self.main_window.material_box.currentText()
-        # Speichere ausgewählte Werte für spätere Benutzung
+        # Speichere ausgewählte Werte für spätere nutzung
         self.main_window.selected_problem = problem
         self.main_window.selected_anzahl = anzahl
         self.main_window.selected_material = material
@@ -178,7 +178,7 @@ class BookingManager:
         self.arzt_card_frames = []
         self.selected_arzt_index = None
         
-        # Verwende Kartenansicht statt Dropdown
+        # Verwende Kartenansicht
         self.show_arzt_cards()
         arzt_layout.addWidget(self.main_window.arzt_cards_container)
         
@@ -206,7 +206,7 @@ class BookingManager:
             QMessageBox.warning(self.main_window, "Fehler", "Bitte wählen Sie zuerst einen Zahnarzt aus.")
             return
             
-        # Verwende den ausgewählten Arzt aus der Kartenauswahl
+        # Verwende ausgewählten
         self.main_window.selected_zahnarzt = self.main_window.verfuegbare_aerzte[self.selected_arzt_index]
         
         # Container für Kalender
@@ -299,7 +299,7 @@ class BookingManager:
         self.main_window.inhalt_layout_inner.addWidget(self.main_window.kalender_container)
         self.main_window.current_page = self.main_window.kalender_container
         
-        # Deaktiviere Tage, an denen der Arzt nicht praktiziert
+        # Deaktiviert Tage, an denen der Arzt nicht arbeitet
         self.update_calendar()
 
     def update_calendar(self):
@@ -317,13 +317,13 @@ class BookingManager:
                 # Alle Tage vor heute: grau
                 format.setBackground(QColor("#e0e0e0"))
             elif weekday == "Sa" or weekday == "So":
-                # Samstag und Sonntag: hellrot
+                # Samstag und Sonntag: rot
                 format.setBackground(QColor("#ffb3b3"))
             elif weekday not in self.main_window.selected_zahnarzt["zeiten"]:
                 # Arzt arbeitet nicht: grau
                 format.setBackground(QColor("#e0e0e0"))
             else:
-                # Verfügbare Tage: hellgrün
+                # Verfügbare Tage: grün
                 format.setBackground(QColor("#b9fbc0"))
 
             self.main_window.kalender.setDateTextFormat(current, format)
@@ -351,7 +351,7 @@ class BookingManager:
         mat_info = BEHANDLUNGEN[self.main_window.selected_problem["art"]]["materialien"].get(self.main_window.selected_material, BEHANDLUNGEN[self.main_window.selected_problem["art"]]["materialien"]["normal"])
         behandlungsdauer = mat_info["zeit"]
         
-        # Erstelle eine Liste aller blockierten Zeiten basierend auf bestehenden Terminen
+        # Erstellt Liste aller blockierten Zeiten basierend auf bestehenden Terminen
         blockierte_zeiten = []
         for termin_zeit, termin_info in tag_termine.items():
             start_zeit = datetime.strptime(termin_zeit, "%H:%M")
@@ -372,10 +372,10 @@ class BookingManager:
             while current_time <= end_time - timedelta(minutes=behandlungsdauer):
                 time_str = current_time.strftime("%H:%M")
                 
-                # Prüfe ob der Zeitslot verfügbar ist
+                # Prüfe ob Zeitslot verfügbar ist
                 is_available = True
                 
-                # Prüfe ob die gesamte Behandlungsdauer verfügbar ist
+                # Prüfe ob gesamte Behandlungsdauer verfügbar ist
                 test_time = current_time
                 while test_time < current_time + timedelta(minutes=behandlungsdauer):
                     if test_time.strftime("%H:%M") in blockierte_zeiten:
@@ -543,7 +543,7 @@ class BookingManager:
             card_layout.setContentsMargins(0, 0, 0, 0)
             card_layout.setSpacing(0)
             card_layout.setAlignment(Qt.AlignTop)
-            # Bild oben, groß, zentriert, nicht verzerrt
+            # Bild oben, zentriert, nicht verzerrt
             bild_label = QLabel()
             bild_label.setFixedSize(180, 180)
             bild_label.setStyleSheet("background-color: #f8f9fa; border-radius: 10px; margin: 0px; padding: 0px;")
@@ -584,7 +584,7 @@ class BookingManager:
         self.selected_arzt_index = idx
         self.main_window.selected_zahnarzt = self.main_window.verfuegbare_aerzte[idx]
         
-        # Farbliche Markierung
+        # Farbliche Markierung wenn ausgewählt
         for i, (card, name_label) in enumerate(self.arzt_card_frames):
             if i == idx:
                 card.setStyleSheet("background: white; border-radius: 18px; border: 3px solid #217dbb;")

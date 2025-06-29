@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import json
 from components.calculator import berechne_kosten_und_zeit
 
-# Helper functions moved from helper.py
+
 CALENDAR_TODAY_OVERRIDE = QDate(2025, 6, 13)
 
 
@@ -27,7 +27,7 @@ class ViewManager:
             self.main_window.current_page.hide()
             self.main_window.current_page.deleteLater()
 
-        # Container für die Analyse
+        # Container Analyse
         analyse_container = QFrame()
         analyse_container.setStyleSheet("""
             QFrame {
@@ -39,7 +39,7 @@ class ViewManager:
         analyse_layout = QVBoxLayout(analyse_container)
 
         if self.main_window.rolle == "Patient" and self.main_window.patient_data:
-            # Analyse der Patientendaten
+            # Analyse Patientendaten
             analyse_data = berechne_kosten_und_zeit(self.main_window.patient_data)
 
             # Überschrift
@@ -59,13 +59,13 @@ class ViewManager:
             analyse_layout.addWidget(versicherung_info)
 
             if not analyse_data["analyse"]:
-                # Hinweistext außerhalb der Box, ohne Scrollbereich
+                # Hinweistext außerhalb Box, ohne Scrollbereich
                 hinweis = QLabel("Sie haben zurzeit keine Behandlungen, neue Behandlungen können Sie in den Einstellungen hinzufügen")
                 hinweis.setStyleSheet("color: #7f8c8d; font-size: 15px; padding: 16px;")
                 hinweis.setAlignment(Qt.AlignCenter)
                 analyse_layout.addWidget(hinweis)
             else:
-                # Container für die Analyse-Details
+                # Container für Analyse-Details
                 details_container = QFrame()
                 details_container.setStyleSheet("""
                     QFrame {
@@ -104,7 +104,7 @@ class ViewManager:
 
                     details_layout.addWidget(behandlung_frame)
 
-                # SCROLLBEREICH für die Behandlungen (rote Box)
+                # SCROLLBEREICH für Behandlungen
                 details_scroll = QScrollArea()
                 details_scroll.setWidgetResizable(True)
                 details_scroll.setWidget(details_container)
@@ -155,7 +155,7 @@ class ViewManager:
             self.main_window.current_page.hide()
             self.main_window.current_page.deleteLater()
 
-        # Container für die Termine
+        # Container für Termine
         termine_container = QFrame()
         termine_container.setStyleSheet("""
             QFrame {
@@ -195,7 +195,7 @@ class ViewManager:
                             "anzahl": termin.get("anzahl")  # Lese Anzahl
                         })
 
-        # Sortiere Termine nach Datum und Zeit
+        # Sortiert Termine nach Datum und Zeit
         meine_termine.sort(key=lambda x: (x["datum"], x["zeit"]))
 
         if not meine_termine:
@@ -203,7 +203,7 @@ class ViewManager:
             keine_termine.setStyleSheet("color: #7f8c8d;")
             termine_layout.addWidget(keine_termine)
         else:
-            # Erstelle eine ScrollArea für die Termine
+            # Erstellt ScrollArea für die Termine
             scroll = QScrollArea()
             scroll.setWidgetResizable(True)
             scroll.setStyleSheet("""
@@ -214,7 +214,7 @@ class ViewManager:
 
             scroll_content = QWidget()
             scroll_layout = QVBoxLayout(scroll_content)
-            scroll_layout.setSpacing(10)  # Reduzierter Abstand zwischen Terminen
+            scroll_layout.setSpacing(10)  # Abstand zwischen Terminen
 
             # Gruppiere Termine nach Datum
             termine_nach_datum = {}
@@ -355,7 +355,7 @@ class ViewManager:
             zahnaerzte_data = json.load(f)
         current_zahnarzt = next((a for a in zahnaerzte_data if a["name"] == self.main_window.benutzername), None)
 
-        # Kompakter Kalender oben
+        # Kompakter Kalender
         kalender_container = QFrame()
         kalender_container.setStyleSheet("""
             QFrame {
@@ -392,13 +392,13 @@ class ViewManager:
         self.main_window.termin_table.setHorizontalHeaderLabels(
             ["Uhrzeit", "Patient", "Behandlung", "Material", "Anzahl", "Dauer"])
         
-        # Header des QTableWidget ausblenden
+        # Header ausblenden
         header = self.main_window.termin_table.horizontalHeader()
         header.setVisible(False)
         for i in range(6):
             self.main_window.termin_table.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
 
-        # Eigene Überschriftenzeile mit QLabels (jetzt flexibel)
+        # Überschriftenzeile mit QLabel
         table_header_row = QFrame()
         table_header_layout = QHBoxLayout(table_header_row)
         table_header_layout.setContentsMargins(0, 0, 0, 0)
@@ -417,7 +417,7 @@ class ViewManager:
             lbl.setStyleSheet("font-weight: bold; font-size: 15px; color: #2c3e50; border-bottom: 1px solid #d0d0d0; background: #f8f9fa; padding: 8px 2px;")
             table_header_layout.addWidget(lbl, 1)  # Stretch für Flexibilität
 
-        # Die Überschriftenzeile und die Tabelle gemeinsam in ein VBoxLayout packen
+        # Überschriftenzeile und Tabelle in QVBoxLayout
         table_with_header = QFrame()
         table_with_header_layout = QVBoxLayout(table_with_header)
         table_with_header_layout.setContentsMargins(0, 0, 0, 0)
@@ -425,13 +425,13 @@ class ViewManager:
         table_with_header_layout.addWidget(table_header_row)
         table_with_header_layout.addWidget(self.main_window.termin_table)
 
-        # Speichere die Überschriftenzeile als Attribut
+        # Speichert Überschriftenzeile als Attribut
         self.main_window.termin_table_header = table_header_row
 
         # Im dashboard_layout die Tabelle durch table_with_header ersetzen
         dashboard_layout.addWidget(table_with_header)
 
-        # Initial: Header und Tabelle ausblenden
+        # Header und Tabelle ausblenden
         self.main_window.termin_table_header.hide()
         self.main_window.termin_table.hide()
 
@@ -459,7 +459,7 @@ class ViewManager:
             format = QTextCharFormat()
             format.setForeground(QColor("#000000"))  # Immer schwarze Schrift
 
-            # Prüfe ob der Tag Termine hat
+            # Prüfe ob Tag Termine hat
             date_str = current.toString("yyyy-MM-dd")
             arzt_termine = termine.get(zahnarzt["name"], {})
             tag_termine = arzt_termine.get(date_str, {})
@@ -469,7 +469,7 @@ class ViewManager:
                 # Alle Tage vor heute: grau
                 format.setBackground(QColor("#e0e0e0"))
             elif weekday == "Sa" or weekday == "So":
-                # Samstag und Sonntag: hellrot
+                # Samstag und Sonntag: rot
                 format.setBackground(QColor("#ffb3b3"))
             elif weekday not in zahnarzt["zeiten"]:
                 # Arzt arbeitet nicht: grau
@@ -478,7 +478,7 @@ class ViewManager:
                 # Tag mit Terminen: orange
                 format.setBackground(QColor("#ffd700"))
             else:
-                # Verfügbare Tage ohne Termine: hellgrün
+                # Verfügbare Tage ohne Termine: grün
                 format.setBackground(QColor("#b9fbc0"))
 
             self.main_window.zahnarzt_kalender.setDateTextFormat(current, format)
@@ -495,7 +495,7 @@ class ViewManager:
         self.main_window.terminliste_titel.setText(f"Termine am {wochentag}, {datum_display}")
         if not tag_termine:
             self.main_window.termin_table_header.hide()
-            self.main_window.termin_table.setRowCount(0)  # Auch bei keinem Termin keine Dummy-Zeile
+            self.main_window.termin_table.setRowCount(0)
             self.main_window.termin_table.hide()
             self.main_window.termin_hinweis.setText("Keine Termine an diesem Tag.")
             self.main_window.termin_hinweis.show()

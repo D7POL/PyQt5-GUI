@@ -24,9 +24,9 @@ class MainFenster(QWidget):
         super().__init__()
         self.benutzername = benutzername
         self.rolle = rolle
-        self.current_page = None  # Speichert die aktuelle Seite
+        self.current_page = None  # Speichert aktuelle Seite
         
-        # Finde den aktuellen Patienten
+        # Finde aktuellen Patienten
         self.patient_data = None
         if rolle == "Patient":
             for p in patienten:
@@ -38,7 +38,7 @@ class MainFenster(QWidget):
         self.setGeometry(300, 50, 1200, 600)
         self.setStyleSheet(STYLE)
         
-        # Setze Hintergrundfarbe
+        # Hintergrundfarbe
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor("#f5f6fa"))
         self.setPalette(palette)
@@ -58,12 +58,12 @@ class MainFenster(QWidget):
         self.init_ui()
 
     def logout(self):
-        # Import here to avoid circular import
+        # Import hier um zirkulären Import zu vermeiden
         from gui.login import LoginFenster
-        # Öffne das Login-Fenster
+        # Öffne Login-Fenster
         self.login_fenster = LoginFenster()
         self.login_fenster.show()
-        # Schließe das aktuelle Fenster
+        # Schließt aktuelle Fenster
         self.close()
 
     def show_meine_daten(self):
@@ -119,7 +119,7 @@ class MainFenster(QWidget):
         hauptlayout.setContentsMargins(20, 20, 20, 20)
         hauptlayout.setSpacing(20)
 
-        # Begrüßung oben mit modernem Design (Header)
+        # Begrüßung (Header)
         begruessung_container = QFrame()
         begruessung_container.setStyleSheet("""
             QFrame {
@@ -169,7 +169,7 @@ class MainFenster(QWidget):
         profil_layout = QVBoxLayout(profil_container)
         profil_layout.setSpacing(15)
 
-        # Profilbild mit modernem Design
+        # Profilbild rund
         profilbild = QLabel()
         profilbild.setFixedSize(100, 100)
         profilbild.setStyleSheet("""
@@ -197,7 +197,7 @@ class MainFenster(QWidget):
                 ("Meine Termine", "📆", self.show_meine_termine),
                 ("Einstellungen", "⚙️", self.show_einstellungen)
             ]
-        else:  # Zahnarzt
+        else:  # andere für Zahnarzt
             menu_buttons = [
                 ("Dashboard", "📊", self.show_zahnarzt_dashboard),
                 ("Einstellungen", "⚙️", self.show_einstellungen)
@@ -263,7 +263,7 @@ class MainFenster(QWidget):
         hauptlayout.addLayout(inhalt_layout)
         self.setLayout(hauptlayout)
         
-        # Zeige initial die passende Seite
+        # Zeigt passende Seite
         if self.rolle == "Patient":
             self.show_meine_daten()
         else:

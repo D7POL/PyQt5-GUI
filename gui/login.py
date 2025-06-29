@@ -19,13 +19,13 @@ class LoginFenster(QWidget):
         self.setGeometry(700, 200, 400, 500)
         self.setStyleSheet(STYLE)
 
-        # Setze Hintergrundfarbe
+        # Hintergrundfarbe
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor("#f5f6fa"))
         self.setPalette(palette)
         self.setAutoFillBackground(True)
 
-        # Container für das gesamte Login-Formular
+        # Container für Login-Formular
         main_container = QFrame(self)
         main_container.setStyleSheet("""
             QFrame {
@@ -95,7 +95,7 @@ class LoginFenster(QWidget):
         pw_layout.addWidget(self.pw_toggle_btn)
         layout.addLayout(pw_layout)
 
-        # Buttons Container
+        # Button Container
         button_container = QFrame()
         button_container.setStyleSheet("""
             QFrame {
