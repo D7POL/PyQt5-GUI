@@ -431,6 +431,10 @@ class ViewManager:
         # Im dashboard_layout die Tabelle durch table_with_header ersetzen
         dashboard_layout.addWidget(table_with_header)
 
+        # Initial: Header und Tabelle ausblenden
+        self.main_window.termin_table_header.hide()
+        self.main_window.termin_table.hide()
+
         self.main_window.termin_hinweis = QLabel("")
         self.main_window.termin_hinweis.setStyleSheet("color: #7f8c8d; font-size: 15px; padding: 16px;")
         self.main_window.termin_hinweis.hide()
