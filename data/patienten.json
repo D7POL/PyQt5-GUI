@@ -17,10 +17,10 @@
     "krankenkasse": "privat",
     "probleme": [
       {
-      "art": "Karies klein",
-      "anzahl": 1
-    }
-  ],
+        "art": "Karies klein",
+        "anzahl": 1
+      }
+    ],
     "passwort_geaendert": true
   },
   {

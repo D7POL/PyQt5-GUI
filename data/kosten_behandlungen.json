@@ -2,45 +2,45 @@
   {
     "art": "Karies klein",
     "materialien": {
-      "normal": {"preis": 100, "zeit": 15, "erstattung": {"gesetzlich": 0.8, "privat": 1.0}},
-      "hochwertig": {"preis": 180, "zeit": 15, "erstattung": {"gesetzlich": 0.7, "privat": 1.0}},
-      "höchstwertig": {"preis": 250, "zeit": 15, "erstattung": {"gesetzlich": 0.5, "privat": 0.95}}
+      "normal": {"preis": 100, "zeit": 15, "erstattung": {"gesetzlich": 0.8, "privat": 1.0, "freiwillig gesetzlich": 0.8}},
+      "hochwertig": {"preis": 180, "zeit": 15, "erstattung": {"gesetzlich": 0.7, "privat": 1.0, "freiwillig gesetzlich": 0.7}},
+      "höchstwertig": {"preis": 250, "zeit": 15, "erstattung": {"gesetzlich": 0.5, "privat": 0.95, "freiwillig gesetzlich": 0.5}}
     },
     "einheit": "Minuten"
   },
   {
     "art": "Karies groß",
     "materialien": {
-      "normal": {"preis": 200, "zeit": 30, "erstattung": {"gesetzlich": 0.8, "privat": 1.0}},
-      "hochwertig": {"preis": 360, "zeit": 30, "erstattung": {"gesetzlich": 0.5, "privat": 1.0}},
-      "höchstwertig": {"preis": 480, "zeit": 30, "erstattung": {"gesetzlich": 0.5, "privat": 0.95}}
+      "normal": {"preis": 200, "zeit": 30, "erstattung": {"gesetzlich": 0.8, "privat": 1.0, "freiwillig gesetzlich": 0.8}},
+      "hochwertig": {"preis": 360, "zeit": 30, "erstattung": {"gesetzlich": 0.5, "privat": 1.0, "freiwillig gesetzlich": 0.5}},
+      "höchstwertig": {"preis": 480, "zeit": 30, "erstattung": {"gesetzlich": 0.5, "privat": 0.95, "freiwillig gesetzlich": 0.5}}
     },
     "einheit": "Minuten"
   },
   {
     "art": "Teilkrone",
     "materialien": {
-      "normal": {"preis": 1000, "zeit": 60, "erstattung": {"gesetzlich": 0.8, "privat": 1.0}},
-      "hochwertig": {"preis": 1800, "zeit": 60, "erstattung": {"gesetzlich": 0.7, "privat": 0.9}},
-      "höchstwertig": {"preis": 3100, "zeit": 60, "erstattung": {"gesetzlich": 0.3, "privat": 0.85}}
+      "normal": {"preis": 1000, "zeit": 60, "erstattung": {"gesetzlich": 0.8, "privat": 1.0, "freiwillig gesetzlich": 0.8}},
+      "hochwertig": {"preis": 1800, "zeit": 60, "erstattung": {"gesetzlich": 0.7, "privat": 0.9, "freiwillig gesetzlich": 0.7}},
+      "höchstwertig": {"preis": 3100, "zeit": 60, "erstattung": {"gesetzlich": 0.3, "privat": 0.85, "freiwillig gesetzlich": 0.3}}
     },
     "einheit": "Minuten"
   },
   {
     "art": "Krone",
     "materialien": {
-      "normal": {"preis": 2800, "zeit": 120, "erstattung": {"gesetzlich": 0.7, "privat": 1.0}},
-      "hochwertig": {"preis": 3600, "zeit": 120, "erstattung": {"gesetzlich": 0.5, "privat": 0.85}},
-      "höchstwertig": {"preis": 4200, "zeit": 120, "erstattung": {"gesetzlich": 0.25, "privat": 0.75}}
+      "normal": {"preis": 2800, "zeit": 120, "erstattung": {"gesetzlich": 0.7, "privat": 1.0, "freiwillig gesetzlich": 0.7}},
+      "hochwertig": {"preis": 3600, "zeit": 120, "erstattung": {"gesetzlich": 0.5, "privat": 0.85, "freiwillig gesetzlich": 0.5}},
+      "höchstwertig": {"preis": 4200, "zeit": 120, "erstattung": {"gesetzlich": 0.25, "privat": 0.75, "freiwillig gesetzlich": 0.25}}
     },
     "einheit": "Minuten"
   },
   {
     "art": "Wurzelbehandlung",
     "materialien": {
-      "normal": {"preis": 750, "zeit": 90, "erstattung": {"gesetzlich": 0.9, "privat": 1.0}},
-      "hochwertig": {"preis": 1200, "zeit": 90, "erstattung": {"gesetzlich": 0.7, "privat": 0.95}},
-      "höchstwertig": {"preis": 1500, "zeit": 120, "erstattung": {"gesetzlich": 0.45, "privat": 0.85}}
+      "normal": {"preis": 750, "zeit": 90, "erstattung": {"gesetzlich": 0.9, "privat": 1.0, "freiwillig gesetzlich": 0.9}},
+      "hochwertig": {"preis": 1200, "zeit": 90, "erstattung": {"gesetzlich": 0.7, "privat": 0.95, "freiwillig gesetzlich": 0.7}},
+      "höchstwertig": {"preis": 1500, "zeit": 120, "erstattung": {"gesetzlich": 0.45, "privat": 0.85, "freiwillig gesetzlich": 0.45}}
     },
     "einheit": "Minuten"
   }
