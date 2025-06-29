@@ -2,18 +2,12 @@
   {
     "name": "Frau Meyer",
     "passwort": "P111",
-    "krankenkasse": "privat",
-    "probleme": [
-      {
-        "art": "Karies groß",
-        "anzahl": 1,
-        "material": "normal"
-      }
-    ],
+    "krankenkasse": "gesetzlich",
+    "probleme": [],
     "passwort_geaendert": true
   },
   {
-    "name": "Herr Krüger",
+    "name": "Herr Kr\u00fcger",
     "passwort": "P333",
     "krankenkasse": "privat",
     "probleme": [],
@@ -44,7 +38,7 @@
     "passwort_geaendert": false
   },
   {
-    "name": "Frau Müller",
+    "name": "Frau M\u00fcller",
     "passwort": "P711",
     "krankenkasse": "privat",
     "probleme": [
@@ -85,7 +79,7 @@
     "krankenkasse": "freiwillig gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -97,7 +91,7 @@
     "krankenkasse": "privat",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 4
       }
     ],
@@ -145,7 +139,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 2
       }
     ],
@@ -217,7 +211,7 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies groß",
+        "art": "Karies gro\u00df",
         "anzahl": 3
       }
     ],

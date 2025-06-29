@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QColor, QPalette
 from gui.data_manager import speichere_daten, patienten, zahnaerzte, pfad_patienten, pfad_zahnaerzte
+import os, json
 
 class SettingsManager:
     def __init__(self, main_window):
@@ -357,12 +358,10 @@ class SettingsManager:
     def update_zahnarzt_name(self):
         if not self.main_window.zahnarzt_data:
             return
-            
         neuer_name = self.main_window.neuer_name.text().strip()
         if not neuer_name:
             QMessageBox.warning(self.main_window, "Fehler", "Bitte geben Sie einen Namen ein.")
             return
-            
         # Prüfe ob der Name bereits existiert
         for arzt in zahnaerzte:
             if arzt["name"] == neuer_name and arzt != self.main_window.zahnarzt_data:
@@ -372,10 +371,52 @@ class SettingsManager:
                     f"Ein Zahnarzt mit dem Namen '{neuer_name}' existiert bereits."
                 )
                 return
-                
+        alter_name = self.main_window.zahnarzt_data["name"]
         self.main_window.zahnarzt_data["name"] = neuer_name
         speichere_daten(pfad_zahnaerzte, zahnaerzte)
+        # --- Bild-Mapping aktualisieren ---
+        bilder_json_path = os.path.join(os.path.dirname(__file__), "..", "data", "zahnaerzte_bilder.json")
+        bilder_json_path = os.path.abspath(bilder_json_path)
+        try:
+            with open(bilder_json_path, "r", encoding="utf-8") as f:
+                bilder_mapping = json.load(f)
+        except Exception:
+            bilder_mapping = {}
+        if alter_name in bilder_mapping:
+            bilder_mapping[neuer_name] = bilder_mapping.pop(alter_name)
+            with open(bilder_json_path, "w", encoding="utf-8") as f:
+                json.dump(bilder_mapping, f, indent=2, ensure_ascii=False)
+        # --- Termine aktualisieren ---
+        termine_path = os.path.join(os.path.dirname(__file__), "..", "data", "termine.json")
+        termine_path = os.path.abspath(termine_path)
+        try:
+            with open(termine_path, "r", encoding="utf-8") as f:
+                termine = json.load(f)
+        except Exception:
+            termine = {}
+        # Zahnarzt-Termine (oberste Ebene)
+        if alter_name in termine:
+            termine[neuer_name] = termine.pop(alter_name)
+        # Patiententermine: Arztname in Details ersetzen
+        for arzt_name in list(termine.keys()):
+            for datum, tag_termine in termine[arzt_name].items():
+                for zeit, termin in tag_termine.items():
+                    if termin.get("zahnarzt") == alter_name:
+                        termin["zahnarzt"] = neuer_name
+                    # Fallback: Falls der Name als "arzt" gespeichert ist
+                    if termin.get("arzt") == alter_name:
+                        termin["arzt"] = neuer_name
+        with open(termine_path, "w", encoding="utf-8") as f:
+            json.dump(termine, f, indent=2, ensure_ascii=False)
+        # --- Patienten-Termine aktualisieren (optional, falls dort gespeichert) ---
+        # (Hier kann ggf. noch patienten.json angepasst werden, falls dort der Zahnarztname gespeichert ist)
+        # --- UI sofort aktualisieren ---
+        self.main_window.benutzername = neuer_name
+        self.main_window.zahnarzt_data["name"] = neuer_name
         QMessageBox.information(self.main_window, "Erfolg", "Name wurde aktualisiert!")
+        # UI-Refresh: Dashboard neu laden, falls offen
+        if hasattr(self.main_window, "show_zahnarzt_dashboard"):
+            self.main_window.show_zahnarzt_dashboard()
 
     def update_zahnarzt_kassen(self):
         if not self.main_window.zahnarzt_data:
