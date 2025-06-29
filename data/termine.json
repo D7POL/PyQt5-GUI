@@ -4,9 +4,17 @@
   "Dr. Wurzel": {},
   "Dr. Winkel": {},
   "Dr. Shikh": {},
-  "Dr. Kraft": {
-    "2025-07-22": {
-      "10:00": {
+  "Dr. Kraft": {},
+  "Dr. Hausmann": {
+    "2025-06-30": {
+      "09:00": {
+        "patient": "Frau Meyer",
+        "behandlung": "Karies klein",
+        "material": "normal",
+        "dauer": 15,
+        "anzahl": 1
+      },
+      "09:30": {
         "patient": "Frau Meyer",
         "behandlung": "Karies klein",
         "material": "normal",

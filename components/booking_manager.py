@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import (
     QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox,
-    QHBoxLayout, QFrame, QSizePolicy, QComboBox, QCalendarWidget
+    QHBoxLayout, QFrame, QSizePolicy, QComboBox, QCalendarWidget, QScrollArea
 )
 from PyQt5.QtCore import Qt, QDate
-from PyQt5.QtGui import QColor, QTextCharFormat
+from PyQt5.QtGui import QColor, QTextCharFormat, QPixmap
 from datetime import datetime, timedelta
 import json
 from gui.data_manager import BEHANDLUNGEN, zahnaerzte, patienten, speichere_daten, pfad_patienten
@@ -174,15 +174,17 @@ class BookingManager:
             QMessageBox.warning(self.main_window, "Keine Ärzte verfügbar", "Leider wurden keine Ärzte gefunden, die Ihre Versicherung akzeptieren.")
             return
         
-        # Zahnarztauswahl
-        self.main_window.arzt_box = QComboBox()
-        for arzt in self.main_window.verfuegbare_aerzte:
-            self.main_window.arzt_box.addItem(arzt["name"])
-        arzt_layout.addWidget(QLabel("Verfügbare Ärzte:"))
-        arzt_layout.addWidget(self.main_window.arzt_box)
+        # Initialisiere Variablen für Kartenauswahl
+        self.arzt_card_frames = []
+        self.selected_arzt_index = None
         
-        # Weiter-Button
+        # Verwende Kartenansicht statt Dropdown
+        self.show_arzt_cards()
+        arzt_layout.addWidget(self.main_window.arzt_cards_container)
+        
+        # Weiter-Button (anfangs deaktiviert)
         self.main_window.kalender_btn = QPushButton("Weiter zur Terminauswahl")
+        self.main_window.kalender_btn.setEnabled(False)  # Erst aktivieren wenn Arzt ausgewählt
         self.main_window.kalender_btn.clicked.connect(self.show_kalender)
         arzt_layout.addWidget(self.main_window.kalender_btn)
         
@@ -199,24 +201,13 @@ class BookingManager:
         self.main_window.current_page = self.main_window.arzt_container
 
     def show_kalender(self):
-        # Speichere ausgewählten Arzt - nur wenn das Widget noch existiert
-        try:
-            if hasattr(self.main_window, 'arzt_box') and self.main_window.arzt_box and not self.main_window.arzt_box.isHidden():
-                self.main_window.selected_zahnarzt = self.main_window.verfuegbare_aerzte[self.main_window.arzt_box.currentIndex()]
-            else:
-                # Fallback: verwende den ersten verfügbaren Arzt
-                if hasattr(self.main_window, 'verfuegbare_aerzte') and self.main_window.verfuegbare_aerzte:
-                    self.main_window.selected_zahnarzt = self.main_window.verfuegbare_aerzte[0]
-                else:
-                    QMessageBox.warning(self.main_window, "Fehler", "Keine Ärzte verfügbar.")
-                    return
-        except (RuntimeError, AttributeError):
-            # Wenn das Widget bereits gelöscht wurde, verwende den ersten verfügbaren Arzt
-            if hasattr(self.main_window, 'verfuegbare_aerzte') and self.main_window.verfuegbare_aerzte:
-                self.main_window.selected_zahnarzt = self.main_window.verfuegbare_aerzte[0]
-            else:
-                QMessageBox.warning(self.main_window, "Fehler", "Keine Ärzte verfügbar.")
-                return
+        # Prüfe ob ein Arzt ausgewählt wurde
+        if self.selected_arzt_index is None:
+            QMessageBox.warning(self.main_window, "Fehler", "Bitte wählen Sie zuerst einen Zahnarzt aus.")
+            return
+            
+        # Verwende den ausgewählten Arzt aus der Kartenauswahl
+        self.main_window.selected_zahnarzt = self.main_window.verfuegbare_aerzte[self.selected_arzt_index]
         
         # Container für Kalender
         self.main_window.kalender_container = QFrame()
@@ -510,4 +501,98 @@ class BookingManager:
                 with open("data/patienten.json", "w", encoding="utf-8") as f:
                     json.dump(patienten_data, f, indent=2, ensure_ascii=False)
             QMessageBox.information(self.main_window, "Termin abgesagt", "Der Termin wurde erfolgreich abgesagt.")
-        self.main_window.show_meine_termine() 
+        self.main_window.show_meine_termine()
+
+    def show_arzt_cards(self):
+        # Scrollbereich für Arztkarten
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_area.setStyleSheet("QScrollArea { border: none; background: transparent; }")
+
+        # Container für Karten (Widget im Scrollbereich)
+        cards_widget = QWidget()
+        cards_layout = QHBoxLayout(cards_widget)
+        cards_layout.setContentsMargins(15, 0, 0, 0)  # 10px links, Rest 0
+        cards_layout.setSpacing(20)
+        cards_layout.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+
+        # Lade Bilder
+        try:
+            with open("data/zahnaerzte_bilder.json", "r", encoding="utf-8") as f:
+                arzt_bilder = json.load(f)
+        except FileNotFoundError:
+            arzt_bilder = {}
+
+        verfuegbare_aerzte = self.main_window.verfuegbare_aerzte
+        self.arzt_card_frames = []
+        for idx, arzt in enumerate(verfuegbare_aerzte):
+            card = QFrame()
+            card.setObjectName(f"arzt_card_{idx}")
+            card.setCursor(Qt.PointingHandCursor)
+            card.setFixedSize(230, 340)
+            card.setStyleSheet("""
+                QFrame {
+                    background: white;
+                    border-radius: 18px;
+                    border: 2px solid #e0e0e0;
+                }
+            """)
+            card_layout = QVBoxLayout(card)
+            card_layout.setContentsMargins(0, 0, 0, 0)
+            card_layout.setSpacing(0)
+            card_layout.setAlignment(Qt.AlignTop)
+            # Bild oben, groß, zentriert, nicht verzerrt
+            bild_label = QLabel()
+            bild_label.setFixedSize(180, 180)
+            bild_label.setStyleSheet("background-color: #f8f9fa; border-radius: 10px; margin: 0px; padding: 0px;")
+            bild_label.setAlignment(Qt.AlignCenter)
+            bild_label.setScaledContents(True)
+            if arzt["name"] in arzt_bilder:
+                bild_path = arzt_bilder[arzt["name"]]
+                pixmap = QPixmap(bild_path).scaled(180, 180, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+                bild_label.setPixmap(pixmap)
+            else:
+                bild_label.setText(arzt["name"][0].upper())
+                bild_label.setStyleSheet("""
+                    background-color: #3498db;
+                    color: white;
+                    border-radius: 10px;
+                    font-size: 48px;
+                    font-weight: bold;
+                    margin: 0px;
+                    padding: 0px;
+                """)
+            card_layout.addWidget(bild_label, alignment=Qt.AlignHCenter)
+            card_layout.addSpacing(18)
+            name_label = QLabel(arzt["name"])
+            name_label.setStyleSheet("font-weight: bold; font-size: 18px; color: #2c3e50;")
+            name_label.setAlignment(Qt.AlignCenter)
+            card_layout.addWidget(name_label)
+            card_layout.addStretch(1)
+            self.arzt_card_frames.append((card, name_label))
+            def make_click_handler(global_idx):
+                return lambda event: self.select_arzt_card(global_idx)
+            card.mousePressEvent = make_click_handler(idx)
+            cards_layout.addWidget(card)
+        cards_widget.setLayout(cards_layout)
+        scroll_area.setWidget(cards_widget)
+        self.main_window.arzt_cards_container = scroll_area
+
+    def select_arzt_card(self, idx):
+        self.selected_arzt_index = idx
+        self.main_window.selected_zahnarzt = self.main_window.verfuegbare_aerzte[idx]
+        
+        # Farbliche Markierung
+        for i, (card, name_label) in enumerate(self.arzt_card_frames):
+            if i == idx:
+                card.setStyleSheet("background: white; border-radius: 18px; border: 3px solid #217dbb;")
+                name_label.setStyleSheet("font-weight: bold; font-size: 18px; color: #217dbb;")
+            else:
+                card.setStyleSheet("background: white; border-radius: 18px; border: 2px solid #e0e0e0;")
+                name_label.setStyleSheet("font-weight: bold; font-size: 18px; color: #2c3e50;")
+        
+        # Aktiviere den Weiter-Button
+        if hasattr(self.main_window, 'kalender_btn'):
+            self.main_window.kalender_btn.setEnabled(True) 
