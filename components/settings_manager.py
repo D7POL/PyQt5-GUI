@@ -413,6 +413,8 @@ class SettingsManager:
         # --- UI sofort aktualisieren ---
         self.main_window.benutzername = neuer_name
         self.main_window.zahnarzt_data["name"] = neuer_name
+        if hasattr(self.main_window, "update_begruessung_label"):
+            self.main_window.update_begruessung_label()
         QMessageBox.information(self.main_window, "Erfolg", "Name wurde aktualisiert!")
         # UI-Refresh: Dashboard neu laden, falls offen
         if hasattr(self.main_window, "show_zahnarzt_dashboard"):

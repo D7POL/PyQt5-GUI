@@ -5,17 +5,17 @@
     "krankenkasse": "gesetzlich",
     "probleme": [
       {
-        "art": "Karies klein",
-        "anzahl": 1,
-        "material": "normal"
-      },
-      {
         "art": "Wurzelbehandlung",
         "anzahl": 1,
         "material": "normal"
       },
       {
         "art": "Karies groß",
+        "anzahl": 1,
+        "material": "normal"
+      },
+      {
+        "art": "Karies klein",
         "anzahl": 1,
         "material": "normal"
       }

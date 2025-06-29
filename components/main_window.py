@@ -132,15 +132,16 @@ class MainFenster(QWidget):
         begruessung_layout = QVBoxLayout(begruessung_container)
         begruessung_layout.setAlignment(Qt.AlignCenter)
         
-        begruessung = QLabel(f"Willkommen {self.benutzername}")
-        begruessung.setStyleSheet("""
-            font-size: 26px;
+        self.begruessung_label = QLabel(f"Willkommen {self.benutzername}")
+        self.begruessung_label.setStyleSheet("""
+            font-size: 22px;
             font-weight: bold;
             color: #2c3e50;
             margin: 0px;
+            padding: 0px;
         """)
-        begruessung.setAlignment(Qt.AlignCenter)
-        begruessung_layout.addWidget(begruessung)
+        self.begruessung_label.setAlignment(Qt.AlignCenter)
+        begruessung_layout.addWidget(self.begruessung_label)
         
         rolle_label = QLabel(f"Angemeldet als {self.rolle}")
         rolle_label.setStyleSheet("color: #7f8c8d; margin: 0px;")
@@ -267,3 +268,6 @@ class MainFenster(QWidget):
             self.show_meine_daten()
         else:
             self.show_zahnarzt_dashboard()
+
+    def update_begruessung_label(self):
+        self.begruessung_label.setText(f"Willkommen {self.benutzername}")
