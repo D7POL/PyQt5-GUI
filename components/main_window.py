@@ -119,7 +119,7 @@ class MainFenster(QWidget):
         hauptlayout.setContentsMargins(20, 20, 20, 20)
         hauptlayout.setSpacing(20)
 
-        # Begrüßung oben mit modernem Design
+        # Begrüßung oben mit modernem Design (Header)
         begruessung_container = QFrame()
         begruessung_container.setStyleSheet("""
             QFrame {
@@ -128,6 +128,7 @@ class MainFenster(QWidget):
                 padding: 12px;
             }
         """)
+        begruessung_container.setFixedHeight(150)  # Feste Höhe für Header
         begruessung_layout = QVBoxLayout(begruessung_container)
         begruessung_layout.setAlignment(Qt.AlignCenter)
         
@@ -150,11 +151,11 @@ class MainFenster(QWidget):
 
         hauptlayout.addWidget(begruessung_container)
 
-        # Hauptbereich: horizontal geteilt
+        # Hauptbereich: horizontal geteilt (Sidebar + Content)
         inhalt_layout = QHBoxLayout()
         inhalt_layout.setSpacing(20)
 
-        # Linkes Menü (Profilbereich) mit Schatten
+        # Sidebar (Profilbereich)
         profil_container = QFrame()
         profil_container.setStyleSheet("""
             QFrame {
@@ -163,6 +164,7 @@ class MainFenster(QWidget):
                 padding: 20px;
             }
         """)
+        profil_container.setFixedWidth(240)  # Feste Breite für Sidebar
         profil_layout = QVBoxLayout(profil_container)
         profil_layout.setSpacing(15)
 
@@ -249,13 +251,15 @@ class MainFenster(QWidget):
                 padding: 20px;
             }
         """)
+        inhalt_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.inhalt_layout_inner = QVBoxLayout(inhalt_container)
+        self.inhalt_layout_inner.setContentsMargins(0, 0, 0, 0)
+        self.inhalt_layout_inner.setSpacing(0)
 
         # Layout zusammensetzen
-        inhalt_layout.addWidget(profil_container, stretch=1)
-        inhalt_layout.addWidget(inhalt_container, stretch=3)
+        inhalt_layout.addWidget(profil_container)
+        inhalt_layout.addWidget(inhalt_container, stretch=1)
         hauptlayout.addLayout(inhalt_layout)
-
         self.setLayout(hauptlayout)
         
         # Zeige initial die passende Seite
