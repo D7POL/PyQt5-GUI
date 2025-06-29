@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QMessageBox,
-    QHBoxLayout, QFrame, QScrollArea, QPushButton, QSizePolicy, QCalendarWidget, QTableWidget, QTableWidgetItem
+    QHBoxLayout, QFrame, QScrollArea, QPushButton, QSizePolicy, QCalendarWidget, QTableWidget, QTableWidgetItem, QHeaderView
 )
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QColor, QTextCharFormat
@@ -388,22 +388,53 @@ class ViewManager:
         # Tabelle und Hinweistext vorbereiten
         self.main_window.termin_table = QTableWidget()
         self.main_window.termin_table.setColumnCount(6)
+        self.main_window.termin_table.setRowCount(0)  # Keine Dummy-Zeile mehr
         self.main_window.termin_table.setHorizontalHeaderLabels(
             ["Uhrzeit", "Patient", "Behandlung", "Material", "Anzahl", "Dauer"])
-        self.main_window.termin_table.horizontalHeader().setStretchLastSection(True)
-        self.main_window.termin_table.horizontalHeader().setStyleSheet("font-size: 14px; font-weight: bold;")
-        self.main_window.termin_table.setStyleSheet("font-size: 15px; selection-background-color: #b9fbc0;")
-        self.main_window.termin_table.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.main_window.termin_table.setSelectionBehavior(QTableWidget.SelectRows)
-        self.main_window.termin_table.setMinimumHeight(180)
-        self.main_window.termin_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.main_window.termin_table.hide()  # Standardmäßig versteckt
+        
+        # Header des QTableWidget ausblenden
+        header = self.main_window.termin_table.horizontalHeader()
+        header.setVisible(False)
+        for i in range(6):
+            self.main_window.termin_table.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
+
+        # Eigene Überschriftenzeile mit QLabels (jetzt flexibel)
+        table_header_row = QFrame()
+        table_header_layout = QHBoxLayout(table_header_row)
+        table_header_layout.setContentsMargins(0, 0, 0, 0)
+        table_header_layout.setSpacing(0)
+        labels = [
+            "Uhrzeit",
+            "Patient",
+            "Behandlung",
+            "Material",
+            "Anzahl",
+            "Dauer"
+        ]
+        for text in labels:
+            lbl = QLabel(text)
+            lbl.setAlignment(Qt.AlignCenter)
+            lbl.setStyleSheet("font-weight: bold; font-size: 15px; color: #2c3e50; border-bottom: 1px solid #d0d0d0; background: #f8f9fa; padding: 8px 2px;")
+            table_header_layout.addWidget(lbl, 1)  # Stretch für Flexibilität
+
+        # Die Überschriftenzeile und die Tabelle gemeinsam in ein VBoxLayout packen
+        table_with_header = QFrame()
+        table_with_header_layout = QVBoxLayout(table_with_header)
+        table_with_header_layout.setContentsMargins(0, 0, 0, 0)
+        table_with_header_layout.setSpacing(0)
+        table_with_header_layout.addWidget(table_header_row)
+        table_with_header_layout.addWidget(self.main_window.termin_table)
+
+        # Speichere die Überschriftenzeile als Attribut
+        self.main_window.termin_table_header = table_header_row
+
+        # Im dashboard_layout die Tabelle durch table_with_header ersetzen
+        dashboard_layout.addWidget(table_with_header)
 
         self.main_window.termin_hinweis = QLabel("")
         self.main_window.termin_hinweis.setStyleSheet("color: #7f8c8d; font-size: 15px; padding: 16px;")
         self.main_window.termin_hinweis.hide()
 
-        dashboard_layout.addWidget(self.main_window.termin_table)
         dashboard_layout.addWidget(self.main_window.termin_hinweis)
 
         self.main_window.inhalt_layout_inner.addWidget(dashboard_container)
@@ -459,10 +490,13 @@ class ViewManager:
         wochentag = get_weekday(date.toPyDate())
         self.main_window.terminliste_titel.setText(f"Termine am {wochentag}, {datum_display}")
         if not tag_termine:
+            self.main_window.termin_table_header.hide()
+            self.main_window.termin_table.setRowCount(0)  # Auch bei keinem Termin keine Dummy-Zeile
             self.main_window.termin_table.hide()
             self.main_window.termin_hinweis.setText("Keine Termine an diesem Tag.")
             self.main_window.termin_hinweis.show()
         else:
+            self.main_window.termin_table_header.show()
             self.main_window.termin_hinweis.hide()
             sorted_termine = sorted(tag_termine.items(), key=lambda x: x[0])
             self.main_window.termin_table.setRowCount(len(sorted_termine))
@@ -476,6 +510,6 @@ class ViewManager:
                                                                                         int) else "N/A"
                 self.main_window.termin_table.setItem(row_idx, 4, QTableWidgetItem(anzahl))
                 self.main_window.termin_table.setItem(row_idx, 5, QTableWidgetItem(str(termin_info['dauer']) + " Min."))
-            self.main_window.termin_table.resizeRowsToContents()
-            self.main_window.termin_table.resizeColumnsToContents()
             self.main_window.termin_table.show()
+            self.main_window.termin_table.updateGeometry()
+            self.main_window.termin_table.repaint()
